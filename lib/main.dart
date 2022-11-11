@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:new_base/mep_lijst_widget.dart';
+import 'package:new_base/recepturen_widget.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,6 +14,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      initialRoute: '/',
+      routes: {
+        // When navigating to the "/" route, build the FirstScreen widget.
+        '/': (context) => const MepLijstWidget(),
+        // When navigating to the "/second" route, build the SecondScreen widget.
+        '/second': (context) => const RecepturenWidget(),
+      },
       theme: ThemeData(
         // This is the theme of your application.
         //
