@@ -122,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     // Navigate to the second screen using a named route.
                     Navigator.pushNamed(context, '/meplijst');
                   },
-                  icon: const Icon(Icons.abc),
+                  icon: const Icon(Icons.line_style),
                 ),
               ],
             ),
