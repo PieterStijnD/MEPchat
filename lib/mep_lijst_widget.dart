@@ -10,22 +10,27 @@ class MepLijstWidget extends StatefulWidget {
 class _MepLijstWidgetState extends State<MepLijstWidget> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Center(
-          child: Text("Mep-Lijsten"),
-        ),
-        Card(
-          child: IconButton(
-            onPressed: () {
-              // Navigate to the second screen using a named route.
-              Navigator.pop(context);
-            },
-            icon: const Icon(Icons.abc),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("MEP-lijsten"),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Center(
+            child: Text("MEP-lijsten"),
           ),
-        ),
-      ],
+          Card(
+            child: IconButton(
+              onPressed: () {
+                // Navigate to the second screen using a named route.
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.arrow_back_ios),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

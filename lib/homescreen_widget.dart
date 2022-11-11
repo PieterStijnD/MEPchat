@@ -10,22 +10,27 @@ class HomescreenWidget extends StatefulWidget {
 class _HomescreenWidgetState extends State<HomescreenWidget> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Center(
-          child: Text("HomeScreen"),
-        ),
-        Card(
-          child: IconButton(
-            onPressed: () {
-              // Navigate to the second screen using a named route.
-              Navigator.pop(context);
-            },
-            icon: const Icon(Icons.abc),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Homescreen"),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Center(
+            child: Text("Homescreen"),
           ),
-        ),
-      ],
+          Card(
+            child: IconButton(
+              onPressed: () {
+                // Navigate to the second screen using a named route.
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.arrow_back_ios),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
