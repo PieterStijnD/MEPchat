@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
-class HomescreenWidget extends StatefulWidget {
-  const HomescreenWidget({Key? key}) : super(key: key);
+class ArchiefWidget extends StatefulWidget {
+  const ArchiefWidget({Key? key}) : super(key: key);
 
   @override
-  State<HomescreenWidget> createState() => _HomescreenWidgetState();
+  State<ArchiefWidget> createState() => _ArchiefWidgetState();
 }
 
-class _HomescreenWidgetState extends State<HomescreenWidget> {
+class _ArchiefWidgetState extends State<ArchiefWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Center(
-          child: Text("HomeScreen"),
+          child: Text("Archief"),
         ),
         Card(
           child: IconButton(

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:new_base/archief_widget.dart';
 import 'package:new_base/mep_lijst_widget.dart';
 import 'package:new_base/recepturen_widget.dart';
+
+import 'menukaarten_widget.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,10 +19,10 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       initialRoute: '/',
       routes: {
-        // When navigating to the "/" route, build the FirstScreen widget.
-        '/': (context) => const MepLijstWidget(),
-        // When navigating to the "/second" route, build the SecondScreen widget.
-        '/second': (context) => const RecepturenWidget(),
+        '/meplijst': (context) => const MepLijstWidget(),
+        '/archief': (context) => const ArchiefWidget(),
+        '/menukaarten': (context) => const MenuKaartenWidget(),
+        '/recepturen': (context) => const RecepturenWidget(),
       },
       theme: ThemeData(
         // This is the theme of your application.
@@ -104,6 +107,44 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    // Navigate to the second screen using a named route.
+                    Navigator.pushNamed(context, '/archief');
+                  },
+                  icon: const Icon(Icons.archive_outlined),
+                ),
+                IconButton(
+                  onPressed: () {
+                    // Navigate to the second screen using a named route.
+                    Navigator.pushNamed(context, '/meplijst');
+                  },
+                  icon: const Icon(Icons.abc),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    // Navigate to the second screen using a named route.
+                    Navigator.pushNamed(context, '/menukaarten');
+                  },
+                  icon: const Icon(Icons.menu),
+                ),
+                IconButton(
+                  onPressed: () {
+                    // Navigate to the second screen using a named route.
+                    Navigator.pushNamed(context, '/recepturen');
+                  },
+                  icon: const Icon(Icons.receipt_long_outlined),
+                ),
+              ],
+            ),
             const Text(
               'You have pushed the button this many times:',
             ),

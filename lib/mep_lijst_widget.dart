@@ -10,6 +10,22 @@ class MepLijstWidget extends StatefulWidget {
 class _MepLijstWidgetState extends State<MepLijstWidget> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Center(
+          child: Text("Mep-Lijsten"),
+        ),
+        Card(
+          child: IconButton(
+            onPressed: () {
+              // Navigate to the second screen using a named route.
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.abc),
+          ),
+        ),
+      ],
+    );
   }
 }
