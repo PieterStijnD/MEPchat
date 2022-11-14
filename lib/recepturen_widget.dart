@@ -20,14 +20,9 @@ class _RecepturenWidgetState extends State<RecepturenWidget> {
           const Center(
             child: Text("Recepturen"),
           ),
-          Card(
-            child: IconButton(
-              onPressed: () {
-                // Navigate to the second screen using a named route.
-                Navigator.pop(context);
-              },
-              icon: const Icon(Icons.arrow_back_ios),
-            ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CircularProgressIndicator(),
           ),
         ],
       ),

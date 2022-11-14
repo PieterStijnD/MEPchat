@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:new_base/archief_widget.dart';
-import 'package:new_base/mep_lijst_widget.dart';
+import 'package:new_base/meplijst/mep_lijst_widget.dart';
 import 'package:new_base/recepturen_widget.dart';
 
 import 'homescreen/homescreen_button_widget.dart';
