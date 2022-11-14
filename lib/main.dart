@@ -3,6 +3,7 @@ import 'package:new_base/archief_widget.dart';
 import 'package:new_base/mep_lijst_widget.dart';
 import 'package:new_base/recepturen_widget.dart';
 
+import 'homescreen/homescreen_button_widget.dart';
 import 'menukaarten_widget.dart';
 
 void main() {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'MEP-chat',
       initialRoute: '/',
       routes: {
         '/meplijst': (context) => const MepLijstWidget(),
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'MEP-chat Home Page'),
     );
   }
 }
@@ -107,50 +108,38 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    // Navigate to the second screen using a named route.
-                    Navigator.pushNamed(context, '/archief');
-                  },
-                  icon: const Icon(Icons.archive_outlined),
-                ),
-                IconButton(
-                  onPressed: () {
-                    // Navigate to the second screen using a named route.
-                    Navigator.pushNamed(context, '/meplijst');
-                  },
-                  icon: const Icon(Icons.line_style),
-                ),
-              ],
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  homescreen_button_widget(
+                    title: 'Archief',
+                    path: 'archief',
+                  ),
+                  homescreen_button_widget(
+                    title: 'MEP-Lijsten',
+                    path: 'meplijst',
+                  ),
+                ],
+              ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    // Navigate to the second screen using a named route.
-                    Navigator.pushNamed(context, '/menukaarten');
-                  },
-                  icon: const Icon(Icons.menu),
-                ),
-                IconButton(
-                  onPressed: () {
-                    // Navigate to the second screen using a named route.
-                    Navigator.pushNamed(context, '/recepturen');
-                  },
-                  icon: const Icon(Icons.receipt_long_outlined),
-                ),
-              ],
-            ),
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: const [
+                  homescreen_button_widget(
+                    title: 'Menukaarten',
+                    path: 'menukaarten',
+                  ),
+                  homescreen_button_widget(
+                    title: 'Recepturen',
+                    path: 'recepturen',
+                  ),
+                ],
+              ),
             ),
           ],
         ),
