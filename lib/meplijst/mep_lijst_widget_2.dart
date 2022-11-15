@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../common/common_bottom_nav_bar_widget.dart';
+
 // stores ExpansionPanel state information
 class Item {
   Item({
@@ -57,37 +59,7 @@ class _MepLijstWidget2State extends State<MepLijstWidget2> {
       appBar: AppBar(
         title: Text("MEP-lijsten"),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            backgroundColor: Colors.black12,
-            icon: Icon(
-              Icons.abc,
-            ),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.list_alt,
-            ),
-            label: 'M.E.P.',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.local_post_office_outlined,
-              color: Colors.black,
-            ),
-            label: 'Archief',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.people_outline,
-              color: Colors.black,
-            ),
-            label: 'Teams',
-          ),
-        ],
-      ),
+      bottomNavigationBar: CommonBottomNavBar(),
       body: SingleChildScrollView(
         child: Column(
           children: [

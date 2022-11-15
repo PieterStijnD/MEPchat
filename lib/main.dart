@@ -83,6 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
+      backgroundColor: Colors.white70,
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
@@ -96,7 +97,6 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
-
                 decoration: InputDecoration(
                   iconColor: Colors.grey,
                   icon: Icon(Icons.search),
@@ -136,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           path: 'archief',
                           icon: Icon(
                             Icons.archive_outlined,
-                            size: 48,
+                            size: 108,
                             color: Colors.blueAccent,
                           ),
                         ),
@@ -145,7 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           path: 'meplijst',
                           icon: Icon(
                             Icons.featured_play_list_outlined,
-                            size: 48,
+                            size: 108,
                             color: Colors.blueAccent,
                           ),
                         ),
@@ -163,7 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           path: 'menukaarten',
                           icon: Icon(
                             Icons.book_outlined,
-                            size: 48,
+                            size: 108,
                             color: Colors.blueAccent,
                           ),
                         ),
@@ -172,7 +172,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           path: 'recepturen',
                           icon: Icon(
                             Icons.list_alt_outlined,
-                            size: 48,
+                            size: 108,
                             color: Colors.blueAccent,
                           ),
                         ),
