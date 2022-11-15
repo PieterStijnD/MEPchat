@@ -35,6 +35,22 @@ class MepLijstWidget2 extends StatefulWidget {
 class _MepLijstWidget2State extends State<MepLijstWidget2> {
   final List<Item> _data = generateItems(5);
 
+  void addItem(String title, List<Item> list) {
+    final List<String> meps = [
+      "Garde",
+      "Ovenkant",
+      "Roti",
+      "Desserts",
+      "Lunch"
+    ];
+
+    setState(() {
+      list.add(Item(
+          headerValue: title,
+          expandedValue: 'This is item number ${list.length}'));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,7 +96,9 @@ class _MepLijstWidget2State extends State<MepLijstWidget2> {
             ),
             IconButton(
               color: Colors.black,
-              onPressed: () {},
+              onPressed: () {
+                addItem("Title", _data);
+              },
               icon: Icon(Icons.add),
             )
           ],
@@ -171,7 +189,7 @@ class _MepLijstWidget2State extends State<MepLijstWidget2> {
                       ),
                     ),
                   );
-                  //TODO make archive function work
+                  //TODO make archive method work
                   setState(() {
                     _data
                         .removeWhere((Item currentItem) => item == currentItem);
