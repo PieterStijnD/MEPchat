@@ -8,17 +8,20 @@ class CommonBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      fixedColor: Colors.blueAccent,
+      backgroundColor: Colors.white,
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          backgroundColor: Colors.black12,
           icon: Icon(
-            Icons.abc,
+            Icons.home,
+            color: Colors.blueAccent,
           ),
           label: 'Home',
         ),
         BottomNavigationBarItem(
           icon: Icon(
             Icons.list_alt,
+            color: Colors.black,
           ),
           label: 'M.E.P.',
         ),

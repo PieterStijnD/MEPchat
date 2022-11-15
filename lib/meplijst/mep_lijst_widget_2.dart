@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../common/common_bottom_nav_bar_widget.dart';
-
 // stores ExpansionPanel state information
 class Item {
   Item({
@@ -17,7 +15,15 @@ class Item {
 }
 
 List<Item> generateItems(int numberOfItems) {
-  final List<String> meps = ["Garde", "Ovenkant", "Roti", "Desserts", "Lunch"];
+  final List<String> meps = [
+    "Crêpes",
+    "Rouille",
+    "Garde",
+    "Ovenkant",
+    "Roti",
+    "Desserts",
+    "Lunch"
+  ];
 
   return List<Item>.generate(numberOfItems, (int index) {
     return Item(
@@ -35,17 +41,12 @@ class MepLijstWidget2 extends StatefulWidget {
 }
 
 class _MepLijstWidget2State extends State<MepLijstWidget2> {
-  final List<Item> _data = generateItems(5);
+  //TODO make dynamic length
+  final List<Item> _data = generateItems(7);
+
+  final _formKey = GlobalKey<FormState>();
 
   void addItem(String title, List<Item> list) {
-    final List<String> meps = [
-      "Garde",
-      "Ovenkant",
-      "Roti",
-      "Desserts",
-      "Lunch"
-    ];
-
     setState(() {
       list.add(Item(
           headerValue: title,
@@ -59,8 +60,9 @@ class _MepLijstWidget2State extends State<MepLijstWidget2> {
       appBar: AppBar(
         title: Text("MEP-lijsten"),
       ),
-      bottomNavigationBar: CommonBottomNavBar(),
+      backgroundColor: Colors.white70,
       body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         child: Column(
           children: [
             Container(
@@ -69,7 +71,7 @@ class _MepLijstWidget2State extends State<MepLijstWidget2> {
             IconButton(
               color: Colors.black,
               onPressed: () {
-                addItem("Title", _data);
+                showFormDialog(context);
               },
               icon: Icon(Icons.add),
             )
@@ -97,17 +99,30 @@ class _MepLijstWidget2State extends State<MepLijstWidget2> {
           body: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              IconButton(
-                color: Colors.redAccent,
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                ),
                 onPressed: () {},
-                icon: Icon(Icons.offline_bolt_outlined),
+                child: FaIcon(
+                  FontAwesomeIcons.powerOff,
+                  color: Colors.redAccent,
+                ),
               ),
-              IconButton(
-                color: Colors.blueAccent,
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                ),
                 onPressed: () {},
-                icon: Icon(Icons.settings_applications_outlined),
+                child: FaIcon(
+                  FontAwesomeIcons.sliders,
+                  color: Colors.amberAccent,
+                ),
               ),
-              IconButton(
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                ),
                 onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -135,10 +150,15 @@ class _MepLijstWidget2State extends State<MepLijstWidget2> {
                         .removeWhere((Item currentItem) => item == currentItem);
                   });
                 },
-                icon: Icon(Icons.delete),
-                color: Colors.redAccent,
+                child: FaIcon(
+                  FontAwesomeIcons.trash,
+                  color: Colors.redAccent,
+                ),
               ),
-              IconButton(
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                ),
                 onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -167,14 +187,166 @@ class _MepLijstWidget2State extends State<MepLijstWidget2> {
                         .removeWhere((Item currentItem) => item == currentItem);
                   });
                 },
-                icon: Icon(Icons.archive_outlined),
-                color: Colors.blueAccent,
-              )
+                child: FaIcon(
+                  FontAwesomeIcons.boxArchive,
+                  color: Colors.blueAccent,
+                ),
+              ),
             ],
           ),
           isExpanded: item.isExpanded,
         );
       }).toList(),
     );
+  }
+
+  void showFormDialog(BuildContext context) {
+    final MEPController = TextEditingController();
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+              title: Center(
+                child: Text("Toevoegen MEP"),
+              ),
+              children: [
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    // crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text("Naam"),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10),
+                                bottomLeft: Radius.circular(10),
+                                bottomRight: Radius.circular(10)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset:
+                                    Offset(0, 3), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                            child: TextFormField(
+                              controller: MEPController,
+                              decoration: InputDecoration(
+                                  border: InputBorder.none, hintText: "..."),
+                              // The validator receives the text that the user has entered.
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter some text';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(18.0),
+                        child: Text(
+                          "Of",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text("Receptuur toevoegen"),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10),
+                                bottomLeft: Radius.circular(10),
+                                bottomRight: Radius.circular(10)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset:
+                                    Offset(0, 3), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                            child: TextField(
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'zoek receptuur',
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.white),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Icon(
+                                Icons.cancel_outlined,
+                                color: Colors.amberAccent,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all(Colors.white)),
+                              onPressed: () {
+                                // Validate returns true if the form is valid, or false otherwise.
+                                if (_formKey.currentState!.validate()) {
+                                  // If the form is valid, display a snackbar. In the real world,
+                                  // you'd often call a server or save the information in a database.
+                                  addItem(MEPController.text, _data);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Processing Data'),
+                                    ),
+                                  );
+                                  Navigator.pop(context);
+                                }
+                              },
+                              child: Icon(Icons.check_circle_outline,
+                                  color: Colors.green),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                )
+              ]);
+        });
   }
 }
