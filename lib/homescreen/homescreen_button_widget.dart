@@ -5,10 +5,12 @@ class homescreen_button_widget extends StatelessWidget {
     Key? key,
     required this.title,
     required this.path,
+    required this.icon,
   }) : super(key: key);
 
   final String title;
   final String path;
+  final Icon icon;
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +25,13 @@ class homescreen_button_widget extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Icon(
-                  Icons.archive_outlined,
-                ),
+                icon,
                 SizedBox(
                   height: 20,
                 ),
                 Text(
                   title,
+                  style: TextStyle(color: Colors.blueAccent),
                 )
               ],
             )),

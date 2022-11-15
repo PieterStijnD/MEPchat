@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:new_base/archief_widget.dart';
-import 'package:new_base/meplijst/mep_lijst_widget.dart';
 import 'package:new_base/recepturen_widget.dart';
 
 import 'homescreen/homescreen_button_widget.dart';
 import 'menukaarten_widget.dart';
+import 'meplijst/mep_lijst_widget_2.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       title: 'MEP-chat',
       initialRoute: '/',
       routes: {
-        '/meplijst': (context) => const MepLijstWidget(),
+        '/meplijst': (context) => const MepLijstWidget2(),
         '/archief': (context) => const ArchiefWidget(),
         '/menukaarten': (context) => const MenuKaartenWidget(),
         '/recepturen': (context) => const RecepturenWidget(),
@@ -116,10 +116,21 @@ class _MyHomePageState extends State<MyHomePage> {
                   homescreen_button_widget(
                     title: 'Archief',
                     path: 'archief',
+                    icon: Icon(
+                      Icons.archive_outlined,
+                      size: 48,
+                      color: Colors.blueAccent,
+                    ),
                   ),
                   homescreen_button_widget(
                     title: 'MEP-Lijsten',
+
                     path: 'meplijst',
+                    icon: Icon(
+                      Icons.featured_play_list_outlined,
+                      size: 48,
+                      color: Colors.blueAccent,
+                    ),
                   ),
                 ],
               ),
@@ -133,10 +144,20 @@ class _MyHomePageState extends State<MyHomePage> {
                   homescreen_button_widget(
                     title: 'Menukaarten',
                     path: 'menukaarten',
+                    icon: Icon(
+                      Icons.book_outlined,
+                      size: 48,
+                      color: Colors.blueAccent,
+                    ),
                   ),
                   homescreen_button_widget(
                     title: 'Recepturen',
                     path: 'recepturen',
+                    icon: Icon(
+                      Icons.list_alt_outlined,
+                      size: 48,
+                      color: Colors.blueAccent,
+                    ),
                   ),
                 ],
               ),
