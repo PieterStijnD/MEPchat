@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // stores ExpansionPanel state information
 class Item {
@@ -18,7 +19,7 @@ List<Item> generateItems(int numberOfItems) {
 
   return List<Item>.generate(numberOfItems, (int index) {
     return Item(
-      headerValue: 'Panel ${meps[index]}',
+      headerValue: meps[index],
       expandedValue: 'This is item number $index',
     );
   });
@@ -71,19 +72,19 @@ class _MepLijstWidget2State extends State<MepLijstWidget2> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          SingleChildScrollView(
-            child: Container(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
               child: _buildPanel(),
             ),
-          ),
-          IconButton(
-            color: Colors.black,
-            onPressed: () {},
-            icon: Icon(Icons.add),
-          )
-        ],
+            IconButton(
+              color: Colors.black,
+              onPressed: () {},
+              icon: Icon(Icons.add),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -99,7 +100,7 @@ class _MepLijstWidget2State extends State<MepLijstWidget2> {
         return ExpansionPanel(
           headerBuilder: (BuildContext context, bool isExpanded) {
             return ListTile(
-              leading: Icon(Icons.settings_applications_outlined),
+              leading: FaIcon(FontAwesomeIcons.clipboard),
               title: Text(item.headerValue),
             );
           },
@@ -187,12 +188,3 @@ class _MepLijstWidget2State extends State<MepLijstWidget2> {
     );
   }
 }
-
-// ListTile(
-// title: Text(item.expandedValue),
-// subtitle:
-// const Text('To delete this panel, tap the trash can icon'),
-// trailing: const Icon(Icons.delete),
-// onTap: () {
-//
-// }),
