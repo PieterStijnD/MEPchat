@@ -140,7 +140,7 @@ class _MepLijstWidget2State extends State<MepLijstWidget2> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       action: SnackBarAction(
-                        label: 'Action',
+                        label: 'Undo',
                         onPressed: () {
                           // Code to execute.
                         },
@@ -171,7 +171,7 @@ class _MepLijstWidget2State extends State<MepLijstWidget2> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       action: SnackBarAction(
-                        label: 'Action',
+                        label: 'Undo',
                         onPressed: () {
                           // Code to execute.
                         },
