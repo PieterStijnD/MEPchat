@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:new_base/Archive/archief_widget.dart';
+import 'package:new_base/meplijst/meppage_wrapper_widget.dart';
 import 'package:new_base/recepturen_widget.dart';
 import 'package:new_base/teams_page/teams_page_widget.dart';
 
+import 'Archive/archief_widget.dart';
 import 'homescreen/homescreen_widget.dart';
 import 'menukaarten_widget.dart';
-import 'meplijst/mep_lijst_widget_2.dart';
+import 'meplijst/mep_lijst_widget.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
       title: 'MEP-chat',
       initialRoute: '/',
       routes: {
-        '/meplijst': (context) => const MepLijstWidget2(),
+        '/meplijst': (context) => const MepLijstWidget(),
         '/archief': (context) => const ArchiefWidget(),
         '/menukaarten': (context) => const MenuKaartenWidget(),
         '/recepturen': (context) => const RecepturenWidget(),
@@ -55,10 +56,10 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     HomescreenWidget(),
-    MepLijstWidget2(),
+    MepPageWrapperWidget(),
     ArchiefWidget(),
     TeamsPage(),
   ];
@@ -129,10 +130,10 @@ class MyStatefulWidget extends StatefulWidget {
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     HomescreenWidget(),
-    MepLijstWidget2(),
+    MepLijstWidget(),
     ArchiefWidget(),
     TeamsPage(),
   ];

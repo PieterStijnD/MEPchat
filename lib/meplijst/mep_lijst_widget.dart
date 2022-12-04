@@ -1,87 +1,349 @@
 import 'package:flutter/material.dart';
-import 'package:new_base/meplijst/single_mep_lijst_widget.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+// stores ExpansionPanel state information
+class Item {
+  Item({
+    required this.expandedValue,
+    required this.headerValue,
+    this.isExpanded = false,
+  });
+
+  String expandedValue;
+  String headerValue;
+  bool isExpanded;
+}
+
+List<Item> generateItems(int numberOfItems) {
+  final List<String> meps = [
+    "Crêpes",
+    "Rouille",
+    "Garde",
+    "Ovenkant",
+    "Roti",
+    "Desserts",
+    "Lunch"
+  ];
+
+  return List<Item>.generate(numberOfItems, (int index) {
+    return Item(
+      headerValue: meps[index],
+      expandedValue: 'This is item number $index',
+    );
+  });
+}
 
 class MepLijstWidget extends StatefulWidget {
-  const MepLijstWidget({Key? key}) : super(key: key);
+  const MepLijstWidget({super.key});
 
   @override
   State<MepLijstWidget> createState() => _MepLijstWidgetState();
 }
 
 class _MepLijstWidgetState extends State<MepLijstWidget> {
-  final List<dynamic> entries = <SingleMepLijstWidget>[
-    SingleMepLijstWidget(
-      title: 'Mep-item 1',
-      active: true,
-    ),
-    SingleMepLijstWidget(
-      title: 'Mep-item 2',
-      active: true,
-    ),
-    SingleMepLijstWidget(
-      title: 'Mep-item 3',
-      active: true,
-    ),
-    SingleMepLijstWidget(
-      title: 'Mep-item 4',
-      active: true,
-    ),
-    SingleMepLijstWidget(
-      title: 'Mep-item 5',
-      active: true,
-    ),
-    SingleMepLijstWidget(
-      title: 'Mep-item 6',
-      active: true,
-    ),
-  ];
+  //TODO make dynamic length
+  final List<Item> _data = generateItems(7);
+
+  final _formKey = GlobalKey<FormState>();
+
+  void addItem(String title, List<Item> list) {
+    setState(() {
+      list.add(Item(
+          headerValue: title,
+          expandedValue: 'This is item number ${list.length}'));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("MEP-lijsten"),
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.7,
+      child: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Column(
+          children: [
+            Container(
+              child: _buildPanel(),
+            ),
+            IconButton(
+              color: Colors.black,
+              onPressed: () {
+                showFormDialog(context);
+              },
+              icon: Icon(Icons.add),
+            )
+          ],
+        ),
       ),
-      body: ListView.separated(
-        padding: const EdgeInsets.all(8),
-        itemCount: entries.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            height: 50,
-            color: Colors.white70,
-            child: Center(child: Text('Entry ${entries[index]}')),
-          );
-        },
-        separatorBuilder: (BuildContext context, int index) => const Divider(),
-      ),
-      // SingleChildScrollView(
-      //   child: Column(
-      //     mainAxisAlignment: MainAxisAlignment.center,
-      //     children: [
-      //
-      //       SingleMepLijstWidget(
-      //         title: 'Mep-item',
-      //         active: true,
-      //       ),
-      //       SingleMepLijstWidget(
-      //         title: 'Mep-item',
-      //         active: true,
-      //       ),
-      //       SingleMepLijstWidget(
-      //         title: 'Mep-item',
-      //         active: true,
-      //       ),
-      //       SingleMepLijstWidget(
-      //         title: 'Mep-item',
-      //         active: true,
-      //       ),
-      //       IconButton(
-      //           color: Colors.black, onPressed: add(), icon: Icon(Icons.add))
-      //     ],
-      //   ),
-      // ),
     );
   }
 
-  add() {}
+  Widget _buildPanel() {
+    return ExpansionPanelList(
+      expansionCallback: (int index, bool isExpanded) {
+        setState(() {
+          _data[index].isExpanded = !isExpanded;
+        });
+      },
+      children: _data.map<ExpansionPanel>((Item item) {
+        return ExpansionPanel(
+          headerBuilder: (BuildContext context, bool isExpanded) {
+            return ListTile(
+              leading: FaIcon(FontAwesomeIcons.clipboard),
+              title: Text(item.headerValue),
+            );
+          },
+          body: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                ),
+                onPressed: () {},
+                child: FaIcon(
+                  FontAwesomeIcons.powerOff,
+                  color: Colors.redAccent,
+                ),
+              ),
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                ),
+                onPressed: () {},
+                child: FaIcon(
+                  FontAwesomeIcons.sliders,
+                  color: Colors.amberAccent,
+                ),
+              ),
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                ),
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      action: SnackBarAction(
+                        label: 'Undo',
+                        onPressed: () {
+                          // Code to execute.
+                        },
+                      ),
+                      content: const Text('Item has been deleted.'),
+                      duration: const Duration(milliseconds: 3000),
+                      width: 280.0,
+                      // Width of the SnackBar.
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0, // Inner padding for SnackBar content.
+                      ),
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
+                  );
+                  setState(() {
+                    _data
+                        .removeWhere((Item currentItem) => item == currentItem);
+                  });
+                },
+                child: FaIcon(
+                  FontAwesomeIcons.trash,
+                  color: Colors.redAccent,
+                ),
+              ),
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                ),
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      action: SnackBarAction(
+                        label: 'Undo',
+                        onPressed: () {
+                          // Code to execute.
+                        },
+                      ),
+                      content: const Text('Item has been archived.'),
+                      duration: const Duration(milliseconds: 3000),
+                      width: 280.0,
+                      // Width of the SnackBar.
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0, // Inner padding for SnackBar content.
+                      ),
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
+                  );
+                  //TODO make archive method work
+                  setState(() {
+                    _data
+                        .removeWhere((Item currentItem) => item == currentItem);
+                  });
+                },
+                child: FaIcon(
+                  FontAwesomeIcons.boxArchive,
+                  color: Colors.blueAccent,
+                ),
+              ),
+            ],
+          ),
+          isExpanded: item.isExpanded,
+        );
+      }).toList(),
+    );
+  }
+
+  void showFormDialog(BuildContext context) {
+    final MEPController = TextEditingController();
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+              title: Center(
+                child: Text("Toevoegen MEP"),
+              ),
+              children: [
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    // crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text("Naam"),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10),
+                                bottomLeft: Radius.circular(10),
+                                bottomRight: Radius.circular(10)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset:
+                                    Offset(0, 3), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                            child: TextFormField(
+                              controller: MEPController,
+                              decoration: InputDecoration(
+                                  border: InputBorder.none, hintText: "..."),
+                              // The validator receives the text that the user has entered.
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter some text';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(18.0),
+                        child: Text(
+                          "Of",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text("Receptuur toevoegen"),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10),
+                                bottomLeft: Radius.circular(10),
+                                bottomRight: Radius.circular(10)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset:
+                                    Offset(0, 3), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                            child: TextField(
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'zoek receptuur',
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.white),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Icon(
+                                Icons.cancel_outlined,
+                                color: Colors.amberAccent,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all(Colors.white)),
+                              onPressed: () {
+                                // Validate returns true if the form is valid, or false otherwise.
+                                if (_formKey.currentState!.validate()) {
+                                  // If the form is valid, display a snackbar. In the real world,
+                                  // you'd often call a server or save the information in a database.
+                                  addItem(MEPController.text, _data);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Processing Data'),
+                                    ),
+                                  );
+                                  Navigator.pop(context);
+                                }
+                              },
+                              child: Icon(Icons.check_circle_outline,
+                                  color: Colors.green),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                )
+              ]);
+        });
+  }
 }

@@ -10,22 +10,17 @@ class MenuKaartenWidget extends StatefulWidget {
 class _MenuKaartenWidgetState extends State<MenuKaartenWidget> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Menukaarten"),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Center(
-            child: Text("Menukaarten"),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CircularProgressIndicator(),
-          ),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Center(
+          child: Text("Menukaarten"),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CircularProgressIndicator(),
+        ),
+      ],
     );
   }
 }

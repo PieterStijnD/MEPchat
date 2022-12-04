@@ -10,22 +10,17 @@ class RecepturenWidget extends StatefulWidget {
 class _RecepturenWidgetState extends State<RecepturenWidget> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Recepturen"),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Center(
-            child: Text("Recepturen"),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CircularProgressIndicator(),
-          ),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Center(
+          child: Text("Recepturen"),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CircularProgressIndicator(),
+        ),
+      ],
     );
   }
 }
