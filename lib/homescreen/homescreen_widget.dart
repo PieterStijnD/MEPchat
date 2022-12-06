@@ -39,7 +39,7 @@ class _HomescreenWidgetState extends State<HomescreenWidget> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: const [
-                          Text("hello")
+                          Text("Homescreen")
                           // homescreen_button_widget(
                           //   title: 'MEP-Lijsten',
                           //   path: 'meplijst',
@@ -67,7 +67,7 @@ class _HomescreenWidgetState extends State<HomescreenWidget> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.max,
                         children: const [
-                          Text("hello")
+                          Text("<Possibly remove>")
 
                           // homescreen_button_widget(
                           //   title: 'Archief',
