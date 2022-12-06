@@ -4,29 +4,41 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // stores ExpansionPanel state information
 class Item {
   Item({
+    required this.isActive,
     required this.expandedValue,
     required this.headerValue,
     this.isExpanded = false,
   });
 
+  bool isActive;
   String expandedValue;
   String headerValue;
   bool isExpanded;
 }
 
-List<Item> generateItems(int numberOfItems) {
-  final List<String> meps = [
-    "Crêpes",
-    "Rouille",
-    "Garde",
-    "Ovenkant",
-    "Roti",
-    "Desserts",
-    "Lunch"
-  ];
+final List<String> meps1 = [
+  "Crêpes",
+  "Rouille",
+  "Garde",
+  "Ovenkant",
+  "Roti",
+  "Desserts",
+  "Lunch"
+];
+final List<String> meps2 = [
+  "TEST",
+  "Rouille",
+  "TEST",
+  "Ovenkant",
+  "TEST",
+  "Desserts",
+  "TEST"
+];
 
+List<Item> generateItems(int numberOfItems, List<String> meps) {
   return List<Item>.generate(numberOfItems, (int index) {
     return Item(
+      isActive: true,
       headerValue: meps[index],
       expandedValue: 'This is item number $index',
     );
@@ -42,13 +54,15 @@ class MepLijstWidget extends StatefulWidget {
 
 class _MepLijstWidgetState extends State<MepLijstWidget> {
   //TODO make dynamic length
-  final List<Item> _data = generateItems(7);
-
+  final List<Item> _data = generateItems(7, meps1);
+  final List<Item> _data2 = generateItems(7, meps2);
   final _formKey = GlobalKey<FormState>();
+  bool _activeItemsList = true;
 
   void addItem(String title, List<Item> list) {
     setState(() {
       list.add(Item(
+          isActive: true,
           headerValue: title,
           expandedValue: 'This is item number ${list.length}'));
     });
@@ -56,36 +70,73 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.7,
-      child: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Column(
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              child: _buildPanel(),
-            ),
             IconButton(
-              color: Colors.black,
-              onPressed: () {
-                showFormDialog(context);
-              },
-              icon: Icon(Icons.add),
-            )
+                onPressed: () {
+                  setState(() {
+                    _activeItemsList = true;
+                  });
+                },
+                icon: Icon(Icons.all_inclusive)),
+            IconButton(
+                onPressed: () {
+                  setState(() {
+                    _activeItemsList = false;
+                  });
+                },
+                icon: Icon(Icons.import_contacts_sharp)),
           ],
         ),
-      ),
+        Container(
+          height: MediaQuery.of(context).size.height * 0.7,
+          child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                if (!_activeItemsList) ...[
+                  Container(
+                    child: _buildPanel(_data),
+                  ),
+                  IconButton(
+                    color: Colors.black,
+                    onPressed: () {
+                      showFormDialog(context);
+                    },
+                    icon: Icon(Icons.add),
+                  )
+                ],
+                if (_activeItemsList) ...[
+                  Container(
+                    child: _buildPanel(_data2),
+                  ),
+                  IconButton(
+                    color: Colors.black,
+                    onPressed: () {
+                      showFormDialog(context);
+                    },
+                    icon: Icon(Icons.add),
+                  )
+                ]
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 
-  Widget _buildPanel() {
+  Widget _buildPanel(List<Item> data) {
     return ExpansionPanelList(
       expansionCallback: (int index, bool isExpanded) {
         setState(() {
-          _data[index].isExpanded = !isExpanded;
+          data[index].isExpanded = !isExpanded;
         });
       },
-      children: _data.map<ExpansionPanel>((Item item) {
+      children: data.map<ExpansionPanel>((Item item) {
         return ExpansionPanel(
           headerBuilder: (BuildContext context, bool isExpanded) {
             return ListTile(
@@ -100,7 +151,11 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.white),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {
+                    item.isActive = !item.isActive;
+                  });
+                },
                 child: FaIcon(
                   FontAwesomeIcons.powerOff,
                   color: Colors.redAccent,
@@ -143,8 +198,7 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
                     ),
                   );
                   setState(() {
-                    _data
-                        .removeWhere((Item currentItem) => item == currentItem);
+                    data.removeWhere((Item currentItem) => item == currentItem);
                   });
                 },
                 child: FaIcon(
@@ -180,8 +234,7 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
                   );
                   //TODO make archive method work
                   setState(() {
-                    _data
-                        .removeWhere((Item currentItem) => item == currentItem);
+                    data.removeWhere((Item currentItem) => item == currentItem);
                   });
                 },
                 child: FaIcon(
