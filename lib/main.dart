@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:new_base/meplijst/meppage_wrapper_widget.dart';
+import 'package:new_base/login_page.dart';
+import 'package:new_base/meplijst/mep_page_wrapper_widget.dart';
 import 'package:new_base/recepturen_widget.dart';
 import 'package:new_base/teams_page/teams_page_widget.dart';
 
@@ -20,8 +21,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'MEP-chat',
-      initialRoute: '/',
+      initialRoute: '/login',
       routes: {
+        '/login': (context) => LoginScreen(),
         '/meplijst': (context) => const MepLijstWidget(),
         '/archief': (context) => const ArchiefWidget(),
         '/menukaarten': (context) => const MenuKaartenWidget(),
@@ -93,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.local_post_office_outlined,
+              Icons.archive_outlined,
             ),
             label: 'Archief',
           ),

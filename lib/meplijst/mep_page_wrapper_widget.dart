@@ -1,3 +1,4 @@
+import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 
 import '../menukaarten_widget.dart';
@@ -38,24 +39,33 @@ class _MepPageWrapperWidgetState extends State<MepPageWrapperWidget> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            FloatingActionButton.extended(
-              onPressed: () {
-                _onItemTapped(0);
-              },
-              label: const Text('MEP-lijsten'),
+            DelayedDisplay(
+              delay: Duration(milliseconds: 200),
+              child: FloatingActionButton.extended(
+                onPressed: () {
+                  _onItemTapped(0);
+                },
+                label: const Text('MEP-lijsten'),
+              ),
             ),
-            FloatingActionButton.extended(
-              onPressed: () {
-                _onItemTapped(1);
-              },
-              label: const Text('Menukaarten'),
+            DelayedDisplay(
+              delay: Duration(milliseconds: 300),
+              child: FloatingActionButton.extended(
+                onPressed: () {
+                  _onItemTapped(1);
+                },
+                label: const Text('Menukaarten'),
+              ),
             ),
-            FloatingActionButton.extended(
-              onPressed: () {
-                _onItemTapped(2);
-              },
-              label: const Text('Recepten'),
-            ),
+            DelayedDisplay(
+              delay: Duration(milliseconds: 400),
+              child: FloatingActionButton.extended(
+                onPressed: () {
+                  _onItemTapped(2);
+                },
+                label: const Text('Recepten'),
+              ),
+            )
           ],
         ),
       ),
