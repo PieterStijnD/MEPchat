@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 
+import 'api/api_user_calls.dart';
 import 'main.dart';
 
 const users = const {
@@ -10,14 +11,18 @@ const users = const {
 class LoginScreen extends StatelessWidget {
   Duration get loginTime => Duration(milliseconds: 2250);
 
-  Future<String?> _authUser(LoginData data) {
+  Future<String?> _authUser(LoginData data) async {
+    var statusCode = await loginUser(data.name, data.password);
     debugPrint('Name: ${data.name}, Password: ${data.password}');
     return Future.delayed(loginTime).then((_) {
-      if (!users.containsKey(data.name)) {
-        return 'User not exists';
-      }
-      if (users[data.name] != data.password) {
-        return 'Password does not match';
+      // if (!users.containsKey(data.name)) {
+      //   return 'User not exists';
+      // }
+      // if (users[data.name] != data.password) {
+      //   return 'Password does not match';
+      // }
+      if (statusCode != 200) {
+        return 'Server error: $statusCode';
       }
       return null;
     });
@@ -44,14 +49,16 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return FlutterLogin(
       title: 'MEP-chat',
-      // logo: AssetImage('assets/images/ecorp-lightblue.png'),
+      //TODO add image?
+      // logo: AssetImage('assets/images/'),
       onLogin: _authUser,
       onSignup: _signupUser,
       onSubmitAnimationCompleted: () {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => MyHomePage(
-            title: 'MEP-chat',
-          ),
+          builder: (context) =>
+              MyHomePage(
+                title: 'MEP-chat',
+              ),
         ));
       },
       onRecoverPassword: _recoverPassword,
