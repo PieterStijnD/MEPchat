@@ -43,7 +43,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlutterLogin(
-      title: 'ECORP',
+      title: 'MEP-chat',
       // logo: AssetImage('assets/images/ecorp-lightblue.png'),
       onLogin: _authUser,
       onSignup: _signupUser,
