@@ -23,8 +23,8 @@ Future<int> loginUser(name, password) async {
 
   //TODO change to "real" address
   String url =
-      Platform.isAndroid ? 'http://10.0.2.2:8080' : 'http://localhost:8080';
-  var urlParsed = Uri.parse('$url/login');
+      Platform.isAndroid ? 'http://localhost:8080' : 'http://localhost:8080';
+  var urlParsed = Uri.parse('$url/register');
 
   Map data = {
     "username": name,

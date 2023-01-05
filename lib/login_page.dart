@@ -13,14 +13,11 @@ class LoginScreen extends StatelessWidget {
 
   Future<String?> _authUser(LoginData data) async {
     var statusCode = await loginUser(data.name, data.password);
-    debugPrint('Name: ${data.name}, Password: ${data.password}');
+    debugPrint("statuscode: $statusCode");
     return Future.delayed(loginTime).then((_) {
-      // if (!users.containsKey(data.name)) {
-      //   return 'User not exists';
-      // }
-      // if (users[data.name] != data.password) {
-      //   return 'Password does not match';
-      // }
+      if (statusCode == 400) {
+        return 'Server error: Access Forbidden';
+      }
       if (statusCode != 200) {
         return 'Server error: $statusCode';
       }
@@ -55,10 +52,9 @@ class LoginScreen extends StatelessWidget {
       onSignup: _signupUser,
       onSubmitAnimationCompleted: () {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) =>
-              MyHomePage(
-                title: 'MEP-chat',
-              ),
+          builder: (context) => MyHomePage(
+            title: 'MEP-chat',
+          ),
         ));
       },
       onRecoverPassword: _recoverPassword,
