@@ -18,6 +18,32 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   Duration get loginTime => Duration(milliseconds: 2250);
 
+  @override
+  Widget build(BuildContext context) {
+    return FlutterLogin(
+      title: 'MEP-chat',
+      //TODO add image?
+      // logo: AssetImage('assets/images/'),
+      onLogin: _authUser,
+      onSignup: _signupUser,
+      additionalSignupFields: [
+        UserFormField(keyName: "Username", displayName: "username"),
+        UserFormField(
+            keyName: "Phone", displayName: "phone", icon: Icon(Icons.phone))
+      ],
+      onSubmitAnimationCompleted: () {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => MyHomePage(
+              title: 'MEP-chat',
+            ),
+          ),
+        );
+      },
+      onRecoverPassword: _recoverPassword,
+    );
+  }
+
   Future<String?> _authUser(LoginData data) async {
     List apiKeyStatusCode = await loginUser(context, data.name, data.password);
 
@@ -34,8 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Provider.of<ApiData>(context, listen: false)
           .updateApiKey(apiKeyStatusCode[0]);
       print("key:");
-      print("${Provider.of<ApiData>(context, listen: false)
-          .getApiKey()}");
+      print("${Provider.of<ApiData>(context, listen: false).getApiKey()}");
 
       return null;
     });
@@ -67,30 +92,5 @@ class _LoginScreenState extends State<LoginScreen> {
       }
       return "Null";
     });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FlutterLogin(
-      title: 'MEP-chat',
-      //TODO add image?
-      // logo: AssetImage('assets/images/'),
-      onLogin: _authUser,
-      onSignup: _signupUser,
-      additionalSignupFields: [
-        UserFormField(keyName: "Username", displayName: "username"),
-        UserFormField(
-            keyName: "Phone", displayName: "phone", icon: Icon(Icons.phone))
-      ],
-      onSubmitAnimationCompleted: () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) =>
-              MyHomePage(
-                title: 'MEP-chat',
-              ),
-        ));
-      },
-      onRecoverPassword: _recoverPassword,
-    );
   }
 }

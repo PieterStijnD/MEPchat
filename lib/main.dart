@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:new_base/api/api_user_calls.dart';
 import 'package:new_base/login_page.dart';
 import 'package:new_base/meplijst/mep_page_wrapper_widget.dart';
 import 'package:new_base/recepturen_widget.dart';
@@ -76,6 +77,13 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(widget.title),
+        actions: [
+          IconButton(
+              onPressed: () {
+                logOutAndNavigateToStart();
+              },
+              icon: Icon(Icons.logout))
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -111,6 +119,15 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
+      ),
+    );
+  }
+
+  void logOutAndNavigateToStart() {
+    logOutUser(context);
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => LoginScreen(),
       ),
     );
   }

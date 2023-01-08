@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../api/api_general.dart';
 
 class HomescreenWidget extends StatefulWidget {
   const HomescreenWidget({Key? key}) : super(key: key);
@@ -10,6 +13,7 @@ class HomescreenWidget extends StatefulWidget {
 class _HomescreenWidgetState extends State<HomescreenWidget> {
   @override
   Widget build(BuildContext context) {
+    var apiKeyLoaded = context.watch<ApiData>().apiKey;
     return Scaffold(
       body: Column(
         children: [
@@ -38,26 +42,8 @@ class _HomescreenWidgetState extends State<HomescreenWidget> {
                       padding: EdgeInsets.all(8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Text("Homescreen")
-                          // homescreen_button_widget(
-                          //   title: 'MEP-Lijsten',
-                          //   path: 'meplijst',
-                          //   icon: Icon(
-                          //     Icons.featured_play_list_outlined,
-                          //     size: 108,
-                          //     color: Colors.blueAccent,
-                          //   ),
-                          // ),
-                          // homescreen_button_widget(
-                          //   title: 'Menukaarten',
-                          //   path: 'menukaarten',
-                          //   icon: Icon(
-                          //     Icons.book_outlined,
-                          //     size: 108,
-                          //     color: Colors.blueAccent,
-                          //   ),
-                          // ),
+                        children: [
+                          Text(apiKeyLoaded.toString()),
                         ],
                       ),
                     ),
@@ -66,28 +52,7 @@ class _HomescreenWidgetState extends State<HomescreenWidget> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.max,
-                        children: const [
-                          Text("<Possibly remove>")
-
-                          // homescreen_button_widget(
-                          //   title: 'Archief',
-                          //   path: 'archief',
-                          //   icon: Icon(
-                          //     Icons.archive_outlined,
-                          //     size: 108,
-                          //     color: Colors.blueAccent,
-                          //   ),
-                          // ),
-                          // homescreen_button_widget(
-                          //   title: 'Recepturen',
-                          //   path: 'recepturen',
-                          //   icon: Icon(
-                          //     Icons.list_alt_outlined,
-                          //     size: 108,
-                          //     color: Colors.blueAccent,
-                          //   ),
-                          // ),
-                        ],
+                        children: const [],
                       ),
                     ),
                   ],
