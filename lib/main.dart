@@ -74,6 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       backgroundColor: Colors.white70,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(widget.title),
       ),
       bottomNavigationBar: BottomNavigationBar(
