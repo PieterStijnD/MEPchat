@@ -50,8 +50,6 @@ Future<List> loginUser(context, name, password) async {
 
   //TODO receive key and update
   String apiKey = response.body.toString();
-  // Provider.of<ApiData>(context, listen: false).updateApiKey(apiKey);
-
   var list = [apiKey, response.statusCode];
 
   return list;
@@ -87,6 +85,31 @@ Future<int> registerUser(name, password, email, phone) async {
   //TODO receive key and update
   // String? apiKey = temp['api_key'];
   // Provider.of<ApiData>(context, listen: false).updateKey(apiKey);
+
+  return response.statusCode;
+}
+
+Future<int> resetUser(name) async {
+  // final startOfUrl = Provider.of<ApiData>(context, listen: false).getApiUrl();
+
+  //TODO change to "real" address
+  String url =
+      Platform.isAndroid ? 'http://10.0.2.2:8081' : 'http://localhost:8081';
+  var urlParsed = Uri.parse('$url/register');
+
+  Map data = {
+    "username": name,
+  };
+
+  var body = json.encode(data);
+  //TODO create in backend, then test
+  debugPrint("awaiting response");
+  var response = await http.post(
+    urlParsed,
+    headers: {"Content-Type": "application/json"},
+    body: body,
+  );
+  debugPrint("received response: ${response.statusCode}");
 
   return response.statusCode;
 }

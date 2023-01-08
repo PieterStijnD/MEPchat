@@ -80,10 +80,12 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-  Future<String> _recoverPassword(String name) {
+  Future<String> _recoverPassword(String name) async {
     debugPrint('Name: $name');
+    var statusCode = await resetUser(name);
+
     return Future.delayed(loginTime).then((_) {
-      if (!users.containsKey(name)) {
+      if (statusCode == 400) {
         return 'User not exists';
       }
       return "Null";
