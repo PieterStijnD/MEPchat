@@ -10,20 +10,18 @@ class ArchiefWidget extends StatefulWidget {
 class _ArchiefWidgetState extends State<ArchiefWidget> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Icon(
-              Icons.archive_outlined,
-              size: 200,
-            ),
-            CircularProgressIndicator(
-              color: Colors.black,
-            ),
-          ],
-        ),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Icon(
+            Icons.archive_outlined,
+            size: 200,
+          ),
+          CircularProgressIndicator(
+            color: Colors.black,
+          ),
+        ],
       ),
     );
   }
