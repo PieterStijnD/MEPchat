@@ -6,10 +6,6 @@ import 'api/api_general.dart';
 import 'api/api_user_calls.dart';
 import 'main.dart';
 
-const users = const {
-  '1@1.com': 'one',
-};
-
 class LoginScreen extends StatefulWidget {
   @override
   State<LoginScreen> createState() => _LoginScreenState();
