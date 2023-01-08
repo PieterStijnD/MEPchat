@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 class ApiData extends ChangeNotifier {
-  String? apiKey;
+  String? apiKey = "empty";
 
   void updateKey(String? newKey) {
     apiKey = newKey;
@@ -13,5 +13,12 @@ class ApiData extends ChangeNotifier {
     return 'http://localhost:8080/register';
   }
 
+  String? getApiKey() {
+    return apiKey;
+  }
 
+  void updateApiKey(String apiKey) {
+    apiKey = apiKey;
+    notifyListeners();
+  }
 }
