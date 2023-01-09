@@ -115,7 +115,6 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
                           builder: (BuildContext context, snapshot) {
                             List<Widget> children;
                             if (!snapshot.hasData) {
-                              //TODO implement api request and render the items
                               return Container(
                                 child: _buildPanel(_data),
                               );
