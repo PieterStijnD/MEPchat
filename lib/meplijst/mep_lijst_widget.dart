@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:new_base/api/api_meplijsten.dart';
 
 // stores ExpansionPanel state information
 class Item {
@@ -40,6 +41,16 @@ List<Item> generateItems(int numberOfItems, List<String> meps) {
     return Item(
       isActive: true,
       headerValue: meps[index],
+      expandedValue: 'This is item number $index',
+    );
+  });
+}
+
+List<Item> generateItems2(int numberOfItems, List<MepLijstData> meps) {
+  return List<Item>.generate(numberOfItems, (int index) {
+    return Item(
+      isActive: true,
+      headerValue: meps[index].name!,
       expandedValue: 'This is item number $index',
     );
   });
@@ -99,8 +110,27 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
               children: [
                 if (!_activeItemsList) ...[
                   Container(
-                    child: _buildPanel(_data),
-                  ),
+                      child: FutureBuilder(
+                          future: getMepLijstenFromServer(context),
+                          builder: (BuildContext context, snapshot) {
+                            List<Widget> children;
+                            if (!snapshot.hasData) {
+                              //TODO implement api request and render the items
+                              return Container(
+                                child: _buildPanel(_data),
+                              );
+                            }
+                            if (snapshot.hasData) {
+                              List<Item> renderData = generateItems2(
+                                  snapshot.data!.length, snapshot.data!);
+                              return Container(
+                                child: _buildPanel(renderData),
+                              );
+                            }
+                            return Text("Whoops");
+                          })
+                      // _buildPanel(_data),
+                      ),
                   IconButton(
                     color: Colors.black,
                     onPressed: () {

@@ -43,7 +43,7 @@ class _HomescreenWidgetState extends State<HomescreenWidget> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(apiKeyLoaded.toString()),
+                          Text("Redesign or Remove"),
                         ],
                       ),
                     ),
