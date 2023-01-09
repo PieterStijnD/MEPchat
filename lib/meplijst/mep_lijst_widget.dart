@@ -91,7 +91,7 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
                 icon: Icon(Icons.import_contacts_sharp)),
           ],
         ),
-        Container(
+        SizedBox(
           height: MediaQuery.of(context).size.height * 0.7,
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
