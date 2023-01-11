@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
@@ -8,7 +9,7 @@ import 'api_general.dart';
 Future<List<MepLijstData>> getMepLijstenFromServer(context) async {
   String startOfUrl = Provider.of<ApiData>(context, listen: false).getApiUrl();
 
-  var url = Uri.parse('http://10.0.2.2:8081/get/mep-lijst');
+  var url = Uri.parse('http://10.0.2.2:8081/mep-lijst');
 
   String key = Provider.of<ApiData>(context, listen: false).apiKey!;
 
@@ -22,14 +23,30 @@ Future<List<MepLijstData>> getMepLijstenFromServer(context) async {
 
   var decodedData = jsonDecode(response.body);
 
-  print("decoded data: $decodedData");
-
   List<MepLijstData> list = [];
   for (var item in decodedData) {
     list.add(MepLijstData.fromJson(item));
   }
-  print("list $list");
   return list;
+}
+
+void deleteMepLijst(context) async {
+  //TODO wait for implementation
+  String startOfUrl = Provider.of<ApiData>(context, listen: false).getApiUrl();
+
+  var url = Uri.parse('http://10.0.2.2:8081/delete/mep-lijst');
+
+  String key = Provider.of<ApiData>(context, listen: false).apiKey!;
+
+  var response = await http.get(
+    url,
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": 'Bearer $key',
+    },
+  );
+
+  debugPrint('${response.statusCode}');
 }
 
 class MepLijstData {
