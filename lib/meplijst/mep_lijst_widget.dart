@@ -84,22 +84,19 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
     return Column(
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            IconButton(
-                onPressed: () {
-                  setState(() {
-                    _activeItemsList = true;
-                  });
-                },
-                icon: Icon(Icons.all_inclusive)),
-            IconButton(
-                onPressed: () {
-                  setState(() {
-                    _activeItemsList = false;
-                  });
-                },
-                icon: Icon(Icons.import_contacts_sharp)),
+            TextButton(
+              onPressed: () => setState(() => _activeItemsList = true),
+              child: Text("Active"),
+            ),
+            // IconButton(
+            //     onPressed: () => setState(() => _activeItemsList = true),
+            //     icon: Icon(Icons.all_inclusive)),
+            TextButton(
+              onPressed: () => setState(() => _activeItemsList = false),
+              child: Text("All"),
+            )
           ],
         ),
         SizedBox(
@@ -115,9 +112,7 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
                           builder: (BuildContext context, snapshot) {
                             List<Widget> children;
                             if (!snapshot.hasData) {
-                              return Container(
-                                child: _buildPanel(_data),
-                              );
+                              return Center(child: CircularProgressIndicator());
                             }
                             if (snapshot.hasData) {
                               List<Item> renderData = generateItems2(
