@@ -144,11 +144,7 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
     return ExpansionPanelList(
       expansionCallback: (int index, bool isExpanded) {
         setState(() {
-          print("before ${data[index].isExpanded}");
-
           data[index].isExpanded = !isExpanded;
-
-          print("after ${data[index].isExpanded}");
         });
       },
       children: data.map<ExpansionPanel>((Item item) {

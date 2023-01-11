@@ -28,7 +28,7 @@ Future<List> loginUser(context, name, password) async {
 
   //TODO change to "real" address
   String url =
-      Platform.isAndroid ? 'http://10.0.2.2:8081' : 'http://localhost:8081';
+  Platform.isAndroid ? 'http://10.0.2.2:8081' : 'http://localhost:8081';
   var urlParsed = Uri.parse('$url/login');
 
   Map data = {
@@ -38,19 +38,16 @@ Future<List> loginUser(context, name, password) async {
 
   var body = json.encode(data);
 
-  debugPrint("awaiting response");
   var response = await http.post(
     urlParsed,
     headers: {"Content-Type": "application/json"},
     body: body,
   );
-  debugPrint("received response: ${response.statusCode}");
-  debugPrint("body:");
-  debugPrint(response.body.toString());
 
-  //TODO receive key and update
   String apiKey = response.body.toString();
   var list = [apiKey, response.statusCode];
+
+  print(apiKey);
 
   return list;
 }
@@ -60,7 +57,7 @@ Future<int> registerUser(name, password, email, phone) async {
 
   //TODO change to "real" address
   String url =
-      Platform.isAndroid ? 'http://10.0.2.2:8081' : 'http://localhost:8081';
+  Platform.isAndroid ? 'http://10.0.2.2:8081' : 'http://localhost:8081';
   var urlParsed = Uri.parse('$url/register');
 
   Map data = {
@@ -94,7 +91,7 @@ Future<int> resetUser(name) async {
 
   //TODO change to "real" address
   String url =
-      Platform.isAndroid ? 'http://10.0.2.2:8081' : 'http://localhost:8081';
+  Platform.isAndroid ? 'http://10.0.2.2:8081' : 'http://localhost:8081';
   var urlParsed = Uri.parse('$url/register');
 
   Map data = {
