@@ -17,15 +17,6 @@ class Item {
   bool isExpanded;
 }
 
-final List<String> meps1 = [
-  "Crêpes",
-  "Rouille",
-  "Garde",
-  "Ovenkant",
-  "Roti",
-  "Desserts",
-  "Lunch"
-];
 final List<String> meps2 = [
   "TEST",
   "Rouille",
@@ -39,6 +30,7 @@ final List<String> meps2 = [
 List<Item> generateItems(int numberOfItems, List<String> meps) {
   return List<Item>.generate(numberOfItems, (int index) {
     return Item(
+      isExpanded: false,
       isActive: true,
       headerValue: meps[index],
       expandedValue: 'This is item number $index',
@@ -49,6 +41,7 @@ List<Item> generateItems(int numberOfItems, List<String> meps) {
 List<Item> generateItems2(int numberOfItems, List<MepLijstData> meps) {
   return List<Item>.generate(numberOfItems, (int index) {
     return Item(
+      isExpanded: false,
       isActive: true,
       headerValue: meps[index].name!,
       expandedValue: 'This is item number $index',
@@ -65,7 +58,8 @@ class MepLijstWidget extends StatefulWidget {
 
 class _MepLijstWidgetState extends State<MepLijstWidget> {
   //TODO make dynamic length
-  final List<Item> _data = generateItems(7, meps1);
+  late Future<List<Item>> fetchedMepLijsten =
+      getMepLijstenFromServerAsListItems(context);
   final List<Item> _data2 = generateItems(7, meps2);
   final _formKey = GlobalKey<FormState>();
   bool _activeItemsList = true;
@@ -73,6 +67,7 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
   void addItem(String title, List<Item> list) {
     setState(() {
       list.add(Item(
+          isExpanded: false,
           isActive: true,
           headerValue: title,
           expandedValue: 'This is item number ${list.length}'));
@@ -90,9 +85,6 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
               onPressed: () => setState(() => _activeItemsList = true),
               child: Text("Active"),
             ),
-            // IconButton(
-            //     onPressed: () => setState(() => _activeItemsList = true),
-            //     icon: Icon(Icons.all_inclusive)),
             TextButton(
               onPressed: () => setState(() => _activeItemsList = false),
               child: Text("All"),
@@ -107,24 +99,19 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
               children: [
                 if (!_activeItemsList) ...[
                   Container(
-                      child: FutureBuilder(
-                          future: getMepLijstenFromServer(context),
-                          builder: (BuildContext context, snapshot) {
-                            List<Widget> children;
-                            if (!snapshot.hasData) {
-                              return Center(child: CircularProgressIndicator());
-                            }
-                            if (snapshot.hasData) {
-                              List<Item> renderData = generateItems2(
-                                  snapshot.data!.length, snapshot.data!);
-                              return Container(
-                                child: _buildPanel(renderData),
-                              );
-                            }
-                            return Text("Whoops");
-                          })
-                      // _buildPanel(_data),
-                      ),
+                    child: FutureBuilder(
+                      future: fetchedMepLijsten,
+                      builder: (BuildContext context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                        if (snapshot.hasData) {
+                          return _buildPanel(snapshot.data!);
+                        }
+                        return Text("Empty");
+                      },
+                    ),
+                  ),
                   IconButton(
                     color: Colors.black,
                     onPressed: () {
@@ -157,7 +144,11 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
     return ExpansionPanelList(
       expansionCallback: (int index, bool isExpanded) {
         setState(() {
+          print("before ${data[index].isExpanded}");
+
           data[index].isExpanded = !isExpanded;
+
+          print("after ${data[index].isExpanded}");
         });
       },
       children: data.map<ExpansionPanel>((Item item) {
@@ -402,7 +393,8 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
                                 if (_formKey.currentState!.validate()) {
                                   // If the form is valid, display a snackbar. In the real world,
                                   // you'd often call a server or save the information in a database.
-                                  addItem(MEPController.text, _data);
+                                  //TODO make AddItem into api request
+                                  // addItem(MEPController.text, _data);
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       content: Text('Processing Data'),
