@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:new_base/api/api_meplijsten.dart';
 
 // stores ExpansionPanel state information
@@ -99,19 +98,19 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
             child: Column(
               children: [
                 if (!_activeItemsList) ...[
-                  Container(
-                    child: FutureBuilder(
-                      future: fetchedMepLijsten,
-                      builder: (BuildContext context, snapshot) {
-                        if (!snapshot.hasData) {
-                          return Center(child: CircularProgressIndicator());
-                        }
-                        if (snapshot.hasData) {
-                          return _buildPanel(snapshot.data!);
-                        }
-                        return Text("Empty");
-                      },
-                    ),
+                  FutureBuilder(
+                    future: fetchedMepLijsten,
+                    builder: (BuildContext context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                      if (snapshot.hasData) {
+                        return Column(children: [
+                          ..._buildListOfSlidables(snapshot.data!)
+                        ]);
+                      }
+                      return Text("Empty");
+                    },
                   ),
                   IconButton(
                     color: Colors.black,
@@ -122,8 +121,10 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
                   )
                 ],
                 if (_activeItemsList) ...[
-                  Container(
-                    child: _buildSlidable(_data2),
+                  Column(
+                    children: [
+                      ..._buildListOfSlidables(_data2),
+                    ],
                   ),
                   IconButton(
                     color: Colors.black,
@@ -141,19 +142,23 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
     );
   }
 
-  Widget _buildSlidable(List<Item> data) {
+  List<Widget> _buildListOfSlidables(List<Item> data) {
+    List<Widget> list = [];
+    for (int i = 0; i < data.length; i++) {
+      list.add(_buildSlidable(data[i], i));
+    }
+    return list;
+  }
+
+  Widget _buildSlidable(Item data, int i) {
     return Slidable(
       // Specify a key if the Slidable is dismissible.
-      key: const ValueKey(0),
-
-      // The start action pane is the one at the left or the top side.
+      key: ValueKey(i),
       startActionPane: ActionPane(
         // A motion is a widget used to control how the pane animates.
         motion: const ScrollMotion(),
-
         // A pane can dismiss the Slidable.
         dismissible: DismissiblePane(onDismissed: () {}),
-
         // All actions are defined in the children parameter.
         children: const [
           // A SlidableAction can have an icon and/or a label.
@@ -164,17 +169,8 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
             icon: Icons.delete,
             label: 'Delete',
           ),
-          // SlidableAction(
-          //   onPressed: null,
-          //   backgroundColor: Color(0xFF21B7CA),
-          //   foregroundColor: Colors.white,
-          //   icon: Icons.share,
-          //   label: 'Share',
-          // ),
         ],
       ),
-
-      // The end action pane is the one at the right or the bottom side.
       endActionPane: const ActionPane(
         motion: ScrollMotion(),
         children: [
@@ -187,140 +183,11 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
             icon: Icons.archive,
             label: 'Archive',
           ),
-          // SlidableAction(
-          //   onPressed: null,
-          //   backgroundColor: Color(0xFF0392CF),
-          //   foregroundColor: Colors.white,
-          //   icon: Icons.save,
-          //   label: 'Save',
-          // ),
         ],
       ),
-
       // The child of the Slidable is what the user sees when the
       // component is not dragged.
-      child: const ListTile(title: Text('Slide me')),
-    );
-  }
-
-  Widget _buildPanel(List<Item> data) {
-    return ExpansionPanelList(
-      expansionCallback: (int index, bool isExpanded) {
-        setState(() {
-          data[index].isExpanded = !isExpanded;
-        });
-      },
-      children: data.map<ExpansionPanel>((Item item) {
-        return ExpansionPanel(
-          headerBuilder: (BuildContext context, bool isExpanded) {
-            return ListTile(
-              leading: FaIcon(FontAwesomeIcons.clipboard),
-              title: Text(item.headerValue),
-            );
-          },
-          body: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.white),
-                ),
-                onPressed: () {
-                  setState(() {
-                    item.isActive = !item.isActive;
-                  });
-                },
-                child: FaIcon(
-                  FontAwesomeIcons.powerOff,
-                  color: Colors.redAccent,
-                ),
-              ),
-              ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.white),
-                ),
-                onPressed: () {},
-                child: FaIcon(
-                  FontAwesomeIcons.sliders,
-                  color: Colors.amberAccent,
-                ),
-              ),
-              ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.white),
-                ),
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      action: SnackBarAction(
-                        label: 'Undo',
-                        onPressed: () {
-                          // Code to execute.
-                        },
-                      ),
-                      content: const Text('Item has been deleted.'),
-                      duration: const Duration(milliseconds: 3000),
-                      width: 280.0,
-                      // Width of the SnackBar.
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0, // Inner padding for SnackBar content.
-                      ),
-                      behavior: SnackBarBehavior.floating,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                    ),
-                  );
-                  setState(() {
-                    data.removeWhere((Item currentItem) => item == currentItem);
-                  });
-                },
-                child: FaIcon(
-                  FontAwesomeIcons.trash,
-                  color: Colors.redAccent,
-                ),
-              ),
-              ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.white),
-                ),
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      action: SnackBarAction(
-                        label: 'Undo',
-                        onPressed: () {
-                          // Code to execute.
-                        },
-                      ),
-                      content: const Text('Item has been archived.'),
-                      duration: const Duration(milliseconds: 3000),
-                      width: 280.0,
-                      // Width of the SnackBar.
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0, // Inner padding for SnackBar content.
-                      ),
-                      behavior: SnackBarBehavior.floating,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                    ),
-                  );
-                  //TODO make archive method work
-                  setState(() {
-                    data.removeWhere((Item currentItem) => item == currentItem);
-                  });
-                },
-                child: FaIcon(
-                  FontAwesomeIcons.boxArchive,
-                  color: Colors.blueAccent,
-                ),
-              ),
-            ],
-          ),
-          isExpanded: item.isExpanded,
-        );
-      }).toList(),
+      child: ListTile(title: Text('${data.headerValue}')),
     );
   }
 
