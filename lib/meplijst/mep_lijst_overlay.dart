@@ -52,8 +52,20 @@ class TutorialOverlay extends ModalRoute<void> {
           ButtonBar(
             alignment: MainAxisAlignment.spaceEvenly,
             children: [
-              TextButton(onPressed: () {}, child: Text("Vandaag")),
-              TextButton(onPressed: () {}, child: Text("Morgen")),
+              OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  side: BorderSide(color: Colors.white),
+                ),
+                onPressed: () {},
+                child: Text("Vandaag"),
+              ),
+              OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  side: BorderSide(color: Colors.white),
+                ),
+                onPressed: () {},
+                child: Text("Morgen"),
+              ),
             ],
           ),
           ..._buildListOfSlidables(_data),
