@@ -8,6 +8,8 @@ class TutorialOverlay extends ModalRoute<void> {
 
   TutorialOverlay({required List<Item> data}) : _data = data;
 
+  bool _vandaag = true;
+
   @override
   Duration get transitionDuration => Duration(milliseconds: 500);
 
@@ -32,22 +34,59 @@ class TutorialOverlay extends ModalRoute<void> {
     Animation<double> animation,
     Animation<double> secondaryAnimation,
   ) {
-    // This makes sure that text and other content follows the material style
     return Material(
       type: MaterialType.transparency,
-      // make sure that the overlay content is not cut off
-      child: SafeArea(
-        child: _buildOverlayContent(context),
-      ),
+      child: _buildOverlayContent(context),
     );
   }
 
   Widget _buildOverlayContent(BuildContext context) {
+    final List<String> meps2 = [
+      "Banaan",
+      "Appel",
+      "Peer",
+      "Zucchini",
+      "Courgette",
+      "Slagroom",
+      "Aardbei"
+    ];
+
+    final List<String> meps = [
+      "Strawberry",
+      "Kiwi",
+      "Banana",
+      "Apple",
+      "Pear",
+      "Snickers",
+      "Rocky Mountain Oysters",
+      "Strawberry",
+      "Kiwi",
+      "Banana",
+      "Apple",
+      "Pear",
+      "Snickers",
+      "Rocky Mountain Oysters",
+    ];
+
+    List<Item> generateItems(int numberOfItems, List<String> meps) {
+      return List<Item>.generate(numberOfItems, (int index) {
+        return Item(
+          isExpanded: false,
+          isActive: true,
+          headerValue: meps[index],
+          expandedValue: 'This is item number $index',
+        );
+      });
+    }
+
+    List<Item> fruitList = generateItems(meps2.length, meps2);
+    List<Item> vegetableList = generateItems(meps.length, meps);
+
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           ButtonBar(
             alignment: MainAxisAlignment.spaceEvenly,
@@ -56,19 +95,32 @@ class TutorialOverlay extends ModalRoute<void> {
                 style: OutlinedButton.styleFrom(
                   side: BorderSide(color: Colors.white),
                 ),
-                onPressed: () {},
+                onPressed: () =>
+                    // TODO changed external state isnt optimal, consider building a controller or reworking this widget into a stateful widget
+                    {setState(() => _vandaag = true), changedExternalState()},
                 child: Text("Vandaag"),
               ),
               OutlinedButton(
                 style: OutlinedButton.styleFrom(
                   side: BorderSide(color: Colors.white),
                 ),
-                onPressed: () {},
+                onPressed: () =>
+                    {setState(() => _vandaag = false), changedExternalState()},
                 child: Text("Morgen"),
               ),
             ],
           ),
-          ..._buildListOfSlidables(_data),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.7,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  if (_vandaag) ...[..._buildListOfSlidables(vegetableList)],
+                  if (!_vandaag) ...[..._buildListOfSlidables(fruitList)]
+                ],
+              ),
+            ),
+          ),
           ButtonBar(
             alignment: MainAxisAlignment.center,
             children: const [
@@ -92,19 +144,6 @@ class TutorialOverlay extends ModalRoute<void> {
       ),
     );
   }
-
-// @override
-// Widget buildTransitions(BuildContext context, Animation<double> animation,
-//     Animation<double> secondaryAnimation, Widget child) {
-//   // You can add your own animations for the overlay content
-//   return FadeTransition(
-//     opacity: animation,
-//     child: ScaleTransition(
-//       scale: animation,
-//       child: child,
-//     ),
-//   );
-// }
 
   List<Widget> _buildListOfSlidables(List<Item> data) {
     List<Widget> list = [];
@@ -134,7 +173,6 @@ class TutorialOverlay extends ModalRoute<void> {
         motion: ScrollMotion(),
         children: const [
           SlidableAction(
-            flex: 2,
             onPressed: null,
             backgroundColor: Color(0xFF7BC043),
             foregroundColor: Colors.white,
@@ -146,10 +184,15 @@ class TutorialOverlay extends ModalRoute<void> {
       child: ListTile(
         title: Container(
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.white),
-              color: Colors.blueGrey,
+              border: Border.all(color: Colors.blue),
+              color: Colors.white,
             ),
-            child: Text('${data.headerValue}')),
+            child: Column(
+              children: [
+                Text('${data.headerValue}'),
+                Text('${data.expandedValue}'),
+              ],
+            )),
         onTap: () => print('Tapped'),
       ),
     );

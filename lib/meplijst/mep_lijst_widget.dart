@@ -26,7 +26,14 @@ final List<String> meps2 = [
   "Ovenkant",
   "TEST",
   "Desserts",
-  "TEST"
+  "TEST",
+  "TEST",
+  "Rouille",
+  "TEST",
+  "Ovenkant",
+  "TEST",
+  "Desserts",
+  "TEST",
 ];
 
 List<Item> generateItems(int numberOfItems, List<String> meps) {
@@ -40,16 +47,16 @@ List<Item> generateItems(int numberOfItems, List<String> meps) {
   });
 }
 
-List<Item> generateItems2(int numberOfItems, List<MepLijstData> meps) {
-  return List<Item>.generate(numberOfItems, (int index) {
-    return Item(
-      isExpanded: false,
-      isActive: true,
-      headerValue: meps[index].name!,
-      expandedValue: 'This is item number $index',
-    );
-  });
-}
+// List<Item> generateItems2(int numberOfItems, List<MepLijstData> meps) {
+//   return List<Item>.generate(numberOfItems, (int index) {
+//     return Item(
+//       isExpanded: false,
+//       isActive: true,
+//       headerValue: meps[index].name!,
+//       expandedValue: 'This is item number $index',
+//     );
+//   });
+// }
 
 class MepLijstWidget extends StatefulWidget {
   const MepLijstWidget({super.key});
@@ -62,7 +69,7 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
   //TODO make dynamic length
   late Future<List<Item>> fetchedMepLijsten =
       getMepLijstenFromServerAsListItems(context);
-  final List<Item> _data2 = generateItems(7, meps2);
+  final List<Item> _data2 = generateItems(meps2.length, meps2);
   final _formKey = GlobalKey<FormState>();
   bool _activeItemsList = true;
 
