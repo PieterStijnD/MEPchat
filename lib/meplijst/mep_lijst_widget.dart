@@ -191,7 +191,7 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
       child: ListTile(
         title: Text('${data.headerValue}'),
         onTap: () =>
-            {Navigator.of(context).push(TutorialOverlay(data: _data2))},
+            {Navigator.of(context).push(MepLijstOverlay(data: _data2))},
       ),
     );
   }

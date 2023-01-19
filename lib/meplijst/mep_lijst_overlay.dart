@@ -3,10 +3,10 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:new_base/meplijst/mep_lijst_widget.dart';
 
-class TutorialOverlay extends ModalRoute<void> {
+class MepLijstOverlay extends ModalRoute<void> {
   final List<Item> _data;
 
-  TutorialOverlay({required List<Item> data}) : _data = data;
+  MepLijstOverlay({required List<Item> data}) : _data = data;
 
   bool _vandaag = true;
 
