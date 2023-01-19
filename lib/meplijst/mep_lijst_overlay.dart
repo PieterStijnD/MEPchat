@@ -36,7 +36,7 @@ class MepLijstOverlay extends ModalRoute<void> {
   ) {
     return Material(
       type: MaterialType.transparency,
-      child: _buildOverlayContent(context),
+      child: SafeArea(child: _buildOverlayContent(context)),
     );
   }
 
@@ -74,7 +74,7 @@ class MepLijstOverlay extends ModalRoute<void> {
           isExpanded: false,
           isActive: true,
           headerValue: meps[index],
-          expandedValue: 'This is item number $index',
+          expandedValue: 'Weight: $index grams',
         );
       });
     }
@@ -123,7 +123,7 @@ class MepLijstOverlay extends ModalRoute<void> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(16.0),
             child: ButtonBar(
               alignment: MainAxisAlignment.center,
               children: const [
@@ -131,7 +131,7 @@ class MepLijstOverlay extends ModalRoute<void> {
                   FontAwesomeIcons.sliders,
                   color: Colors.amberAccent,
                 ),
-                SizedBox(width: 10),
+                SizedBox(width: 15),
                 FaIcon(
                   FontAwesomeIcons.powerOff,
                   color: Colors.redAccent,
