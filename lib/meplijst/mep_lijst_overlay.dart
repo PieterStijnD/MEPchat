@@ -105,6 +105,7 @@ class TutorialOverlay extends ModalRoute<void> {
                   side: BorderSide(color: Colors.white),
                 ),
                 onPressed: () =>
+                    // TODO changed external state isnt optimal, consider building a controller or reworking this widget into a stateful widget
                     {setState(() => _vandaag = false), changedExternalState()},
                 child: Text("Morgen"),
               ),
@@ -121,19 +122,22 @@ class TutorialOverlay extends ModalRoute<void> {
               ),
             ),
           ),
-          ButtonBar(
-            alignment: MainAxisAlignment.center,
-            children: const [
-              FaIcon(
-                FontAwesomeIcons.sliders,
-                color: Colors.amberAccent,
-              ),
-              SizedBox(width: 10),
-              FaIcon(
-                FontAwesomeIcons.powerOff,
-                color: Colors.redAccent,
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ButtonBar(
+              alignment: MainAxisAlignment.center,
+              children: const [
+                FaIcon(
+                  FontAwesomeIcons.sliders,
+                  color: Colors.amberAccent,
+                ),
+                SizedBox(width: 10),
+                FaIcon(
+                  FontAwesomeIcons.powerOff,
+                  color: Colors.redAccent,
+                ),
+              ],
+            ),
           ),
           BackButton(
             color: Colors.white,
@@ -187,11 +191,14 @@ class TutorialOverlay extends ModalRoute<void> {
               border: Border.all(color: Colors.blue),
               color: Colors.white,
             ),
-            child: Column(
-              children: [
-                Text('${data.headerValue}'),
-                Text('${data.expandedValue}'),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Text('${data.headerValue}'),
+                  Text('${data.expandedValue}'),
+                ],
+              ),
             )),
         onTap: () => print('Tapped'),
       ),
