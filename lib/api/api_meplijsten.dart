@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
@@ -46,64 +45,97 @@ Future<List<Item>> getMepLijstenFromServerAsListItems(context) async {
     },
   );
 
-  var decodedData = jsonDecode(response.body);
-  //TODO improve logic, make more neat
+  List decodedData = jsonDecode(response.body);
+
   List<MepLijstData> list = [];
+
   for (var item in decodedData) {
     list.add(MepLijstData.fromJson(item));
   }
-  List<Item> list2 = [];
-  for (var item in list) {
-    return List<Item>.generate(list.length, (int index) {
-      return Item(
-        isExpanded: false,
-        isActive: true,
-        headerValue: item.name!,
-        expandedValue: 'This is item number $index',
-      );
-    });
-  }
+  List<Item> list2 = list
+      .map((e) => Item(
+          id: e.id!,
+          isExpanded: false,
+          isActive: true,
+          headerValue: e.name!,
+          expandedValue: e.name!))
+      .toList();
 
   return list2;
 }
 
-void deleteMepLijst(context) async {
+Future<int> postMepLijst(String title, context) async {
   //TODO wait for implementation
   String startOfUrl = Provider.of<ApiData>(context, listen: false).getApiUrl();
 
-  var url = Uri.parse('http://10.0.2.2:8081/delete/mep-lijst');
+  var url = Uri.parse('http://10.0.2.2:8081/mep-lijst');
 
   String key = Provider.of<ApiData>(context, listen: false).apiKey!;
 
-  var response = await http.get(
+  Map data = {
+    "name": title,
+  };
+
+  var body = json.encode(data);
+
+  var response = await http.post(
     url,
     headers: {
       "Content-Type": "application/json",
       "Authorization": 'Bearer $key',
     },
+    body: body,
   );
 
-  debugPrint('${response.statusCode}');
+  print('Response status: ${response.statusCode}');
+  print('Response body: ${response.body}');
+
+  return response.statusCode;
+}
+
+Future<int> deleteMepLijst(int id, context) async {
+  //TODO wait for implementation
+  String startOfUrl = Provider.of<ApiData>(context, listen: false).getApiUrl();
+
+  var url = Uri.parse('http://10.0.2.2:8081/mep-lijst/$id');
+
+  String key = Provider.of<ApiData>(context, listen: false).apiKey!;
+
+  Map data = {
+    "id": id,
+  };
+
+  var body = json.encode(data);
+
+  var response = await http.delete(
+    url,
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": 'Bearer $key',
+    },
+    body: body,
+  );
+
+  print('${response.statusCode}');
+  print('${response.body}');
+  return response.statusCode;
 }
 
 class MepLijstData {
   MepLijstData({
-    this.mep_id,
+    this.id,
     this.enabled,
     this.name,
     // this.app_user_id,
   });
 
-  int? mep_id;
+  int? id;
   bool? enabled;
   String? name;
 
-  // int? app_user_id;
-
   factory MepLijstData.fromJson(Map<String, dynamic> json) => MepLijstData(
-        mep_id: json["mep_id"],
+        id: json["id"],
         enabled: json["enabled"],
         name: json["name"],
-        // app_user_id: json["app_user_id"]
       );
 }

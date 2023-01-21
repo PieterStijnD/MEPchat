@@ -3,10 +3,14 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:new_base/meplijst/mep_lijst_widget.dart';
 
+import '../api/api_meplijsten.dart';
+
 class MepLijstOverlay extends ModalRoute<void> {
   final List<Item> _data;
+  final String title;
 
-  MepLijstOverlay({required List<Item> data}) : _data = data;
+  MepLijstOverlay({required List<Item> data, required this.title})
+      : _data = data;
 
   bool _vandaag = true;
 
@@ -36,41 +40,37 @@ class MepLijstOverlay extends ModalRoute<void> {
   ) {
     return Material(
       type: MaterialType.transparency,
-      child: SafeArea(child: _buildOverlayContent(context)),
+      child: SafeArea(child: _buildOverlayContent(title, context)),
     );
   }
 
-  Widget _buildOverlayContent(BuildContext context) {
+  Widget _buildOverlayContent(String title, BuildContext context) {
+    String _title = title;
+
     final List<String> meps2 = [
-      "Banaan",
-      "Appel",
-      "Peer",
-      "Zucchini",
-      "Courgette",
-      "Slagroom",
-      "Aardbei"
+      "Paprika Rouille",
+      "Dashi",
+      "Knolselderij Salade",
+      "Pesto",
     ];
 
     final List<String> meps = [
-      "Strawberry",
-      "Kiwi",
-      "Banana",
-      "Apple",
-      "Pear",
-      "Snickers",
-      "Rocky Mountain Oysters",
-      "Strawberry",
-      "Kiwi",
-      "Banana",
-      "Apple",
-      "Pear",
-      "Snickers",
-      "Rocky Mountain Oysters",
+      "Aguachillle",
+      "Bisque",
+      "Dashi",
+      "Fishtaco vulling",
+      "Knolselderij Salade",
+      "Kruidenboter",
+      "Mosterdsoep",
+      "Paprika Rouille",
+      "Pesto",
+      "Zeebaars cevice",
     ];
 
     List<Item> generateItems(int numberOfItems, List<String> meps) {
       return List<Item>.generate(numberOfItems, (int index) {
         return Item(
+          id: index,
           isExpanded: false,
           isActive: true,
           headerValue: meps[index],
@@ -82,12 +82,17 @@ class MepLijstOverlay extends ModalRoute<void> {
     List<Item> fruitList = generateItems(meps2.length, meps2);
     List<Item> vegetableList = generateItems(meps.length, meps);
 
+    final formKey = GlobalKey<FormState>();
+
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
+          Center(
+              child: Text("${_title}: Recepten",
+                  style: TextStyle(color: Colors.white, fontSize: 20))),
           ButtonBar(
             alignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -112,7 +117,7 @@ class MepLijstOverlay extends ModalRoute<void> {
             ],
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.7,
+            height: MediaQuery.of(context).size.height * 0.6,
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -139,10 +144,23 @@ class MepLijstOverlay extends ModalRoute<void> {
               ],
             ),
           ),
-          BackButton(
-            color: Colors.white,
-            onPressed: () => Navigator.pop(context),
-            // child: Text('Dismiss'),
+          ButtonBar(
+            alignment: MainAxisAlignment.center,
+            children: [
+              BackButton(
+                color: Colors.white,
+                onPressed: () => Navigator.pop(context),
+              ),
+              IconButton(
+                onPressed: () {
+                  showFormDialog(context);
+                },
+                color: Colors.white,
+                icon: Icon(
+                  Icons.add,
+                ),
+              ),
+            ],
           )
         ],
       ),
@@ -170,6 +188,13 @@ class MepLijstOverlay extends ModalRoute<void> {
             foregroundColor: Colors.white,
             icon: Icons.delete,
             label: 'Delete',
+          ),
+          SlidableAction(
+            onPressed: null,
+            backgroundColor: Color(0xFFFE4A49),
+            foregroundColor: Colors.white,
+            icon: Icons.power_settings_new,
+            label: 'In/Active',
           ),
         ],
       ),
@@ -203,5 +228,120 @@ class MepLijstOverlay extends ModalRoute<void> {
         onTap: () => print('Tapped'),
       ),
     );
+  }
+
+  void showFormDialog(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
+
+    final MEPController = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: Center(
+            child: Text("Toevoegen Ingredient"),
+          ),
+          children: [
+            Form(
+              key: _formKey,
+              child: Column(
+                // crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("Naam"),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                            bottomLeft: Radius.circular(10),
+                            bottomRight: Radius.circular(10)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: Offset(0, 3), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                        child: TextFormField(
+                          controller: MEPController,
+                          decoration: InputDecoration(
+                              border: InputBorder.none, hintText: "..."),
+                          // The validator receives the text that the user has entered.
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter some text';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.white),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Icon(
+                            Icons.cancel_outlined,
+                            color: Colors.amberAccent,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.white)),
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              //TODO make AddItem into api request
+                              addItem(MEPController.text, context);
+                              Navigator.pop(context);
+                            }
+                          },
+                          child: Icon(Icons.check_circle_outline,
+                              color: Colors.green),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  void addItem(String title, context) async {
+    int code = 0;
+    code = await postMepLijst(title, context);
+    debugPrint(code.toString());
+    // if (code != 0) {
+    //   setState(() {
+    //     fetchedMepLijsten = getMepLijstenFromServerAsListItems(context);
+    //   });
+    // }
   }
 }
