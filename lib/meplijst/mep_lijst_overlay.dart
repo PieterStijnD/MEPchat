@@ -71,7 +71,6 @@ class MepLijstOverlay extends ModalRoute<void> {
       return List<Item>.generate(numberOfItems, (int index) {
         return Item(
           id: index,
-          isExpanded: false,
           isActive: true,
           headerValue: meps[index],
           expandedValue: 'Weight: $index grams',

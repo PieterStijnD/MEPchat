@@ -11,14 +11,12 @@ class Item {
     required this.isActive,
     required this.expandedValue,
     required this.headerValue,
-    this.isExpanded = false,
   });
 
   int id;
   bool isActive;
   String expandedValue;
   String headerValue;
-  bool isExpanded;
 }
 
 final List<String> meps2 = [
@@ -35,7 +33,6 @@ List<Item> generateItems(int numberOfItems, List<String> meps) {
   return List<Item>.generate(numberOfItems, (int index) {
     return Item(
       id: index,
-      isExpanded: false,
       isActive: true,
       headerValue: meps[index],
       expandedValue: 'This is item number $index',
@@ -103,12 +100,20 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
                     icon: Icon(Icons.add),
                   )
                 ],
-                // TODO fetch list again and filter active OR filter active from fetchedlist?
                 if (_activeItemsList) ...[
-                  Column(
-                    children: [
-                      ..._buildListOfSlidables(_data2),
-                    ],
+                  FutureBuilder(
+                    future: fetchedMepLijsten,
+                    builder: (BuildContext context, snapshot) {
+                      if (snapshot.connectionState != ConnectionState.done) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                      if (snapshot.hasData || snapshot.data != null) {
+                        return Column(children: [
+                          ..._buildListOfEnabledSlidables(snapshot.data!)
+                        ]);
+                      }
+                      return Text("Empty");
+                    },
                   ),
                   IconButton(
                     color: Colors.black,
@@ -117,7 +122,7 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
                     },
                     icon: Icon(Icons.add),
                   )
-                ]
+                ],
               ],
             ),
           ),
@@ -148,10 +153,31 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
     }
   }
 
+  void flipEnabledItem(int id, BuildContext context) async {
+    int code = 0;
+    code = await deleteMepLijst(id, context);
+    debugPrint(code.toString());
+    if (code != 0) {
+      setState(() {
+        fetchedMepLijsten = getMepLijstenFromServerAsListItems(context);
+      });
+    }
+  }
+
   List<Widget> _buildListOfSlidables(List<Item> data) {
     List<Widget> list = [];
     for (var item in data) {
       list.add(_buildSlidable(item, data.indexOf(item)));
+    }
+    return list;
+  }
+
+  List<Widget> _buildListOfEnabledSlidables(List<Item> data) {
+    List<Widget> list = [];
+    for (var item in data) {
+      if (!item.isActive) {
+        list.add(_buildSlidable(item, data.indexOf(item)));
+      }
     }
     return list;
   }

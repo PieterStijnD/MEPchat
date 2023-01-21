@@ -55,8 +55,7 @@ Future<List<Item>> getMepLijstenFromServerAsListItems(context) async {
   List<Item> list2 = list
       .map((e) => Item(
           id: e.id!,
-          isExpanded: false,
-          isActive: true,
+          isActive: e.enabled!,
           headerValue: e.name!,
           expandedValue: e.name!))
       .toList();
@@ -126,7 +125,6 @@ class MepLijstData {
     this.id,
     this.enabled,
     this.name,
-    // this.app_user_id,
   });
 
   int? id;
