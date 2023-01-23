@@ -11,7 +11,16 @@ class PhotoParserWidget extends StatefulWidget {
 }
 
 class PhotoParserWidgetState extends State<PhotoParserWidget> {
+  List<String> sentences = [];
+
+  @override
+  initState() {
+    super.initState();
+    sentences = widget.sentences;
+  }
+
   List<String> options = [
+    "none",
     "name",
     "volume",
     "unit",
@@ -22,17 +31,18 @@ class PhotoParserWidgetState extends State<PhotoParserWidget> {
     "timeUnit",
     "archived"
   ];
-  late String selectedOption = options[0];
-
-  void _selectOption(String option) {
-    setState(() {
-      selectedOption = option;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
-    List<String> sentences = ["sentence 1", "sentence 2", "sentence 3"];
+    // List<String> sentences = ["sentence 1", "sentence 2", "sentence 3"];
+    late List<String> selectedOptions =
+        List.filled(sentences.length, options[0]);
+
+    void _selectOption(String option, int index) {
+      setState(() {
+        selectedOptions[index] = option;
+      });
+    }
 
     return Scaffold(
       body: Column(
@@ -46,10 +56,15 @@ class PhotoParserWidgetState extends State<PhotoParserWidget> {
                   children: [
                     Text(widget.sentences[index]),
                     DropdownButton<String>(
-                      value: selectedOption,
-                      onChanged: (String? value) {
+                      value: selectedOptions[index],
+                      // onChanged: (String? newValue) {
+                      //   setState(() {
+                      //     selectedOptions[index] = newValue!;
+                      //   });
+                      // },
+                      onChanged: (value) {
                         setState(() {
-                          selectedOption = value!;
+                          selectedOptions[index] = value!;
                         });
                       },
                       items: options
