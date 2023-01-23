@@ -198,7 +198,7 @@ class _RecipesWidgetState extends State<RecipesWidget> {
       builder: (BuildContext context) {
         return SimpleDialog(
           title: Center(
-            child: Text("Toevoegen MEP"),
+            child: Text("Add Recipe"),
           ),
           children: [
             Form(
@@ -206,79 +206,19 @@ class _RecipesWidgetState extends State<RecipesWidget> {
               child: Column(
                 // crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text("Naam"),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 5,
-                            blurRadius: 7,
-                            offset: Offset(0, 3), // changes position of shadow
-                          ),
-                        ],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                        child: TextFormField(
-                          controller: recipeController,
-                          decoration: InputDecoration(
-                              border: InputBorder.none, hintText: "..."),
-                          // The validator receives the text that the user has entered.
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter some text';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(18.0),
-                    child: Text(
-                      "Of",
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text("Receptuur toevoegen"),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 5,
-                            blurRadius: 7,
-                            offset: Offset(0, 3), // changes position of shadow
-                          ),
-                        ],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                        child: TextField(
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'zoek receptuur',
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  TextFieldWidget(
+                      recipeController: recipeController, label: "Naam"),
+                  TextFieldWidget(
+                      recipeController: recipeController, label: "Volume"),
+                  TextFieldWidget(
+                      recipeController: recipeController, label: "Measurement"),
+                  TextFieldWidget(
+                      recipeController: recipeController,
+                      label: "Instructions"),
+                  TextFieldWidget(
+                      recipeController: recipeController, label: "Duration"),
+                  TextFieldWidget(
+                      recipeController: recipeController, label: "Time unit"),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -322,6 +262,53 @@ class _RecipesWidgetState extends State<RecipesWidget> {
           ],
         );
       },
+    );
+  }
+}
+
+class TextFieldWidget extends StatelessWidget {
+  const TextFieldWidget({
+    Key? key,
+    required this.recipeController,
+    required this.label,
+  }) : super(key: key);
+
+  final TextEditingController recipeController;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 5,
+              blurRadius: 7,
+              offset: Offset(0, 3), // changes position of shadow
+            ),
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+          child: TextFormField(
+            controller: recipeController,
+            decoration:
+                InputDecoration(border: InputBorder.none, hintText: label),
+            // The validator receives the text that the user has entered.
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter some text';
+              }
+              return null;
+            },
+          ),
+        ),
+      ),
     );
   }
 }
