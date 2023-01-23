@@ -11,6 +11,7 @@ import 'api/api_general.dart';
 import 'homescreen/homescreen_widget.dart';
 import 'menukaarten_widget.dart';
 import 'meplijst/mep_lijst_widget.dart';
+import 'photo_page/camera_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -62,6 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
     MepPageWrapperWidget(),
     ArchiefWidget(),
     TeamsPage(),
+    CameraWidget(),
   ];
 
   void _onItemTapped(int index) {
@@ -110,6 +112,12 @@ class _MyHomePageState extends State<MyHomePage> {
               Icons.people_outline,
             ),
             label: 'Teams',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.camera_alt_outlined,
+            ),
+            label: 'Camera',
           ),
         ],
         currentIndex: _selectedIndex,
