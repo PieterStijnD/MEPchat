@@ -39,7 +39,7 @@ Future<int> postRecipe(String title, context) async {
   Map data = {
     "name": "recept",
     "volume": 500,
-    "unit": {"name": "g"},
+    "unit": {"name": "ml"},
     "instructions": "Fork it over",
     "preparationTime": 600,
     "timeUnit": {"name": "uur"}
