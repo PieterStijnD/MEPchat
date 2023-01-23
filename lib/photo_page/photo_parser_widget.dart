@@ -32,61 +32,60 @@ class PhotoParserWidgetState extends State<PhotoParserWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: ListView.builder(
-            itemCount: widget.sentences.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(widget.sentences[index]),
-                  DropdownButton<String>(
-                    value: selectedOption,
-                    onChanged: (String? value) {
-                      setState(() {
-                        selectedOption = value!;
-                      });
-                    },
-                    items: options
-                        .map((String option) => DropdownMenuItem<String>(
-                              value: option,
-                              child: Text(option),
-                            ))
-                        .toList(),
-                  ),
-                ],
-              );
-            },
+    List<String> sentences = ["sentence 1", "sentence 2", "sentence 3"];
+
+    return Scaffold(
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: widget.sentences.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(widget.sentences[index]),
+                    DropdownButton<String>(
+                      value: selectedOption,
+                      onChanged: (String? value) {
+                        setState(() {
+                          selectedOption = value!;
+                        });
+                      },
+                      items: options
+                          .map((String option) => DropdownMenuItem<String>(
+                                value: option,
+                                child: Text(option),
+                              ))
+                          .toList(),
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
-        ),
-        ButtonBar(
-          alignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text("Cancel"),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                int code = 0;
-                code = await postRecipe("title", context);
-                debugPrint(code.toString());
-                // if (code != 0) {
-                //   setState(() {
-                //     fetchedMepLijsten = getMepLijstenFromServerAsListItems(context);
-                //   });
-                // }
-                Navigator.pop(context);
-              },
-              child: const Text("Save"),
-            ),
-          ],
-        ),
-      ],
+          ButtonBar(
+            alignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text("Cancel"),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  int code = 0;
+                  code = await postRecipe("title", context);
+                  debugPrint(code.toString());
+                  Navigator.pop(context);
+                },
+                child: const Text("Save"),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
