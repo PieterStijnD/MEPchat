@@ -3,13 +3,12 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
-import '../meplijst/mep_lijst_widget.dart';
 import 'api_general.dart';
 
-Future<List<MepLijstData>> getMepLijstenFromServer(context) async {
+Future<List<MenuClass>> getMenusFromServer(context) async {
   String startOfUrl = Provider.of<ApiData>(context, listen: false).getApiUrl();
 
-  var url = Uri.parse('http://10.0.2.2:8081/mep-lijst');
+  var url = Uri.parse('http://10.0.2.2:8081/menucard');
 
   String key = Provider.of<ApiData>(context, listen: false).apiKey!;
 
@@ -23,48 +22,17 @@ Future<List<MepLijstData>> getMepLijstenFromServer(context) async {
 
   var decodedData = jsonDecode(response.body);
 
-  List<MepLijstData> list = [];
+  List<MenuClass> list = [];
   for (var item in decodedData) {
-    list.add(MepLijstData.fromJson(item));
+    list.add(MenuClass.fromJson(item));
   }
   return list;
 }
 
-Future<List<MepListClass>> getMepLijstenFromServerAsListItems(context) async {
+Future<int> postMenu(String title, context) async {
   String startOfUrl = Provider.of<ApiData>(context, listen: false).getApiUrl();
 
-  var url = Uri.parse('http://10.0.2.2:8081/mep-lijst');
-
-  String key = Provider.of<ApiData>(context, listen: false).apiKey!;
-
-  var response = await http.get(
-    url,
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": 'Bearer $key',
-    },
-  );
-
-  List decodedData = jsonDecode(response.body);
-
-  List<MepLijstData> list = [];
-
-  for (var item in decodedData) {
-    list.add(MepLijstData.fromJson(item));
-  }
-  List<MepListClass> list2 = list
-      .map((e) =>
-          MepListClass(id: e.id!, isActive: e.enabled!, headerValue: e.name!))
-      .toList();
-
-  return list2;
-}
-
-Future<int> postMepLijst(String title, context) async {
-  //TODO wait for implementation
-  String startOfUrl = Provider.of<ApiData>(context, listen: false).getApiUrl();
-
-  var url = Uri.parse('http://10.0.2.2:8081/mep-lijst');
+  var url = Uri.parse('http://10.0.2.2:8081/menucard');
 
   String key = Provider.of<ApiData>(context, listen: false).apiKey!;
 
@@ -89,10 +57,10 @@ Future<int> postMepLijst(String title, context) async {
   return response.statusCode;
 }
 
-Future<int> deleteMepLijst(int id, context) async {
+Future<int> deleteMenu(int id, context) async {
   String startOfUrl = Provider.of<ApiData>(context, listen: false).getApiUrl();
 
-  var url = Uri.parse('http://10.0.2.2:8081/mep-lijst/$id');
+  var url = Uri.parse('http://10.0.2.2:8081/menucard/$id');
 
   String key = Provider.of<ApiData>(context, listen: false).apiKey!;
 
@@ -116,8 +84,8 @@ Future<int> deleteMepLijst(int id, context) async {
   return response.statusCode;
 }
 
-class MepLijstData {
-  MepLijstData({
+class MenuClass {
+  MenuClass({
     this.id,
     this.enabled,
     this.name,
@@ -127,7 +95,7 @@ class MepLijstData {
   bool? enabled;
   String? name;
 
-  factory MepLijstData.fromJson(Map<String, dynamic> json) => MepLijstData(
+  factory MenuClass.fromJson(Map<String, dynamic> json) => MenuClass(
         id: json["id"],
         enabled: json["enabled"],
         name: json["name"],

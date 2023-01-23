@@ -70,7 +70,6 @@ class MepLijstOverlay extends ModalRoute<void> {
           id: index,
           isActive: true,
           headerValue: meps[index],
-          expandedValue: 'Weight: $index grams',
         );
       });
     }
@@ -217,7 +216,6 @@ class MepLijstOverlay extends ModalRoute<void> {
               child: Column(
                 children: [
                   Text('${data.headerValue}'),
-                  Text('${data.expandedValue}'),
                 ],
               ),
             )),

@@ -9,13 +9,11 @@ class MepListClass {
   MepListClass({
     required this.id,
     required this.isActive,
-    required this.expandedValue,
     required this.headerValue,
   });
 
   int id;
   bool isActive;
-  String expandedValue;
   String headerValue;
 }
 
