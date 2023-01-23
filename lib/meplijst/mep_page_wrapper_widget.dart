@@ -18,7 +18,7 @@ class _MepPageWrapperWidgetState extends State<MepPageWrapperWidget> {
   static const List<Widget> _widgetOptions = <Widget>[
     MepLijstWidget(),
     MenuKaartenWidget(),
-    RecepturenWidget(),
+    RecipesWidget(),
   ];
 
   void _onItemTapped(int index) {

@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
               '/meplijst': (context) => const MepLijstWidget(),
               '/archief': (context) => const ArchiefWidget(),
               '/menukaarten': (context) => const MenuKaartenWidget(),
-              '/recepturen': (context) => const RecepturenWidget(),
+              '/recepturen': (context) => const RecipesWidget(),
             },
             theme: ThemeData(
               primarySwatch: Colors.blue,
