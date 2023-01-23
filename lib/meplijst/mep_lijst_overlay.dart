@@ -6,13 +6,9 @@ import 'package:new_base/meplijst/mep_lijst_widget.dart';
 import '../api/api_meplijsten.dart';
 
 class MepLijstOverlay extends ModalRoute<void> {
-  final List<Item> _data;
   final String title;
 
-  MepLijstOverlay({required List<Item> data, required this.title})
-      : _data = data;
-
-  bool _vandaag = true;
+  MepLijstOverlay({required this.title});
 
   @override
   Duration get transitionDuration => Duration(milliseconds: 500);
@@ -46,6 +42,7 @@ class MepLijstOverlay extends ModalRoute<void> {
 
   Widget _buildOverlayContent(String title, BuildContext context) {
     String _title = title;
+    bool _vandaag = true;
 
     final List<String> meps2 = [
       "Paprika Rouille",
@@ -67,9 +64,9 @@ class MepLijstOverlay extends ModalRoute<void> {
       "Zeebaars cevice",
     ];
 
-    List<Item> generateItems(int numberOfItems, List<String> meps) {
-      return List<Item>.generate(numberOfItems, (int index) {
-        return Item(
+    List<MepListClass> generateItems(int numberOfItems, List<String> meps) {
+      return List<MepListClass>.generate(numberOfItems, (int index) {
+        return MepListClass(
           id: index,
           isActive: true,
           headerValue: meps[index],
@@ -78,8 +75,8 @@ class MepLijstOverlay extends ModalRoute<void> {
       });
     }
 
-    List<Item> fruitList = generateItems(meps2.length, meps2);
-    List<Item> vegetableList = generateItems(meps.length, meps);
+    List<MepListClass> fruitList = generateItems(meps2.length, meps2);
+    List<MepListClass> vegetableList = generateItems(meps.length, meps);
 
     final formKey = GlobalKey<FormState>();
 
@@ -166,7 +163,7 @@ class MepLijstOverlay extends ModalRoute<void> {
     );
   }
 
-  List<Widget> _buildListOfSlidables(List<Item> data) {
+  List<Widget> _buildListOfSlidables(List<MepListClass> data) {
     List<Widget> list = [];
     for (int i = 0; i < data.length; i++) {
       list.add(_buildSlidable(data[i], i));
@@ -174,7 +171,7 @@ class MepLijstOverlay extends ModalRoute<void> {
     return list;
   }
 
-  Widget _buildSlidable(Item data, int i) {
+  Widget _buildSlidable(MepListClass data, int i) {
     return Slidable(
       key: ValueKey(i),
       startActionPane: ActionPane(
@@ -313,7 +310,6 @@ class MepLijstOverlay extends ModalRoute<void> {
                                   MaterialStateProperty.all(Colors.white)),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              //TODO make AddItem into api request
                               addItem(MEPController.text, context);
                               Navigator.pop(context);
                             }

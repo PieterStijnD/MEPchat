@@ -30,7 +30,7 @@ Future<List<MepLijstData>> getMepLijstenFromServer(context) async {
   return list;
 }
 
-Future<List<Item>> getMepLijstenFromServerAsListItems(context) async {
+Future<List<MepListClass>> getMepLijstenFromServerAsListItems(context) async {
   String startOfUrl = Provider.of<ApiData>(context, listen: false).getApiUrl();
 
   var url = Uri.parse('http://10.0.2.2:8081/mep-lijst');
@@ -52,8 +52,8 @@ Future<List<Item>> getMepLijstenFromServerAsListItems(context) async {
   for (var item in decodedData) {
     list.add(MepLijstData.fromJson(item));
   }
-  List<Item> list2 = list
-      .map((e) => Item(
+  List<MepListClass> list2 = list
+      .map((e) => MepListClass(
           id: e.id!,
           isActive: e.enabled!,
           headerValue: e.name!,

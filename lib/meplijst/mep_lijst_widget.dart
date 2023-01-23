@@ -5,8 +5,8 @@ import 'package:new_base/api/api_meplijsten.dart';
 import 'mep_lijst_overlay.dart';
 
 // stores ExpansionPanel state information
-class Item {
-  Item({
+class MepListClass {
+  MepListClass({
     required this.id,
     required this.isActive,
     required this.expandedValue,
@@ -19,27 +19,6 @@ class Item {
   String headerValue;
 }
 
-final List<String> meps2 = [
-  "TEST",
-  "Rouille",
-  "TEST",
-  "Ovenkant",
-  "TEST",
-  "Desserts",
-  "TEST",
-];
-
-List<Item> generateItems(int numberOfItems, List<String> meps) {
-  return List<Item>.generate(numberOfItems, (int index) {
-    return Item(
-      id: index,
-      isActive: true,
-      headerValue: meps[index],
-      expandedValue: 'This is item number $index',
-    );
-  });
-}
-
 class MepLijstWidget extends StatefulWidget {
   const MepLijstWidget({super.key});
 
@@ -48,9 +27,8 @@ class MepLijstWidget extends StatefulWidget {
 }
 
 class _MepLijstWidgetState extends State<MepLijstWidget> {
-  late Future<List<Item>> fetchedMepLijsten =
+  late Future<List<MepListClass>> fetchedMepLijsten =
       getMepLijstenFromServerAsListItems(context);
-  final List<Item> _data2 = generateItems(meps2.length, meps2);
   final _formKey = GlobalKey<FormState>();
   bool _activeItemsList = true;
 
@@ -164,7 +142,7 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
     }
   }
 
-  List<Widget> _buildListOfSlidables(List<Item> data) {
+  List<Widget> _buildListOfSlidables(List<MepListClass> data) {
     List<Widget> list = [];
     for (var item in data) {
       list.add(_buildSlidable(item, data.indexOf(item)));
@@ -172,7 +150,7 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
     return list;
   }
 
-  List<Widget> _buildListOfEnabledSlidables(List<Item> data) {
+  List<Widget> _buildListOfEnabledSlidables(List<MepListClass> data) {
     List<Widget> list = [];
     for (var item in data) {
       if (!item.isActive) {
@@ -182,7 +160,7 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
     return list;
   }
 
-  Widget _buildSlidable(Item data, int i) {
+  Widget _buildSlidable(MepListClass data, int i) {
     return Slidable(
       key: ValueKey(i),
       startActionPane: ActionPane(
@@ -221,8 +199,8 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
       child: ListTile(
         title: Text('${data.headerValue}'),
         onTap: () => {
-          Navigator.of(context)
-              .push(MepLijstOverlay(title: data.headerValue, data: _data2))
+          // TODO send data to overlay or fetch data from server in overlay
+          Navigator.of(context).push(MepLijstOverlay(title: data.headerValue))
         },
       ),
     );
