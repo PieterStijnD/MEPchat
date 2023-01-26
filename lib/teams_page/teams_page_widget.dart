@@ -15,12 +15,47 @@ class _TeamsPageState extends State<TeamsPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: const [
-            Icon(
-              Icons.people_outline,
-              size: 200,
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text("Current logged in user:"),
             ),
-            CircularProgressIndicator(
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text("P.S. Doeleman"),
+            ),
+            Divider(
               color: Colors.black,
+              thickness: 1,
+              indent: 20,
+              endIndent: 20,
+            ),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text("Current user level:"),
+            ),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text("admin"),
+            ),
+            Divider(
+              color: Colors.black,
+              thickness: 1,
+              indent: 20,
+              endIndent: 20,
+            ),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text("Completed tasks:"),
+            ),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text("0"),
+            ),
+            Divider(
+              color: Colors.black,
+              thickness: 1,
+              indent: 20,
+              endIndent: 20,
             ),
           ],
         ),
