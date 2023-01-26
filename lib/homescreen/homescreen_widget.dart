@@ -1,3 +1,4 @@
+import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,20 +18,6 @@ class _HomescreenWidgetState extends State<HomescreenWidget> {
     return Scaffold(
       body: Column(
         children: [
-          //TODO make into functioning search field, perhaps find one at pub.dev?
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                autofocus: false,
-                decoration: InputDecoration(
-                  iconColor: Colors.grey,
-                  icon: Icon(Icons.search),
-                ),
-              ),
-            ),
-          ),
           Expanded(
             flex: 8,
             child: Center(
@@ -39,13 +26,27 @@ class _HomescreenWidgetState extends State<HomescreenWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("Redesign or Remove"),
-                        ],
-                      ),
+                      padding: const EdgeInsets.all(8.0),
+                      child: DelayedDisplay(
+                          delay: Duration(milliseconds: 200),
+                          // TODO change to real name
+                          child: Text("Welcome back, \$User")),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: DelayedDisplay(
+                          delay: Duration(milliseconds: 300),
+                          // TODO change to real amount
+                          child: Text(
+                              "You currently have X amount of items open")),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: DelayedDisplay(
+                          delay: Duration(milliseconds: 300),
+                          // TODO change to real amount
+                          child: Text(
+                              "Click the navigation bar to see your items")),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
