@@ -115,6 +115,8 @@ class _CameraWidgetState extends State<CameraWidget> {
                 ),
                 Column(
                   children: [
+                    if (scannedText.isEmpty)
+                      ElevatedButton(onPressed: null, child: Text("Parse")),
                     if (scannedText.isNotEmpty)
                       Container(
                         child: Text(
@@ -122,21 +124,23 @@ class _CameraWidgetState extends State<CameraWidget> {
                           style: TextStyle(fontSize: 20),
                         ),
                       ),
+                    if (scannedText.isNotEmpty)
+                      ElevatedButton(
+                          onPressed: () async {
+                            await Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
+                                return PhotoParserWidget(
+                                    sentences: scannedText);
+                              },
+                            ));
+                          },
+                          // Navigator.of(context).push(
+                          //   PhotoParserWidget(sentences: scannedText),
+                          // );
+
+                          child: Text("Parse"))
                   ],
                 ),
-                ElevatedButton(
-                    onPressed: () async {
-                      await Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) {
-                          return PhotoParserWidget(sentences: scannedText);
-                        },
-                      ));
-                    },
-                    // Navigator.of(context).push(
-                    //   PhotoParserWidget(sentences: scannedText),
-                    // );
-
-                    child: Text("Parse"))
               ],
             ),
           ),
