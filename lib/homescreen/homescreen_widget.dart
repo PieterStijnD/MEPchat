@@ -26,11 +26,15 @@ class _HomescreenWidgetState extends State<HomescreenWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(32.0),
                       child: DelayedDisplay(
                           delay: Duration(milliseconds: 200),
                           // TODO change to real name
-                          child: Text("Welcome back, \$User")),
+                          child: Text("Welcome back, {user}",
+                              style: TextStyle(
+                                  color: Colors.blue,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold))),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -38,7 +42,7 @@ class _HomescreenWidgetState extends State<HomescreenWidget> {
                           delay: Duration(milliseconds: 300),
                           // TODO change to real amount
                           child: Text(
-                              "You currently have X amount of items open")),
+                              "You currently have {int} amount of items open")),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
