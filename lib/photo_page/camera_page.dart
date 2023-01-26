@@ -28,8 +28,13 @@ class _CameraWidgetState extends State<CameraWidget> {
             margin: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                if (textScanning) const CircularProgressIndicator(),
+                if (textScanning)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: const CircularProgressIndicator(),
+                  ),
                 if (!textScanning && imageFile == null)
                   Container(
                     width: 300,
@@ -134,10 +139,6 @@ class _CameraWidgetState extends State<CameraWidget> {
                               },
                             ));
                           },
-                          // Navigator.of(context).push(
-                          //   PhotoParserWidget(sentences: scannedText),
-                          // );
-
                           child: Text("Parse"))
                   ],
                 ),
