@@ -11,16 +11,33 @@ class PhotoParserWidget extends StatefulWidget {
 }
 
 class PhotoParserWidgetState extends State<PhotoParserWidget> {
+  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+
+  void _handleSubmitted() {
+    final FormState? form = _formKey.currentState;
+    if (!form!.validate()) {
+    } else {
+      form.save();
+
+      // User.instance.save().then((result) {
+      //   print("Saving done: ${result}.");
+      //   Navigator.pop(context);
+      // });
+    }
+  }
+
   List<String> sentences = [];
+  List<String> _selectedDropDownButton = [];
 
   @override
   initState() {
     super.initState();
     sentences = widget.sentences;
+    _selectedDropDownButton = List.filled(sentences.length, options[0]);
   }
 
   List<String> options = [
-    "none",
+    "remove",
     "name",
     "volume",
     "unit",
@@ -34,7 +51,6 @@ class PhotoParserWidgetState extends State<PhotoParserWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // List<String> sentences = ["sentence 1", "sentence 2", "sentence 3"];
     late List<String> selectedOptions =
         List.filled(sentences.length, options[0]);
 
@@ -44,62 +60,112 @@ class PhotoParserWidgetState extends State<PhotoParserWidget> {
       });
     }
 
+    // This list of controllers can be used to set and get the text from/to the TextFields
+    Map<String, TextEditingController> textEditingControllers = {};
+    var textFields = <TextField>[];
+    for (var str in sentences) {
+      var textEditingController = TextEditingController(text: str);
+      textEditingControllers.putIfAbsent(str, () => textEditingController);
+      continue;
+    }
+
     return Scaffold(
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: widget.sentences.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(widget.sentences[index]),
-                    DropdownButton<String>(
-                      value: selectedOptions[index],
-                      // onChanged: (String? newValue) {
-                      //   setState(() {
-                      //     selectedOptions[index] = newValue!;
-                      //   });
-                      // },
-                      onChanged: (value) {
-                        setState(() {
-                          selectedOptions[index] = value!;
-                        });
-                      },
-                      items: options
-                          .map((String option) => DropdownMenuItem<String>(
-                                value: option,
-                                child: Text(option),
-                              ))
-                          .toList(),
-                    ),
-                  ],
-                );
-              },
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                itemCount: widget.sentences.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Form(
+                      //   key: _formKey,
+                      //   // autovalidate: _autovalidate,
+                      //   // onWillPop: _warnUserAboutInvalidData,
+                      //   child: ListView(
+                      //     padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      //     children: <Widget>[
+                      //       for (var item in sentences)
+                      //         Container(
+                      //           child: TextFormField(
+                      //             initialValue: item,
+                      //             autocorrect: false,
+                      //             controller: textEditingControllers[
+                      //                 sentences.indexOf(item)],
+                      //             // onSaved: (String value) {
+                      //             //   sentences[item] = value;
+                      //             // },
+                      //           ),
+                      //         ),
+                      //     ],
+                      //   ),
+                      // ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 24.0),
+                        child: TextFormField(
+                            initialValue: widget.sentences[index],
+                            controller: textEditingControllers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                widget.sentences[index] = value;
+                              });
+                            },
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Sentence',
+                            )),
+                        // child: Text(widget.sentences[index]),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 24.0),
+                        child: DropdownButton<String>(
+                          value: _selectedDropDownButton[index],
+                          onChanged: (newValue) {
+                            setState(() {
+                              _selectedDropDownButton[index] = newValue!;
+                            });
+                          },
+                          items: options
+                              .map((String option) => DropdownMenuItem<String>(
+                                    value: option,
+                                    child: Text(option),
+                                  ))
+                              .toList(),
+                        ),
+                      ),
+                      Divider(
+                        height: 1,
+                        thickness: 1,
+                      ),
+                    ],
+                  );
+                },
+              ),
             ),
-          ),
-          ButtonBar(
-            alignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text("Cancel"),
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  int code = 0;
-                  code = await postRecipe("title", context);
-                  debugPrint(code.toString());
-                  Navigator.pop(context);
-                },
-                child: const Text("Save"),
-              ),
-            ],
-          ),
-        ],
+            ButtonBar(
+              alignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Cancel"),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    int code = 0;
+                    code = await postRecipe("title", context);
+                    debugPrint(code.toString());
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Save"),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
