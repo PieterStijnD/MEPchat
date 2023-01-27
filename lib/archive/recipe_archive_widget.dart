@@ -20,72 +20,71 @@ class _RecipeArchiveWidgetState extends State<RecipeArchiveWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            TextButton(
-              onPressed: () => setState(() => _activeItemsList = true),
-              child: Text("Active"),
-            ),
-            TextButton(
-              onPressed: () => setState(() => _activeItemsList = false),
-              child: Text("All"),
-            )
-          ],
-        ),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //   children: [
+        //     TextButton(
+        //       onPressed: () => setState(() => _activeItemsList = true),
+        //       child: Text("Active"),
+        //     ),
+        //     TextButton(
+        //       onPressed: () => setState(() => _activeItemsList = false),
+        //       child: Text("All"),
+        //     )
+        //   ],
+        // ),
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.7,
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Column(
               children: [
-                if (!_activeItemsList) ...[
-                  FutureBuilder(
-                    future: fetchedRecipeList,
-                    builder: (BuildContext context, snapshot) {
-                      if (snapshot.connectionState != ConnectionState.done) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                      if (snapshot.hasData || snapshot.data != null) {
-                        return Column(children: [
-                          ..._buildListOfSlidables(snapshot.data!)
-                        ]);
-                      }
-                      return Text("Empty");
-                    },
-                  ),
-                  IconButton(
-                    color: Colors.black,
-                    onPressed: () {
-                      showFormDialog(context);
-                    },
-                    icon: Icon(Icons.add),
-                  )
-                ],
-                if (_activeItemsList) ...[
-                  FutureBuilder(
-                    future: fetchedRecipeList,
-                    builder: (BuildContext context, snapshot) {
-                      if (snapshot.connectionState != ConnectionState.done) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                      if (snapshot.hasData || snapshot.data != null) {
-                        return Column(children: [
-                          // TODO change back to enabled Slidables?
-                          ..._buildListOfSlidables(snapshot.data!)
-                        ]);
-                      }
-                      return Text("Empty");
-                    },
-                  ),
-                  IconButton(
-                    color: Colors.black,
-                    onPressed: () {
-                      showFormDialog(context);
-                    },
-                    icon: Icon(Icons.add),
-                  )
-                ],
+                // if (!_activeItemsList) ...[
+                FutureBuilder(
+                  future: fetchedRecipeList,
+                  builder: (BuildContext context, snapshot) {
+                    if (snapshot.connectionState != ConnectionState.done) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    if (snapshot.hasData || snapshot.data != null) {
+                      return Column(
+                          children: [..._buildListOfSlidables(snapshot.data!)]);
+                    }
+                    return Text("Empty");
+                  },
+                ),
+                IconButton(
+                  color: Colors.black,
+                  onPressed: () {
+                    showFormDialog(context);
+                  },
+                  icon: Icon(Icons.add),
+                )
+                // ],
+                // if (_activeItemsList) ...[
+                //   FutureBuilder(
+                //     future: fetchedRecipeList,
+                //     builder: (BuildContext context, snapshot) {
+                //       if (snapshot.connectionState != ConnectionState.done) {
+                //         return Center(child: CircularProgressIndicator());
+                //       }
+                //       if (snapshot.hasData || snapshot.data != null) {
+                //         return Column(children: [
+                //           // TODO change back to enabled Slidables?
+                //           ..._buildListOfSlidables(snapshot.data!)
+                //         ]);
+                //       }
+                //       return Text("Empty");
+                //     },
+                //   ),
+                //   IconButton(
+                //     color: Colors.black,
+                //     onPressed: () {
+                //       showFormDialog(context);
+                //     },
+                //     icon: Icon(Icons.add),
+                //   )
+                // ],
               ],
             ),
           ),

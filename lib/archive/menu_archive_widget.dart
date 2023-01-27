@@ -19,75 +19,73 @@ class _MenuArchiveWidgetState extends State<MenuArchiveWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            TextButton(
-              onPressed: () => setState(() => _activeItemsList = true),
-              child: Text("Active"),
-            ),
-            TextButton(
-              onPressed: () => setState(() => _activeItemsList = false),
-              child: Text("All"),
-            )
-          ],
-        ),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //   children: [
+        //     TextButton(
+        //       onPressed: () => setState(() => _activeItemsList = true),
+        //       child: Text("Active"),
+        //     ),
+        //     TextButton(
+        //       onPressed: () => setState(() => _activeItemsList = false),
+        //       child: Text("All"),
+        //     )
+        //   ],
+        // ),
         SizedBox(
-          height: MediaQuery
-              .of(context)
-              .size
-              .height * 0.7,
+          height: MediaQuery.of(context).size.height * 0.7,
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Column(
               children: [
-                if (!_activeItemsList) ...[
-                  FutureBuilder(
-                    future: fetchedMenuList,
-                    builder: (BuildContext context, snapshot) {
-                      if (snapshot.connectionState != ConnectionState.done) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                      if (snapshot.hasData || snapshot.data != null) {
-                        return Column(children: [
-                          ..._buildListOfSlidables(snapshot.data!)
-                        ]);
-                      }
-                      return Text("Empty");
-                    },
-                  ),
-                  IconButton(
+                // if (!_activeItemsList) ...[
+                FutureBuilder(
+                  future: fetchedMenuList,
+                  builder: (BuildContext context, snapshot) {
+                    if (snapshot.connectionState != ConnectionState.done) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    if (snapshot.hasData || snapshot.data != null) {
+                      return Column(
+                          children: [..._buildListOfSlidables(snapshot.data!)]);
+                    }
+                    return Text("Empty");
+                  },
+                ),
+                Center(
+                  child: IconButton(
                     color: Colors.black,
                     onPressed: () {
                       showFormDialog(context);
                     },
                     icon: Icon(Icons.add),
-                  )
-                ],
-                if (_activeItemsList) ...[
-                  FutureBuilder(
-                    future: fetchedMenuList,
-                    builder: (BuildContext context, snapshot) {
-                      if (snapshot.connectionState != ConnectionState.done) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                      if (snapshot.hasData || snapshot.data != null) {
-                        return Column(children: [
-                          // TODO change back to enabled Slidables?
-                          ..._buildListOfSlidables(snapshot.data!)
-                        ]);
-                      }
-                      return Text("Empty");
-                    },
                   ),
-                  IconButton(
-                    color: Colors.black,
-                    onPressed: () {
-                      showFormDialog(context);
-                    },
-                    icon: Icon(Icons.add),
-                  )
-                ],
+                )
+                // ],
+                // if (_activeItemsList) ...[
+                //   FutureBuilder(
+                //     future: fetchedMenuList,
+                //     builder: (BuildContext context, snapshot) {
+                //       if (snapshot.connectionState != ConnectionState.done) {
+                //         return Center(child: CircularProgressIndicator());
+                //       }
+                //       if (snapshot.hasData || snapshot.data != null) {
+                //         return Column(children: [
+                //           // TODO change back to enabled Slidables?
+                //           ..._buildListOfSlidables(snapshot.data!)
+                //         ]);
+                //       }
+                //       return Text("Empty");
+                //     },
+                //   ),
+                //   IconButton(
+                //     color: Colors.black,
+                //     onPressed: () {
+                //       showFormDialog(context);
+                //     },
+                //     icon: Icon(Icons.add),
+                //   )
+                // ],
               ],
             ),
           ),
@@ -179,15 +177,14 @@ class _MenuArchiveWidgetState extends State<MenuArchiveWidget> {
             onPressed: null,
             backgroundColor: Color(0xFF7BC043),
             foregroundColor: Colors.white,
-            icon: Icons.archive,
-            label: 'Archive',
+            icon: Icons.unarchive,
+            label: 'Unarchive',
           ),
         ],
       ),
       child: ListTile(
         title: Text('${data.name}'),
-        onTap: () =>
-        {
+        onTap: () => {
           // TODO , on tap, do what?
         },
       ),
@@ -290,7 +287,7 @@ class _MenuArchiveWidgetState extends State<MenuArchiveWidget> {
                         child: ElevatedButton(
                           style: ButtonStyle(
                             backgroundColor:
-                            MaterialStateProperty.all(Colors.white),
+                                MaterialStateProperty.all(Colors.white),
                           ),
                           onPressed: () {
                             Navigator.pop(context);
@@ -306,7 +303,7 @@ class _MenuArchiveWidgetState extends State<MenuArchiveWidget> {
                         child: ElevatedButton(
                           style: ButtonStyle(
                               backgroundColor:
-                              MaterialStateProperty.all(Colors.white)),
+                                  MaterialStateProperty.all(Colors.white)),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               addItem(MEPController.text, context);

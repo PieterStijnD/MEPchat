@@ -35,71 +35,70 @@ class _MepListArchiveWidgetState extends State<MepListArchiveWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            TextButton(
-              onPressed: () => setState(() => _activeItemsList = true),
-              child: Text("Active"),
-            ),
-            TextButton(
-              onPressed: () => setState(() => _activeItemsList = false),
-              child: Text("All"),
-            )
-          ],
-        ),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //   children: [
+        //     TextButton(
+        //       onPressed: () => setState(() => _activeItemsList = true),
+        //       child: Text("Active"),
+        //     ),
+        //     TextButton(
+        //       onPressed: () => setState(() => _activeItemsList = false),
+        //       child: Text("All"),
+        //     )
+        //   ],
+        // ),
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.7,
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Column(
               children: [
-                if (!_activeItemsList) ...[
-                  FutureBuilder(
-                    future: fetchedMepLijsten,
-                    builder: (BuildContext context, snapshot) {
-                      if (snapshot.connectionState != ConnectionState.done) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                      if (snapshot.hasData || snapshot.data != null) {
-                        return Column(children: [
-                          ..._buildListOfSlidables(snapshot.data!)
-                        ]);
-                      }
-                      return Text("Empty");
-                    },
-                  ),
-                  IconButton(
-                    color: Colors.black,
-                    onPressed: () {
-                      showFormDialog(context);
-                    },
-                    icon: Icon(Icons.add),
-                  )
-                ],
-                if (_activeItemsList) ...[
-                  FutureBuilder(
-                    future: fetchedMepLijsten,
-                    builder: (BuildContext context, snapshot) {
-                      if (snapshot.connectionState != ConnectionState.done) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                      if (snapshot.hasData || snapshot.data != null) {
-                        return Column(children: [
-                          ..._buildListOfEnabledSlidables(snapshot.data!)
-                        ]);
-                      }
-                      return Text("Empty");
-                    },
-                  ),
-                  IconButton(
-                    color: Colors.black,
-                    onPressed: () {
-                      showFormDialog(context);
-                    },
-                    icon: Icon(Icons.add),
-                  )
-                ],
+                // if (!_activeItemsList) ...[
+                FutureBuilder(
+                  future: fetchedMepLijsten,
+                  builder: (BuildContext context, snapshot) {
+                    if (snapshot.connectionState != ConnectionState.done) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    if (snapshot.hasData || snapshot.data != null) {
+                      return Column(
+                          children: [..._buildListOfSlidables(snapshot.data!)]);
+                    }
+                    return Text("Empty");
+                  },
+                ),
+                IconButton(
+                  color: Colors.black,
+                  onPressed: () {
+                    showFormDialog(context);
+                  },
+                  icon: Icon(Icons.add),
+                )
+                // ],
+                // if (_activeItemsList) ...[
+                //   FutureBuilder(
+                //     future: fetchedMepLijsten,
+                //     builder: (BuildContext context, snapshot) {
+                //       if (snapshot.connectionState != ConnectionState.done) {
+                //         return Center(child: CircularProgressIndicator());
+                //       }
+                //       if (snapshot.hasData || snapshot.data != null) {
+                //         return Column(children: [
+                //           ..._buildListOfEnabledSlidables(snapshot.data!)
+                //         ]);
+                //       }
+                //       return Text("Empty");
+                //     },
+                //   ),
+                //   IconButton(
+                //     color: Colors.black,
+                //     onPressed: () {
+                //       showFormDialog(context);
+                //     },
+                //     icon: Icon(Icons.add),
+                //   )
+                // ],
               ],
             ),
           ),
@@ -190,8 +189,8 @@ class _MepListArchiveWidgetState extends State<MepListArchiveWidget> {
             onPressed: null,
             backgroundColor: Color(0xFF7BC043),
             foregroundColor: Colors.white,
-            icon: Icons.archive,
-            label: 'Archive',
+            icon: Icons.unarchive,
+            label: 'Unarchive',
           ),
         ],
       ),
