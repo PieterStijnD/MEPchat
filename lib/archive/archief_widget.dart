@@ -42,6 +42,8 @@ class _ArchiefWidgetState extends State<ArchiefWidget> {
             DelayedDisplay(
               delay: Duration(milliseconds: 200),
               child: FloatingActionButton.extended(
+                backgroundColor:
+                    _selectedIndex == 0 ? Colors.blue : Colors.grey,
                 onPressed: () {
                   _onItemTapped(0);
                 },
@@ -51,6 +53,8 @@ class _ArchiefWidgetState extends State<ArchiefWidget> {
             DelayedDisplay(
               delay: Duration(milliseconds: 300),
               child: FloatingActionButton.extended(
+                backgroundColor:
+                    _selectedIndex == 1 ? Colors.blue : Colors.grey,
                 onPressed: () {
                   _onItemTapped(1);
                 },
@@ -60,6 +64,8 @@ class _ArchiefWidgetState extends State<ArchiefWidget> {
             DelayedDisplay(
               delay: Duration(milliseconds: 400),
               child: FloatingActionButton.extended(
+                backgroundColor:
+                    _selectedIndex == 2 ? Colors.blue : Colors.grey,
                 onPressed: () {
                   _onItemTapped(2);
                 },
