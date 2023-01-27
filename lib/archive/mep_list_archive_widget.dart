@@ -52,54 +52,34 @@ class _MepListArchiveWidgetState extends State<MepListArchiveWidget> {
           height: MediaQuery.of(context).size.height * 0.7,
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
-            child: Column(
-              children: [
-                // if (!_activeItemsList) ...[
-                FutureBuilder(
-                  future: fetchedMepLijsten,
-                  builder: (BuildContext context, snapshot) {
-                    if (snapshot.connectionState != ConnectionState.done) {
-                      return Center(child: CircularProgressIndicator());
-                    }
-                    if (snapshot.hasData || snapshot.data != null) {
-                      return Column(
-                          children: [..._buildListOfSlidables(snapshot.data!)]);
-                    }
-                    return Text("Empty");
-                  },
-                ),
-                IconButton(
-                  color: Colors.black,
-                  onPressed: () {
-                    showFormDialog(context);
-                  },
-                  icon: Icon(Icons.add),
-                )
-                // ],
-                // if (_activeItemsList) ...[
-                //   FutureBuilder(
-                //     future: fetchedMepLijsten,
-                //     builder: (BuildContext context, snapshot) {
-                //       if (snapshot.connectionState != ConnectionState.done) {
-                //         return Center(child: CircularProgressIndicator());
-                //       }
-                //       if (snapshot.hasData || snapshot.data != null) {
-                //         return Column(children: [
-                //           ..._buildListOfEnabledSlidables(snapshot.data!)
-                //         ]);
-                //       }
-                //       return Text("Empty");
-                //     },
-                //   ),
-                //   IconButton(
-                //     color: Colors.black,
-                //     onPressed: () {
-                //       showFormDialog(context);
-                //     },
-                //     icon: Icon(Icons.add),
-                //   )
-                // ],
-              ],
+            child: Expanded(
+              child: Column(
+                children: [
+                  FutureBuilder(
+                    future: fetchedMepLijsten,
+                    builder: (BuildContext context, snapshot) {
+                      if (snapshot.connectionState != ConnectionState.done) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                      if (snapshot.hasData || snapshot.data != null) {
+                        return Column(children: [
+                          ..._buildListOfSlidables(snapshot.data!)
+                        ]);
+                      }
+                      return Text("Empty");
+                    },
+                  ),
+                  Center(
+                    child: IconButton(
+                      color: Colors.black,
+                      onPressed: () {
+                        showFormDialog(context);
+                      },
+                      icon: Icon(Icons.add),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),

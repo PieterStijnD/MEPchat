@@ -37,55 +37,60 @@ class _RecipeArchiveWidgetState extends State<RecipeArchiveWidget> {
           height: MediaQuery.of(context).size.height * 0.7,
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
-            child: Column(
-              children: [
-                // if (!_activeItemsList) ...[
-                FutureBuilder(
-                  future: fetchedRecipeList,
-                  builder: (BuildContext context, snapshot) {
-                    if (snapshot.connectionState != ConnectionState.done) {
-                      return Center(child: CircularProgressIndicator());
-                    }
-                    if (snapshot.hasData || snapshot.data != null) {
-                      return Column(
-                          children: [..._buildListOfSlidables(snapshot.data!)]);
-                    }
-                    return Text("Empty");
-                  },
-                ),
-                IconButton(
-                  color: Colors.black,
-                  onPressed: () {
-                    showFormDialog(context);
-                  },
-                  icon: Icon(Icons.add),
-                )
-                // ],
-                // if (_activeItemsList) ...[
-                //   FutureBuilder(
-                //     future: fetchedRecipeList,
-                //     builder: (BuildContext context, snapshot) {
-                //       if (snapshot.connectionState != ConnectionState.done) {
-                //         return Center(child: CircularProgressIndicator());
-                //       }
-                //       if (snapshot.hasData || snapshot.data != null) {
-                //         return Column(children: [
-                //           // TODO change back to enabled Slidables?
-                //           ..._buildListOfSlidables(snapshot.data!)
-                //         ]);
-                //       }
-                //       return Text("Empty");
-                //     },
-                //   ),
-                //   IconButton(
-                //     color: Colors.black,
-                //     onPressed: () {
-                //       showFormDialog(context);
-                //     },
-                //     icon: Icon(Icons.add),
-                //   )
-                // ],
-              ],
+            child: Expanded(
+              child: Column(
+                children: [
+                  // if (!_activeItemsList) ...[
+                  FutureBuilder(
+                    future: fetchedRecipeList,
+                    builder: (BuildContext context, snapshot) {
+                      if (snapshot.connectionState != ConnectionState.done) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                      if (snapshot.hasData || snapshot.data != null) {
+                        return Column(children: [
+                          ..._buildListOfSlidables(snapshot.data!)
+                        ]);
+                      }
+                      return Text("Empty");
+                    },
+                  ),
+                  Center(
+                    child: IconButton(
+                      color: Colors.black,
+                      onPressed: () {
+                        showFormDialog(context);
+                      },
+                      icon: Icon(Icons.add),
+                    ),
+                  )
+                  // ],
+                  // if (_activeItemsList) ...[
+                  //   FutureBuilder(
+                  //     future: fetchedRecipeList,
+                  //     builder: (BuildContext context, snapshot) {
+                  //       if (snapshot.connectionState != ConnectionState.done) {
+                  //         return Center(child: CircularProgressIndicator());
+                  //       }
+                  //       if (snapshot.hasData || snapshot.data != null) {
+                  //         return Column(children: [
+                  //           // TODO change back to enabled Slidables?
+                  //           ..._buildListOfSlidables(snapshot.data!)
+                  //         ]);
+                  //       }
+                  //       return Text("Empty");
+                  //     },
+                  //   ),
+                  //   IconButton(
+                  //     color: Colors.black,
+                  //     onPressed: () {
+                  //       showFormDialog(context);
+                  //     },
+                  //     icon: Icon(Icons.add),
+                  //   )
+                  // ],
+                ],
+              ),
             ),
           ),
         ),

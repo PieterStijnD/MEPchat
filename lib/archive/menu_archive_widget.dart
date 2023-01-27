@@ -36,57 +36,34 @@ class _MenuArchiveWidgetState extends State<MenuArchiveWidget> {
           height: MediaQuery.of(context).size.height * 0.7,
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
-            child: Column(
-              children: [
-                // if (!_activeItemsList) ...[
-                FutureBuilder(
-                  future: fetchedMenuList,
-                  builder: (BuildContext context, snapshot) {
-                    if (snapshot.connectionState != ConnectionState.done) {
-                      return Center(child: CircularProgressIndicator());
-                    }
-                    if (snapshot.hasData || snapshot.data != null) {
-                      return Column(
-                          children: [..._buildListOfSlidables(snapshot.data!)]);
-                    }
-                    return Text("Empty");
-                  },
-                ),
-                Center(
-                  child: IconButton(
-                    color: Colors.black,
-                    onPressed: () {
-                      showFormDialog(context);
+            child: Expanded(
+              child: Column(
+                children: [
+                  FutureBuilder(
+                    future: fetchedMenuList,
+                    builder: (BuildContext context, snapshot) {
+                      if (snapshot.connectionState != ConnectionState.done) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                      if (snapshot.hasData || snapshot.data != null) {
+                        return Column(children: [
+                          ..._buildListOfSlidables(snapshot.data!)
+                        ]);
+                      }
+                      return Text("Empty");
                     },
-                    icon: Icon(Icons.add),
                   ),
-                )
-                // ],
-                // if (_activeItemsList) ...[
-                //   FutureBuilder(
-                //     future: fetchedMenuList,
-                //     builder: (BuildContext context, snapshot) {
-                //       if (snapshot.connectionState != ConnectionState.done) {
-                //         return Center(child: CircularProgressIndicator());
-                //       }
-                //       if (snapshot.hasData || snapshot.data != null) {
-                //         return Column(children: [
-                //           // TODO change back to enabled Slidables?
-                //           ..._buildListOfSlidables(snapshot.data!)
-                //         ]);
-                //       }
-                //       return Text("Empty");
-                //     },
-                //   ),
-                //   IconButton(
-                //     color: Colors.black,
-                //     onPressed: () {
-                //       showFormDialog(context);
-                //     },
-                //     icon: Icon(Icons.add),
-                //   )
-                // ],
-              ],
+                  Center(
+                    child: IconButton(
+                      color: Colors.black,
+                      onPressed: () {
+                        showFormDialog(context);
+                      },
+                      icon: Icon(Icons.add),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
