@@ -39,7 +39,7 @@ class _HomescreenWidgetState extends State<HomescreenWidget> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: DelayedDisplay(
-                          delay: Duration(milliseconds: 300),
+                          delay: Duration(milliseconds: 400),
                           // TODO change to real amount
                           child: Text(
                               "You currently have {int} amount of items open")),
@@ -47,7 +47,7 @@ class _HomescreenWidgetState extends State<HomescreenWidget> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: DelayedDisplay(
-                          delay: Duration(milliseconds: 300),
+                          delay: Duration(milliseconds: 500),
                           // TODO change to real amount
                           child: Text(
                               "Click the navigation bar to see your items")),
