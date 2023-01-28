@@ -16,7 +16,6 @@ class _FileParserWidgetState extends State<FileParserWidget> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   late PlatformFile file;
   late List<String> sentences;
-  bool _isLoading = true;
 
   List<String> _selectedDropDownButton = [];
 
@@ -24,7 +23,6 @@ class _FileParserWidgetState extends State<FileParserWidget> {
   initState() {
     super.initState();
     sentences = widget.sentences;
-    // readFileLineByLine(file);
     _selectedDropDownButton = List.filled(sentences.length, options[0]);
   }
 

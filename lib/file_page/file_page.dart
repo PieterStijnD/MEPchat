@@ -23,7 +23,6 @@ class _FileWidgetState extends State<FileWidget> {
   String? _extension;
   bool _isLoading = false;
   bool _userAborted = false;
-  bool _multiPick = false;
   FileType _pickingType = FileType.any;
   TextEditingController _controller = TextEditingController();
 
@@ -38,12 +37,10 @@ class _FileWidgetState extends State<FileWidget> {
     try {
       _directoryPath = null;
       _paths = (await FilePicker.platform.pickFiles(
-        type: _pickingType,
-        allowMultiple: _multiPick,
+        type: FileType.custom,
+        allowedExtensions: ['pdf'],
+        allowMultiple: false,
         onFileLoading: (FilePickerStatus status) => print(status),
-        allowedExtensions: (_extension?.isNotEmpty ?? false)
-            ? _extension?.replaceAll(' ', '').split(',')
-            : null,
       ))
           ?.files;
     } on PlatformException catch (e) {
@@ -95,24 +92,7 @@ class _FileWidgetState extends State<FileWidget> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: DropdownButton<FileType>(
-                      hint: const Text('LOAD PATH FROM'),
-                      value: _pickingType,
-                      items: FileType.values
-                          .map((fileType) => DropdownMenuItem<FileType>(
-                                child: Text(fileType.toString()),
-                                value: fileType,
-                              ))
-                          .toList(),
-                      onChanged: (value) => setState(() {
-                            _pickingType = value!;
-                            if (_pickingType != FileType.custom) {
-                              _controller.text = _extension = '';
-                            }
-                          })),
-                ),
+                Text("File type can only be .pdf"),
                 ConstrainedBox(
                   constraints: const BoxConstraints.tightFor(width: 100.0),
                   child: _pickingType == FileType.custom
