@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import 'Archive/archief_widget.dart';
 import 'api/api_general.dart';
+import 'file_page/file_page.dart';
 import 'homescreen/homescreen_widget.dart';
 import 'menukaarten_widget.dart';
 import 'meplijst/mep_lijst_widget.dart';
@@ -64,6 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
     ArchiefWidget(),
     TeamsPage(),
     CameraWidget(),
+    FileWidget(),
   ];
 
   void _onItemTapped(int index) {
@@ -118,6 +120,12 @@ class _MyHomePageState extends State<MyHomePage> {
               Icons.camera_alt_outlined,
             ),
             label: 'Camera',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.arrow_downward,
+            ),
+            label: 'Files',
           ),
         ],
         currentIndex: _selectedIndex,

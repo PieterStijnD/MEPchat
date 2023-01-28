@@ -1,38 +1,30 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:new_base/api/api_recipes.dart';
 
-class PhotoParserWidget extends StatefulWidget {
+import '../api/api_recipes.dart';
+
+class FileParserWidget extends StatefulWidget {
+  const FileParserWidget({Key? key, required this.sentences}) : super(key: key);
+
   final List<String> sentences;
 
-  const PhotoParserWidget({required this.sentences});
-
   @override
-  PhotoParserWidgetState createState() => PhotoParserWidgetState();
+  State<FileParserWidget> createState() => _FileParserWidgetState();
 }
 
-class PhotoParserWidgetState extends State<PhotoParserWidget> {
+class _FileParserWidgetState extends State<FileParserWidget> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  late PlatformFile file;
+  late List<String> sentences;
+  bool _isLoading = true;
 
-  void _handleSubmitted() {
-    final FormState? form = _formKey.currentState;
-    if (!form!.validate()) {
-    } else {
-      form.save();
-
-      // User.instance.save().then((result) {
-      //   print("Saving done: ${result}.");
-      //   Navigator.pop(context);
-      // });
-    }
-  }
-
-  List<String> sentences = [];
   List<String> _selectedDropDownButton = [];
 
   @override
   initState() {
     super.initState();
     sentences = widget.sentences;
+    // readFileLineByLine(file);
     _selectedDropDownButton = List.filled(sentences.length, options[0]);
   }
 
@@ -54,6 +46,12 @@ class PhotoParserWidgetState extends State<PhotoParserWidget> {
     late List<String> selectedOptions =
         List.filled(sentences.length, options[0]);
 
+    void _selectOption(String option, int index) {
+      setState(() {
+        selectedOptions[index] = option;
+      });
+    }
+
     // This list of controllers can be used to set and get the text from/to the TextFields
     Map<String, TextEditingController> textEditingControllers = {};
     var textFields = <TextField>[];
@@ -69,42 +67,20 @@ class PhotoParserWidgetState extends State<PhotoParserWidget> {
           children: [
             Expanded(
               child: ListView.builder(
-                itemCount: widget.sentences.length,
+                itemCount: sentences.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // Form(
-                      //   key: _formKey,
-                      //   // autovalidate: _autovalidate,
-                      //   // onWillPop: _warnUserAboutInvalidData,
-                      //   child: ListView(
-                      //     padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      //     children: <Widget>[
-                      //       for (var item in sentences)
-                      //         Container(
-                      //           child: TextFormField(
-                      //             initialValue: item,
-                      //             autocorrect: false,
-                      //             controller: textEditingControllers[
-                      //                 sentences.indexOf(item)],
-                      //             // onSaved: (String value) {
-                      //             //   sentences[item] = value;
-                      //             // },
-                      //           ),
-                      //         ),
-                      //     ],
-                      //   ),
-                      // ),
                       Padding(
                         padding: const EdgeInsets.only(
                             top: 24.0, left: 16.0, right: 16.0),
                         child: TextFormField(
-                            initialValue: widget.sentences[index],
+                            initialValue: sentences[index],
                             controller: textEditingControllers[index],
                             onChanged: (value) {
                               setState(() {
-                                widget.sentences[index] = value;
+                                sentences[index] = value;
                               });
                             },
                             decoration: InputDecoration(
