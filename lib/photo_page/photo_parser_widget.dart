@@ -103,7 +103,8 @@ class PhotoParserWidgetState extends State<PhotoParserWidget> {
                       //   ),
                       // ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 24.0),
+                        padding: const EdgeInsets.only(
+                            top: 24.0, left: 16.0, right: 16.0),
                         child: TextFormField(
                             initialValue: widget.sentences[index],
                             controller: textEditingControllers[index],
@@ -138,6 +139,7 @@ class PhotoParserWidgetState extends State<PhotoParserWidget> {
                       Divider(
                         height: 1,
                         thickness: 1,
+                        color: Colors.blue,
                       ),
                     ],
                   );
