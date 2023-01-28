@@ -151,7 +151,7 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
   List<Widget> _buildListOfEnabledSlidables(List<MepListClass> data) {
     List<Widget> list = [];
     for (var item in data) {
-      if (!item.isActive) {
+      if (item.isActive) {
         list.add(_buildSlidable(item, data.indexOf(item)));
       }
     }
