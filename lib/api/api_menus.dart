@@ -84,16 +84,15 @@ Future<int> deleteMenu(int id, context) async {
   return response.statusCode;
 }
 
-Future<int> switchEnabledMenuLijst(int id, context) async {
+Future<int> switchEnabledMenuLijst(bool isEnabled, int id, context) async {
   String startOfUrl = Provider.of<ApiData>(context, listen: false).getApiUrl();
 
-  var url = Uri.parse('http://10.0.2.2:8081/mep-lijst/$id');
+  var url = Uri.parse('http://10.0.2.2:8081/menucard/$id');
 
   String key = Provider.of<ApiData>(context, listen: false).apiKey!;
 
   List data = [
-    // TODO check values
-    {"op": "replace", "path": "/enabled", "value": false}
+    {"op": "replace", "path": "/enabled", "value": !isEnabled}
   ];
 
   var body = json.encode(data);

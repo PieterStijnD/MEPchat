@@ -116,9 +116,9 @@ class _MenuKaartenWidgetState extends State<MenuKaartenWidget> {
     }
   }
 
-  void flipEnabledItem(int id, BuildContext context) async {
+  void flipEnabledItem(bool isEnabled, int id, BuildContext context) async {
     int code = 0;
-    code = await deleteMenu(id, context);
+    code = await switchEnabledMenuLijst(isEnabled, id, context);
     debugPrint(code.toString());
     if (code != 0) {
       setState(() {
@@ -130,7 +130,7 @@ class _MenuKaartenWidgetState extends State<MenuKaartenWidget> {
   List<Widget> _buildListOfSlidables(List<MenuClass> data) {
     List<Widget> list = [];
     for (var item in data) {
-      list.add(_buildSlidable(item, data.indexOf(item)));
+      list.add(_buildSlidable(false, item, data.indexOf(item)));
     }
     return list;
   }
@@ -140,13 +140,13 @@ class _MenuKaartenWidgetState extends State<MenuKaartenWidget> {
     List<Widget> list = [];
     for (var item in data) {
       if (!item.enabled!) {
-        list.add(_buildSlidable(item, data.indexOf(item)));
+        list.add(_buildSlidable(true, item, data.indexOf(item)));
       }
     }
     return list;
   }
 
-  Widget _buildSlidable(MenuClass data, int i) {
+  Widget _buildSlidable(bool isEnabled, MenuClass data, int i) {
     return Slidable(
       key: ValueKey(i),
       startActionPane: ActionPane(
@@ -162,7 +162,9 @@ class _MenuKaartenWidgetState extends State<MenuKaartenWidget> {
             label: 'Delete',
           ),
           SlidableAction(
-            onPressed: null,
+            onPressed: (_) {
+              flipEnabledItem(isEnabled, data.id!, context);
+            },
             backgroundColor: Colors.orange,
             foregroundColor: Colors.white,
             icon: Icons.power_settings_new,

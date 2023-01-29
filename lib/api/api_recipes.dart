@@ -83,6 +83,33 @@ Future<int> postRecipe(Map body, context) async {
   return response.statusCode;
 }
 
+Future<int> switchEnabledRecipe(bool isEnabled, int id, context) async {
+  String startOfUrl = Provider.of<ApiData>(context, listen: false).getApiUrl();
+
+  var url = Uri.parse('http://10.0.2.2:8081/recipe/$id');
+
+  String key = Provider.of<ApiData>(context, listen: false).apiKey!;
+
+  List data = [
+    {"op": "replace", "path": "/enabled", "value": !isEnabled}
+  ];
+
+  var body = json.encode(data);
+
+  var response = await http.patch(
+    url,
+    headers: {
+      "Content-Type": "application/json-patch+json",
+      "Authorization": 'Bearer $key',
+    },
+    body: body,
+  );
+
+  print('${response.statusCode}');
+  print('${response.body}');
+  return response.statusCode;
+}
+
 Future<int> deleteRecipe(int id, context) async {
   String startOfUrl = Provider.of<ApiData>(context, listen: false).getApiUrl();
 

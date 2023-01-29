@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
-import '../meplijst/mep_lijst_widget.dart';
 import 'api_general.dart';
 
 Future<List<MepLijstData>> getMepLijstenFromServer(context) async {
@@ -30,7 +29,7 @@ Future<List<MepLijstData>> getMepLijstenFromServer(context) async {
   return list;
 }
 
-Future<List<MepListClass>> getMepLijstenFromServerAsListItems(context) async {
+Future<List<MepLijstData>> getMepLijstenFromServerAsListItems(context) async {
   String startOfUrl = Provider.of<ApiData>(context, listen: false).getApiUrl();
 
   var url = Uri.parse('http://10.0.2.2:8081/mep-lijst');
@@ -48,13 +47,13 @@ Future<List<MepListClass>> getMepLijstenFromServerAsListItems(context) async {
   List decodedData = jsonDecode(response.body);
 
   List<MepLijstData> list = [];
-
   for (var item in decodedData) {
     list.add(MepLijstData.fromJson(item));
   }
-  List<MepListClass> list2 = list
-      .map((e) =>
-          MepListClass(id: e.id!, isActive: e.enabled!, headerValue: e.name!))
+  print("list: $list");
+  List<MepLijstData> list2 = list
+      .map((e) => MepLijstData(
+          id: e.id!, enabled: e.enabled!, name: e.name!, archived: e.archived!))
       .toList();
 
   return list2;
@@ -143,20 +142,50 @@ Future<int> switchEnabledMepLijst(bool isEnabled, int id, context) async {
   return response.statusCode;
 }
 
+Future<int> switchArchivedMepLijst(bool isArchived, int id, context) async {
+  String startOfUrl = Provider.of<ApiData>(context, listen: false).getApiUrl();
+
+  var url = Uri.parse('http://10.0.2.2:8081/mep-lijst/archiving/$id');
+
+  String key = Provider.of<ApiData>(context, listen: false).apiKey!;
+
+  List data = [
+    {"op": "replace", "path": "/enabled", "value": !isArchived}
+  ];
+
+  var body = json.encode(data);
+
+  var response = await http.patch(
+    url,
+    headers: {
+      "Content-Type": "application/json-patch+json",
+      "Authorization": 'Bearer $key',
+    },
+    body: body,
+  );
+
+  print('${response.statusCode}');
+  print('${response.body}');
+  return response.statusCode;
+}
+
 class MepLijstData {
   MepLijstData({
     this.id,
     this.enabled,
     this.name,
+    this.archived,
   });
 
   int? id;
   bool? enabled;
   String? name;
+  bool? archived;
 
   factory MepLijstData.fromJson(Map<String, dynamic> json) => MepLijstData(
         id: json["id"],
         enabled: json["enabled"],
         name: json["name"],
+        archived: json["archived"],
       );
 }

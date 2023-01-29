@@ -53,15 +53,6 @@ class _MenuArchiveWidgetState extends State<MenuArchiveWidget> {
                       return Text("Empty");
                     },
                   ),
-                  // Center(
-                  //   child: IconButton(
-                  //     color: Colors.black,
-                  //     onPressed: () {
-                  //       showFormDialog(context);
-                  //     },
-                  //     icon: Icon(Icons.add),
-                  //   ),
-                  // )
                 ],
               ),
             ),
@@ -70,17 +61,6 @@ class _MenuArchiveWidgetState extends State<MenuArchiveWidget> {
       ],
     );
   }
-
-  // void addItem(String title, context) async {
-  //   int code = 0;
-  //   code = await postMenu(title, context);
-  //   debugPrint(code.toString());
-  //   if (code != 0) {
-  //     setState(() {
-  //       fetchedMenuList = getMenusFromServer(context);
-  //     });
-  //   }
-  // }
 
   void removeItem(int id, BuildContext context) async {
     int code = 0;

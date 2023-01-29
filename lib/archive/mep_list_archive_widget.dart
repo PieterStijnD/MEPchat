@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:new_base/api/api_meplijsten.dart';
 
-import '../meplijst/mep_lijst_widget.dart';
-
 // // stores ExpansionPanel state information
 // class MepListClass {
 //   MepListClass({
@@ -25,8 +23,8 @@ class MepListArchiveWidget extends StatefulWidget {
 }
 
 class _MepListArchiveWidgetState extends State<MepListArchiveWidget> {
-  late Future<List<MepListClass>> fetchedMepLijsten =
-  getMepLijstenFromServerAsListItems(context);
+  late Future<List<MepLijstData>> fetchedMepLijsten =
+      getMepLijstenFromServerAsListItems(context);
   final _formKey = GlobalKey<FormState>();
   bool _activeItemsList = true;
 
@@ -48,10 +46,7 @@ class _MepListArchiveWidgetState extends State<MepListArchiveWidget> {
         //   ],
         // ),
         SizedBox(
-          height: MediaQuery
-              .of(context)
-              .size
-              .height * 0.7,
+          height: MediaQuery.of(context).size.height * 0.7,
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Expanded(
@@ -122,25 +117,17 @@ class _MepListArchiveWidgetState extends State<MepListArchiveWidget> {
     }
   }
 
-  List<Widget> _buildListOfSlidables(List<MepListClass> data) {
+  List<Widget> _buildListOfSlidables(List<MepLijstData> data) {
     List<Widget> list = [];
     for (var item in data) {
-      list.add(_buildSlidable(item, data.indexOf(item)));
-    }
-    return list;
-  }
-
-  List<Widget> _buildListOfEnabledSlidables(List<MepListClass> data) {
-    List<Widget> list = [];
-    for (var item in data) {
-      if (!item.isActive) {
+      if (item.archived == true) {
         list.add(_buildSlidable(item, data.indexOf(item)));
       }
     }
     return list;
   }
 
-  Widget _buildSlidable(MepListClass data, int i) {
+  Widget _buildSlidable(MepLijstData data, int i) {
     // TODO filter archive and remove
     return Slidable(
       key: ValueKey(i),
@@ -149,20 +136,13 @@ class _MepListArchiveWidgetState extends State<MepListArchiveWidget> {
         children: [
           SlidableAction(
             onPressed: (_) {
-              removeItem(data.id, context);
+              removeItem(data.id!, context);
             },
             backgroundColor: Color(0xFFFE4A49),
             foregroundColor: Colors.white,
             icon: Icons.delete,
             label: 'Delete',
           ),
-          // SlidableAction(
-          //   onPressed: null,
-          //   backgroundColor: Colors.orange,
-          //   foregroundColor: Colors.white,
-          //   icon: Icons.power_settings_new,
-          //   label: 'In/Active',
-          // ),
         ],
       ),
       endActionPane: const ActionPane(
@@ -178,143 +158,9 @@ class _MepListArchiveWidgetState extends State<MepListArchiveWidget> {
         ],
       ),
       child: ListTile(
-        title: Text('${data.headerValue}'),
+        title: Text('${data.name!}'),
         onTap: () => {},
       ),
     );
   }
-
-// void showFormDialog(BuildContext context) {
-//   final MEPController = TextEditingController();
-//   showDialog(
-//     context: context,
-//     builder: (BuildContext context) {
-//       return SimpleDialog(
-//         title: Center(
-//           child: Text("Toevoegen MEP"),
-//         ),
-//         children: [
-//           Form(
-//             key: _formKey,
-//             child: Column(
-//               // crossAxisAlignment: CrossAxisAlignment.stretch,
-//               children: [
-//                 Padding(
-//                   padding: const EdgeInsets.all(8.0),
-//                   child: Text("Naam"),
-//                 ),
-//                 Padding(
-//                   padding: const EdgeInsets.all(8.0),
-//                   child: Container(
-//                     decoration: BoxDecoration(
-//                       color: Colors.white,
-//                       borderRadius: BorderRadius.all(Radius.circular(10)),
-//                       boxShadow: [
-//                         BoxShadow(
-//                           color: Colors.grey.withOpacity(0.5),
-//                           spreadRadius: 5,
-//                           blurRadius: 7,
-//                           offset: Offset(0, 3), // changes position of shadow
-//                         ),
-//                       ],
-//                     ),
-//                     child: Padding(
-//                       padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-//                       child: TextFormField(
-//                         controller: MEPController,
-//                         decoration: InputDecoration(
-//                             border: InputBorder.none, hintText: "..."),
-//                         // The validator receives the text that the user has entered.
-//                         validator: (value) {
-//                           if (value == null || value.isEmpty) {
-//                             return 'Please enter some text';
-//                           }
-//                           return null;
-//                         },
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//                 Padding(
-//                   padding: const EdgeInsets.all(18.0),
-//                   child: Text(
-//                     "Of",
-//                     style: TextStyle(fontSize: 18),
-//                   ),
-//                 ),
-//                 Padding(
-//                   padding: const EdgeInsets.all(8.0),
-//                   child: Text("Receptuur toevoegen"),
-//                 ),
-//                 Padding(
-//                   padding: const EdgeInsets.all(8.0),
-//                   child: Container(
-//                     decoration: BoxDecoration(
-//                       color: Colors.white,
-//                       borderRadius: BorderRadius.all(Radius.circular(10)),
-//                       boxShadow: [
-//                         BoxShadow(
-//                           color: Colors.grey.withOpacity(0.5),
-//                           spreadRadius: 5,
-//                           blurRadius: 7,
-//                           offset: Offset(0, 3), // changes position of shadow
-//                         ),
-//                       ],
-//                     ),
-//                     child: Padding(
-//                       padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-//                       child: TextField(
-//                         decoration: InputDecoration(
-//                           border: InputBorder.none,
-//                           hintText: 'zoek receptuur',
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//                 Row(
-//                   mainAxisAlignment: MainAxisAlignment.center,
-//                   children: [
-//                     Padding(
-//                       padding: const EdgeInsets.all(8.0),
-//                       child: ElevatedButton(
-//                         style: ButtonStyle(
-//                           backgroundColor:
-//                               MaterialStateProperty.all(Colors.white),
-//                         ),
-//                         onPressed: () {
-//                           context.pop();
-//                         },
-//                         child: Icon(
-//                           Icons.cancel_outlined,
-//                           color: Colors.amberAccent,
-//                         ),
-//                       ),
-//                     ),
-//                     Padding(
-//                       padding: const EdgeInsets.all(8.0),
-//                       child: ElevatedButton(
-//                         style: ButtonStyle(
-//                             backgroundColor:
-//                                 MaterialStateProperty.all(Colors.white)),
-//                         onPressed: () {
-//                           if (_formKey.currentState!.validate()) {
-//                             addItem(MEPController.text, context);
-//                             context.pop();
-//                           }
-//                         },
-//                         child: Icon(Icons.check_circle_outline,
-//                             color: Colors.green),
-//                       ),
-//                     ),
-//                   ],
-//                 )
-//               ],
-//             ),
-//           )
-//         ],
-//       );
-//     },
-//   );
-// }
 }

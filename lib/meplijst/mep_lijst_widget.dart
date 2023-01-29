@@ -3,7 +3,6 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
 import 'package:new_base/api/api_meplijsten.dart';
 
-// stores ExpansionPanel state information
 class MepListClass {
   MepListClass({
     required this.id,
@@ -24,7 +23,7 @@ class MepLijstWidget extends StatefulWidget {
 }
 
 class _MepLijstWidgetState extends State<MepLijstWidget> {
-  late Future<List<MepListClass>> fetchedMepLijsten =
+  late Future<List<MepLijstData>> fetchedMepLijsten =
       getMepLijstenFromServerAsListItems(context);
   final _formKey = GlobalKey<FormState>();
   bool _activeItemsList = true;
@@ -140,25 +139,41 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
     }
   }
 
-  List<Widget> _buildListOfSlidables(List<MepListClass> data) {
-    List<Widget> list = [];
-    for (var item in data) {
-      list.add(_buildSlidable(false, item, data.indexOf(item)));
+  void flipArchivedItem(bool isArchived, int id, BuildContext context) async {
+    int code = 0;
+    code = await switchArchivedMepLijst(isArchived, id, context);
+    debugPrint(code.toString());
+    if (code != 0) {
+      setState(() {
+        fetchedMepLijsten = getMepLijstenFromServerAsListItems(context);
+      });
     }
-    return list;
   }
 
-  List<Widget> _buildListOfEnabledSlidables(List<MepListClass> data) {
+  List<Widget> _buildListOfSlidables(List<MepLijstData> data) {
     List<Widget> list = [];
     for (var item in data) {
-      if (item.isActive) {
-        list.add(_buildSlidable(true, item, data.indexOf(item)));
+      if (!item.archived!) {
+        list.add(
+            _buildSlidable(false, item.archived!, item, data.indexOf(item)));
       }
     }
     return list;
   }
 
-  Widget _buildSlidable(bool isEnabled, MepListClass data, int i) {
+  List<Widget> _buildListOfEnabledSlidables(List<MepLijstData> data) {
+    List<Widget> list = [];
+    for (var item in data) {
+      if (item.enabled! && !item.archived!) {
+        list.add(
+            _buildSlidable(true, item.archived!, item, data.indexOf(item)));
+      }
+    }
+    return list;
+  }
+
+  Widget _buildSlidable(
+      bool isEnabled, bool isArchived, MepLijstData data, int i) {
     return Slidable(
       key: ValueKey(i),
       startActionPane: ActionPane(
@@ -166,7 +181,7 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
         children: [
           SlidableAction(
             onPressed: (_) {
-              removeItem(data.id, context);
+              removeItem(data.id!, context);
             },
             backgroundColor: Color(0xFFFE4A49),
             foregroundColor: Colors.white,
@@ -175,7 +190,7 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
           ),
           SlidableAction(
             onPressed: (_) {
-              flipEnabledItem(isEnabled, data.id, context);
+              flipEnabledItem(isEnabled, data.id!, context);
             },
             backgroundColor: Colors.orange,
             foregroundColor: Colors.white,
@@ -184,11 +199,13 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
           ),
         ],
       ),
-      endActionPane: const ActionPane(
+      endActionPane: ActionPane(
         motion: ScrollMotion(),
         children: [
           SlidableAction(
-            onPressed: null,
+            onPressed: (_) {
+              flipArchivedItem(isArchived, data.id!, context);
+            },
             backgroundColor: Color(0xFF7BC043),
             foregroundColor: Colors.white,
             icon: Icons.archive,
@@ -197,12 +214,12 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
         ],
       ),
       child: ListTile(
-        title: Text('${data.headerValue}'),
+        title: Text('${data.name}'),
         onTap: () => {
           // TODO send data to overlay or fetch data from server in overlay
           context.goNamed(
             "meplijstoverlay",
-            extra: data.headerValue,
+            extra: data.name,
           ),
           // Navigator.of(context).push(MepLijstOverlay(title: data.headerValue))
         },
