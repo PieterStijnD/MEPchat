@@ -130,7 +130,8 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
 
   void flipEnabledItem(int id, BuildContext context) async {
     int code = 0;
-    code = await deleteMepLijst(id, context);
+    code = await switchEnabledMepLijst(id, context);
+
     debugPrint(code.toString());
     if (code != 0) {
       setState(() {
@@ -173,7 +174,9 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
             label: 'Delete',
           ),
           SlidableAction(
-            onPressed: null,
+            onPressed: (_) {
+              flipEnabledItem(data.id, context);
+            },
             backgroundColor: Colors.orange,
             foregroundColor: Colors.white,
             icon: Icons.power_settings_new,

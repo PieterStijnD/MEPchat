@@ -116,6 +116,33 @@ Future<int> deleteMepLijst(int id, context) async {
   return response.statusCode;
 }
 
+Future<int> switchEnabledMepLijst(int id, context) async {
+  String startOfUrl = Provider.of<ApiData>(context, listen: false).getApiUrl();
+
+  var url = Uri.parse('http://10.0.2.2:8081/mep-lijst/$id');
+
+  String key = Provider.of<ApiData>(context, listen: false).apiKey!;
+
+  List data = [
+    {"op": "replace", "path": "/enabled", "value": true}
+  ];
+
+  var body = json.encode(data);
+
+  var response = await http.patch(
+    url,
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": 'Bearer $key',
+    },
+    body: body,
+  );
+
+  print('${response.statusCode}');
+  print('${response.body}');
+  return response.statusCode;
+}
+
 class MepLijstData {
   MepLijstData({
     this.id,

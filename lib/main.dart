@@ -13,6 +13,7 @@ import 'api/api_general.dart';
 import 'file_page/file_page.dart';
 import 'homescreen/homescreen_widget.dart';
 import 'menukaarten_widget.dart';
+import 'meplijst/mep_lijst_recepten.dart';
 import 'meplijst/mep_lijst_widget.dart';
 import 'photo_page/camera_page.dart';
 
@@ -23,6 +24,7 @@ void main() {
 /// The route configuration.
 final GoRouter _router = GoRouter(
   debugLogDiagnostics: true,
+  initialLocation: '/login',
   routes: <RouteBase>[
     GoRoute(
       name: 'login',
@@ -41,10 +43,10 @@ final GoRouter _router = GoRouter(
           name: 'meplijstoverlay',
           path: 'meplijstoverlay',
           builder: (BuildContext context, GoRouterState state) {
-            List<String> data = [];
-            data.add(state.extra as String);
-            return PhotoParserWidget(
-              sentences: data,
+            String data = "";
+            data = state.extra as String;
+            return MepLijstRecepten(
+              title: data,
             );
           },
         ),
