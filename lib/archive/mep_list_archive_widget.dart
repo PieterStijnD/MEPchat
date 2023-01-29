@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:go_router/go_router.dart';
 import 'package:new_base/api/api_meplijsten.dart';
 
-import '../meplijst/mep_lijst_overlay.dart';
 import '../meplijst/mep_lijst_widget.dart';
 
 // // stores ExpansionPanel state information
@@ -176,10 +176,7 @@ class _MepListArchiveWidgetState extends State<MepListArchiveWidget> {
       ),
       child: ListTile(
         title: Text('${data.headerValue}'),
-        onTap: () => {
-          // TODO send data to overlay or fetch data from server in overlay
-          Navigator.of(context).push(MepLijstOverlay(title: data.headerValue))
-        },
+        onTap: () => {},
       ),
     );
   }
@@ -283,7 +280,7 @@ class _MepListArchiveWidgetState extends State<MepListArchiveWidget> {
                                 MaterialStateProperty.all(Colors.white),
                           ),
                           onPressed: () {
-                            Navigator.pop(context);
+                            context.pop();
                           },
                           child: Icon(
                             Icons.cancel_outlined,
@@ -300,7 +297,7 @@ class _MepListArchiveWidgetState extends State<MepListArchiveWidget> {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               addItem(MEPController.text, context);
-                              Navigator.pop(context);
+                              context.pop();
                             }
                           },
                           child: Icon(Icons.check_circle_outline,

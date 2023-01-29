@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:new_base/api/api_recipes.dart';
 
 class PhotoParserWidget extends StatefulWidget {
   final List<String> sentences;
 
-  const PhotoParserWidget({required this.sentences});
+  const PhotoParserWidget({super.key, required this.sentences});
 
   @override
   PhotoParserWidgetState createState() => PhotoParserWidgetState();
@@ -145,7 +146,7 @@ class PhotoParserWidgetState extends State<PhotoParserWidget> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    context.pop();
                   },
                   child: const Text("Cancel"),
                 ),
@@ -154,7 +155,7 @@ class PhotoParserWidgetState extends State<PhotoParserWidget> {
                     int code = 0;
                     code = await postRecipe("title", context);
                     debugPrint(code.toString());
-                    Navigator.pop(context);
+                    context.pop();
                   },
                   child: const Text("Save"),
                 ),

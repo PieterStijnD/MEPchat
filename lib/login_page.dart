@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import 'api/api_general.dart';
 import 'api/api_user_calls.dart';
-import 'main.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -28,13 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
             keyName: "Phone", displayName: "phone", icon: Icon(Icons.phone))
       ],
       onSubmitAnimationCompleted: () {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => MyHomePage(
-              title: 'MEP-chat',
-            ),
-          ),
-        );
+        context.go('/');
       },
       onRecoverPassword: _recoverPassword,
     );

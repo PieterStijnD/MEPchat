@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:new_base/api/api_user_calls.dart';
 import 'package:new_base/login_page.dart';
 import 'package:new_base/meplijst/mep_page_wrapper_widget.dart';
+import 'package:new_base/photo_page/photo_parser_widget.dart';
 import 'package:new_base/recepturen_widget.dart';
 import 'package:new_base/teams_page/teams_page_widget.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +20,91 @@ void main() {
   runApp(const MyApp());
 }
 
+/// The route configuration.
+final GoRouter _router = GoRouter(
+  debugLogDiagnostics: true,
+  routes: <RouteBase>[
+    GoRoute(
+      name: 'login',
+      path: '/login',
+      builder: (context, state) =>
+      // pass the original location to the LoginPage (if there is one)
+      LoginScreen(),
+    ),
+    GoRoute(
+      name: 'meplijstoverlay',
+      path: '/meplijstoverlay',
+      builder: (BuildContext context, GoRouterState state) {
+        List<String> data = [];
+        data.add(state.extra as String);
+        return PhotoParserWidget(
+          sentences: data,
+        );
+      },
+    ),
+    GoRoute(
+      path: '/',
+      builder: (BuildContext context, GoRouterState state) {
+        return const MyHomePage(title: 'MEP-chat Home Page');
+      },
+      routes: [
+        GoRoute(
+          name: 'photoparser',
+          path: 'photoparser',
+          builder: (BuildContext context, GoRouterState state) {
+            List<String> data = state.extra as List<String>;
+            return PhotoParserWidget(
+              sentences: data,
+            );
+          },
+        ),
+
+        GoRoute(
+          name: 'meplijst',
+          path: 'meplijst',
+          builder: (BuildContext context, GoRouterState state) {
+            return MepLijstWidget();
+          },
+        ),
+        GoRoute(
+          path: 'archief',
+          builder: (BuildContext context, GoRouterState state) {
+            return ArchiefWidget();
+          },
+        ),
+        GoRoute(
+          path: 'menukaarten',
+          builder: (BuildContext context, GoRouterState state) {
+            return MenuKaartenWidget();
+          },
+        ),
+        GoRoute(
+          path: 'recepturen',
+          builder: (BuildContext context, GoRouterState state) {
+            return RecipesWidget();
+          },
+        ),
+        GoRoute(
+          path: 'camera',
+          builder: (BuildContext context, GoRouterState state) {
+            return CameraWidget();
+          },
+        ),
+        // GoRoute(
+        //   name: 'photoparser',
+        //   path: 'photoparser',
+        //   builder: (BuildContext context, GoRouterState state) {
+        //     List<String> data = state.extra as List<String>;
+        //     return PhotoParserWidget(
+        //       sentences: data,
+        //     );
+        //   },
+        // ),
+      ],
+    ),
+  ],
+);
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -27,20 +114,21 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider<ApiData>(
         create: (_) => ApiData(),
         builder: (context, child) {
-          return MaterialApp(
+          return MaterialApp.router(
             title: 'MEP-chat',
-            initialRoute: '/login',
-            routes: {
-              '/login': (context) => LoginScreen(),
-              '/meplijst': (context) => const MepLijstWidget(),
-              '/archief': (context) => const ArchiefWidget(),
-              '/menukaarten': (context) => const MenuKaartenWidget(),
-              '/recepturen': (context) => const RecipesWidget(),
-            },
+            routerConfig: _router,
+            // initialRoute: '/login',
+            // routes: {
+            //   '/login': (context) => LoginScreen(),
+            //   '/meplijst': (context) => const MepLijstWidget(),
+            //   '/archief': (context) => const ArchiefWidget(),
+            //   '/menukaarten': (context) => const MenuKaartenWidget(),
+            //   '/recepturen': (context) => const RecipesWidget(),
+            // },
             theme: ThemeData(
               primarySwatch: Colors.blue,
             ),
-            home: const MyHomePage(title: 'MEP-chat Home Page'),
+            // home: const MyHomePage(title: 'MEP-chat Home Page'),
           );
         });
   }
@@ -58,7 +146,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     HomescreenWidget(),
     MepPageWrapperWidget(),
@@ -141,10 +229,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void logOutAndNavigateToStart() {
     logOutUser(context);
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (context) => LoginScreen(),
-      ),
-    );
+    context.go('/login');
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:go_router/go_router.dart';
 
 import '../api/api_recipes.dart';
 
@@ -234,7 +235,7 @@ class _RecipeArchiveWidgetState extends State<RecipeArchiveWidget> {
                                 MaterialStateProperty.all(Colors.white),
                           ),
                           onPressed: () {
-                            Navigator.pop(context);
+                            context.pop();
                           },
                           child: Icon(
                             Icons.cancel_outlined,
@@ -251,7 +252,7 @@ class _RecipeArchiveWidgetState extends State<RecipeArchiveWidget> {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               addItem(recipeController.text, context);
-                              Navigator.pop(context);
+                              context.pop();
                             }
                           },
                           child: Icon(Icons.check_circle_outline,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:new_base/meplijst/mep_lijst_widget.dart';
 
 import '../api/api_meplijsten.dart';
@@ -144,7 +145,7 @@ class MepLijstOverlay extends ModalRoute<void> {
             children: [
               BackButton(
                 color: Colors.white,
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => context.pop(),
               ),
               IconButton(
                 onPressed: () {
@@ -292,7 +293,7 @@ class MepLijstOverlay extends ModalRoute<void> {
                                 MaterialStateProperty.all(Colors.white),
                           ),
                           onPressed: () {
-                            Navigator.pop(context);
+                            context.pop();
                           },
                           child: Icon(
                             Icons.cancel_outlined,
@@ -309,7 +310,7 @@ class MepLijstOverlay extends ModalRoute<void> {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               addItem(MEPController.text, context);
-                              Navigator.pop(context);
+                              context.pop();
                             }
                           },
                           child: Icon(Icons.check_circle_outline,

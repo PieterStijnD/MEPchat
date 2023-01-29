@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:go_router/go_router.dart';
 import 'package:new_base/api/api_meplijsten.dart';
-
-import 'mep_lijst_overlay.dart';
 
 // stores ExpansionPanel state information
 class MepListClass {
@@ -198,7 +197,11 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
         title: Text('${data.headerValue}'),
         onTap: () => {
           // TODO send data to overlay or fetch data from server in overlay
-          Navigator.of(context).push(MepLijstOverlay(title: data.headerValue))
+          context.goNamed(
+            "meplijstoverlay",
+            extra: data.headerValue,
+          ),
+          // Navigator.of(context).push(MepLijstOverlay(title: data.headerValue))
         },
       ),
     );
@@ -303,7 +306,7 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
                                 MaterialStateProperty.all(Colors.white),
                           ),
                           onPressed: () {
-                            Navigator.pop(context);
+                            context.pop();
                           },
                           child: Icon(
                             Icons.cancel_outlined,
@@ -320,7 +323,7 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               addItem(MEPController.text, context);
-                              Navigator.pop(context);
+                              context.pop();
                             }
                           },
                           child: Icon(Icons.check_circle_outline,

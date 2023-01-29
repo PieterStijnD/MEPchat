@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:go_router/go_router.dart';
 
 import 'api/api_menus.dart';
 
@@ -33,10 +34,7 @@ class _MenuKaartenWidgetState extends State<MenuKaartenWidget> {
           ],
         ),
         SizedBox(
-          height: MediaQuery
-              .of(context)
-              .size
-              .height * 0.7,
+          height: MediaQuery.of(context).size.height * 0.7,
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Column(
@@ -186,8 +184,7 @@ class _MenuKaartenWidgetState extends State<MenuKaartenWidget> {
       ),
       child: ListTile(
         title: Text('${data.name}'),
-        onTap: () =>
-        {
+        onTap: () => {
           // TODO , on tap, do what?
         },
       ),
@@ -290,10 +287,10 @@ class _MenuKaartenWidgetState extends State<MenuKaartenWidget> {
                         child: ElevatedButton(
                           style: ButtonStyle(
                             backgroundColor:
-                            MaterialStateProperty.all(Colors.white),
+                                MaterialStateProperty.all(Colors.white),
                           ),
                           onPressed: () {
-                            Navigator.pop(context);
+                            context.pop();
                           },
                           child: Icon(
                             Icons.cancel_outlined,
@@ -306,11 +303,11 @@ class _MenuKaartenWidgetState extends State<MenuKaartenWidget> {
                         child: ElevatedButton(
                           style: ButtonStyle(
                               backgroundColor:
-                              MaterialStateProperty.all(Colors.white)),
+                                  MaterialStateProperty.all(Colors.white)),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               addItem(MEPController.text, context);
-                              Navigator.pop(context);
+                              context.pop();
                             }
                           },
                           child: Icon(Icons.check_circle_outline,

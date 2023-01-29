@@ -1,5 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../api/api_recipes.dart';
 
@@ -119,7 +120,7 @@ class _FileParserWidgetState extends State<FileParserWidget> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    context.pop();
                   },
                   child: const Text("Cancel"),
                 ),
@@ -128,7 +129,7 @@ class _FileParserWidgetState extends State<FileParserWidget> {
                     int code = 0;
                     code = await postRecipe("title", context);
                     debugPrint(code.toString());
-                    Navigator.pop(context);
+                    context.pop();
                   },
                   child: const Text("Save"),
                 ),

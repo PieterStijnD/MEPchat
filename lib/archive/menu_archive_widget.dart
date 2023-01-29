@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:go_router/go_router.dart';
 
 import '../api/api_menus.dart';
 
@@ -267,7 +268,7 @@ class _MenuArchiveWidgetState extends State<MenuArchiveWidget> {
                                 MaterialStateProperty.all(Colors.white),
                           ),
                           onPressed: () {
-                            Navigator.pop(context);
+                            context.pop();
                           },
                           child: Icon(
                             Icons.cancel_outlined,
@@ -284,7 +285,7 @@ class _MenuArchiveWidgetState extends State<MenuArchiveWidget> {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               addItem(MEPController.text, context);
-                              Navigator.pop(context);
+                              context.pop();
                             }
                           },
                           child: Icon(Icons.check_circle_outline,

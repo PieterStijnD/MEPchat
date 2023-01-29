@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:new_base/photo_page/photo_parser_widget.dart';
 
 class CameraWidget extends StatefulWidget {
   const CameraWidget({Key? key}) : super(key: key);
@@ -131,14 +131,10 @@ class _CameraWidgetState extends State<CameraWidget> {
                       ),
                     if (scannedText.isNotEmpty)
                       ElevatedButton(
-                          onPressed: () async {
-                            await Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                                return PhotoParserWidget(
-                                    sentences: scannedText);
-                              },
-                            ));
-                          },
+                          onPressed: () => context.goNamed(
+                                "photoparser",
+                                extra: scannedText,
+                              ),
                           child: Text("Parse"))
                   ],
                 ),
