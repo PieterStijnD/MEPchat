@@ -132,7 +132,17 @@ class _FileParserWidgetState extends State<FileParserWidget> {
                         makeBodyForPost(sentences, _selectedDropDownButton);
                     code = await postRecipe(body, context);
                     debugPrint(code.toString());
-                    context.pop();
+                    if (code == 200) {
+                      context.pop();
+                      _showMyDialog();
+                    }
+                    if (code != 200) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Error. Something went wrong.'),
+                        ),
+                      );
+                    }
                   },
                   child: const Text("Save"),
                 ),
@@ -141,6 +151,35 @@ class _FileParserWidgetState extends State<FileParserWidget> {
           ],
         ),
       ),
+    );
+  }
+
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('File parsing complete'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                SizedBox(height: 24.0),
+                Icon(Icons.check_circle_outline, color: Colors.green),
+                Center(child: Text('Recipe saved.')),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

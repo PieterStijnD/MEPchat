@@ -137,8 +137,17 @@ class PhotoParserWidgetState extends State<PhotoParserWidget> {
                         makeBodyForPost(sentences, _selectedDropDownButton);
                     code = await postRecipe(body, context);
                     debugPrint(code.toString());
-                    context.pop();
-                    _showMyDialog();
+                    if (code == 200) {
+                      context.pop();
+                      _showMyDialog();
+                    }
+                    if (code != 200) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Error. Something went wrong.'),
+                        ),
+                      );
+                    }
                   },
                   child: const Text("Save"),
                 ),
@@ -156,7 +165,7 @@ class PhotoParserWidgetState extends State<PhotoParserWidget> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('AlertDialog Title'),
+          title: const Text('Image parsing complete'),
           content: SingleChildScrollView(
             child: ListBody(
               children: const <Widget>[
