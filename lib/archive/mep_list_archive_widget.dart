@@ -93,7 +93,6 @@ class _MepListArchiveWidgetState extends State<MepListArchiveWidget> {
   }
 
   Widget _buildSlidable(bool isArchived, MepLijstData data, int i) {
-    // TODO filter archive and remove
     return Slidable(
       key: ValueKey(i),
       startActionPane: ActionPane(

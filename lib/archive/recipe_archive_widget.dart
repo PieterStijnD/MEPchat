@@ -55,40 +55,6 @@ class _RecipeArchiveWidgetState extends State<RecipeArchiveWidget> {
                       return Text("Empty");
                     },
                   ),
-                  // Center(
-                  //   child: IconButton(
-                  //     color: Colors.black,
-                  //     onPressed: () {
-                  //       showFormDialog(context);
-                  //     },
-                  //     icon: Icon(Icons.add),
-                  //   ),
-                  // )
-                  // ],
-                  // if (_activeItemsList) ...[
-                  //   FutureBuilder(
-                  //     future: fetchedRecipeList,
-                  //     builder: (BuildContext context, snapshot) {
-                  //       if (snapshot.connectionState != ConnectionState.done) {
-                  //         return Center(child: CircularProgressIndicator());
-                  //       }
-                  //       if (snapshot.hasData || snapshot.data != null) {
-                  //         return Column(children: [
-                  //           // TODO change back to enabled Slidables?
-                  //           ..._buildListOfSlidables(snapshot.data!)
-                  //         ]);
-                  //       }
-                  //       return Text("Empty");
-                  //     },
-                  //   ),
-                  //   IconButton(
-                  //     color: Colors.black,
-                  //     onPressed: () {
-                  //       showFormDialog(context);
-                  //     },
-                  //     icon: Icon(Icons.add),
-                  //   )
-                  // ],
                 ],
               ),
             ),
@@ -97,17 +63,6 @@ class _RecipeArchiveWidgetState extends State<RecipeArchiveWidget> {
       ],
     );
   }
-
-  // void addItem(String title, context) async {
-  //   int code = 0;
-  //   // code = await postRecipe(title, context);
-  //   debugPrint(code.toString());
-  //   if (code != 0) {
-  //     setState(() {
-  //       fetchedRecipeList = getRecipesFromServer(context);
-  //     });
-  //   }
-  // }
 
   void removeItem(int id, BuildContext context) async {
     int code = 0;
@@ -139,7 +94,6 @@ class _RecipeArchiveWidgetState extends State<RecipeArchiveWidget> {
     return list;
   }
 
-  // TODO enabled on a menu?
   List<Widget> _buildListOfEnabledSlidables(List<RecipeClass> data) {
     List<Widget> list = [];
     for (var item in data) {

@@ -28,7 +28,7 @@ Future<List> loginUser(context, name, password) async {
 
   //TODO change to "real" address
   String url =
-  Platform.isAndroid ? 'http://10.0.2.2:8081' : 'http://localhost:8081';
+      Platform.isAndroid ? 'http://10.0.2.2:8081' : 'http://localhost:8081';
   var urlParsed = Uri.parse('$url/login');
 
   Map data = {
@@ -57,7 +57,7 @@ Future<int> registerUser(context, name, password, email, phone) async {
 
   //TODO change to "real" address
   String url =
-  Platform.isAndroid ? 'http://10.0.2.2:8081' : 'http://localhost:8081';
+      Platform.isAndroid ? 'http://10.0.2.2:8081' : 'http://localhost:8081';
   var urlParsed = Uri.parse('$url/register');
 
   Map data = {
@@ -77,13 +77,9 @@ Future<int> registerUser(context, name, password, email, phone) async {
   );
   debugPrint("received response: ${response.statusCode}");
 
-  // Map<String, dynamic> temp = json.decode(response.body);
-
-  //TODO receive key and update
   String apiKey = response.body.toString();
   print(apiKey);
-  Provider.of<ApiData>(context, listen: false)
-      .updateApiKey(apiKey);
+  Provider.of<ApiData>(context, listen: false).updateApiKey(apiKey);
 
   return response.statusCode;
 }
@@ -93,7 +89,7 @@ Future<int> resetUser(name) async {
 
   //TODO change to "real" address
   String url =
-  Platform.isAndroid ? 'http://10.0.2.2:8081' : 'http://localhost:8081';
+      Platform.isAndroid ? 'http://10.0.2.2:8081' : 'http://localhost:8081';
   var urlParsed = Uri.parse('$url/register');
 
   Map data = {

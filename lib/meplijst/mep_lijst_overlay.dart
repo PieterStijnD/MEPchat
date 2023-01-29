@@ -97,7 +97,6 @@ class MepLijstOverlay extends ModalRoute<void> {
                   side: BorderSide(color: Colors.white),
                 ),
                 onPressed: () =>
-                    // TODO changed external state isnt optimal, consider building a controller or reworking this widget into a stateful widget
                     {setState(() => _vandaag = true), changedExternalState()},
                 child: Text("Vandaag"),
               ),
@@ -106,7 +105,6 @@ class MepLijstOverlay extends ModalRoute<void> {
                   side: BorderSide(color: Colors.white),
                 ),
                 onPressed: () =>
-                    // TODO changed external state isnt optimal, consider building a controller or reworking this widget into a stateful widget
                     {setState(() => _vandaag = false), changedExternalState()},
                 child: Text("Morgen"),
               ),

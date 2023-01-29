@@ -138,6 +138,7 @@ class PhotoParserWidgetState extends State<PhotoParserWidget> {
                     code = await postRecipe(body, context);
                     debugPrint(code.toString());
                     context.pop();
+                    _showMyDialog();
                   },
                   child: const Text("Save"),
                 ),
@@ -149,63 +150,32 @@ class PhotoParserWidgetState extends State<PhotoParserWidget> {
     );
   }
 
-// Map makeBodyForPost() {
-//   Map<String, String> combined = {
-//     for (var i = 0; i < sentences.length; i++)
-//       sentences[i]: _selectedDropDownButton[i]
-//   };
-//
-//   Map body = {
-//     "name": "",
-//     "volume": 0,
-//     "unit": {"name": "g"},
-//     "description": "",
-//     "instructions": "",
-//     "ingredients": [],
-//     "preparationTime": 600,
-//     "timeUnit": {"name": "uur"},
-//     "archived": false
-//   };
-//   for (var item in combined.entries) {
-//     if (item.value == "name") {
-//       body["name"] = body["name"] + " " + item.key;
-//     }
-//   }
-//   for (var item in combined.entries) {
-//     if (item.value == "volume") {
-//       body["volume"] = body["volume"] + " " + item.key;
-//     }
-//   }
-//   for (var item in combined.entries) {
-//     if (item.value == "unit") {
-//       body["unit"] = body["unit"] + " " + item.key;
-//     }
-//   }
-//   for (var item in combined.entries) {
-//     if (item.value == "description") {
-//       body["description"] = body["description"] + " " + item.key;
-//     }
-//   }
-//   for (var item in combined.entries) {
-//     if (item.value == "instructions") {
-//       body["instructions"] = body["instructions"] + " " + item.key;
-//     }
-//   }
-//   for (var item in combined.entries) {
-//     if (item.value == "ingredients") {
-//       body["ingredients"] = body["ingredients"] + " " + item.key;
-//     }
-//   }
-//   for (var item in combined.entries) {
-//     if (item.value == "preparationTime") {
-//       body["preparationTime"] = body["preparationTime"] + " " + item.key;
-//     }
-//   }
-//   for (var item in combined.entries) {
-//     if (item.value == "timeUnit") {
-//       body["timeUnit"] = body["timeUnit"] + " " + item.key;
-//     }
-//   }
-//   return body;
-// }
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('AlertDialog Title'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                SizedBox(height: 24.0),
+                Icon(Icons.check_circle_outline, color: Colors.green),
+                Center(child: Text('Recipe saved.')),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

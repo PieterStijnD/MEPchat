@@ -72,7 +72,6 @@ class _RecipesWidgetState extends State<RecipesWidget> {
                       }
                       if (snapshot.hasData || snapshot.data != null) {
                         return Column(children: [
-                          // TODO change back to enabled Slidables?
                           ..._buildListOfSlidables(snapshot.data!)
                         ]);
                       }
