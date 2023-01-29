@@ -60,14 +60,14 @@ class _LoginScreenState extends State<LoginScreen> {
     var additionalDataPhone = data.additionalSignupData!["Phone"];
     var addtionalDataUsername = data.additionalSignupData!["Username"];
 
-    var statusCode = await registerUser(
-        data.name, data.password, additionalDataPhone, addtionalDataUsername);
+    var statusCode = await registerUser(context, data.name, data.password,
+        additionalDataPhone, addtionalDataUsername);
 
     return Future.delayed(loginTime).then((_) {
       if (statusCode == 400) {
         return 'Server error: Access Forbidden';
       }
-      if (statusCode != 201) {
+      if (statusCode != 200) {
         return 'Server error: $statusCode';
       }
       return null;

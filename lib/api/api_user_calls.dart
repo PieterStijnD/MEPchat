@@ -52,7 +52,7 @@ Future<List> loginUser(context, name, password) async {
   return list;
 }
 
-Future<int> registerUser(name, password, email, phone) async {
+Future<int> registerUser(context, name, password, email, phone) async {
   // final startOfUrl = Provider.of<ApiData>(context, listen: false).getApiUrl();
 
   //TODO change to "real" address
@@ -80,8 +80,10 @@ Future<int> registerUser(name, password, email, phone) async {
   // Map<String, dynamic> temp = json.decode(response.body);
 
   //TODO receive key and update
-  // String? apiKey = temp['api_key'];
-  // Provider.of<ApiData>(context, listen: false).updateKey(apiKey);
+  String apiKey = response.body.toString();
+  print(apiKey);
+  Provider.of<ApiData>(context, listen: false)
+      .updateApiKey(apiKey);
 
   return response.statusCode;
 }
