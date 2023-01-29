@@ -116,7 +116,7 @@ Future<int> deleteMepLijst(int id, context) async {
   return response.statusCode;
 }
 
-Future<int> switchEnabledMepLijst(int id, context) async {
+Future<int> switchEnabledMepLijst(bool isEnabled, int id, context) async {
   String startOfUrl = Provider.of<ApiData>(context, listen: false).getApiUrl();
 
   var url = Uri.parse('http://10.0.2.2:8081/mep-lijst/$id');
@@ -124,7 +124,7 @@ Future<int> switchEnabledMepLijst(int id, context) async {
   String key = Provider.of<ApiData>(context, listen: false).apiKey!;
 
   List data = [
-    {"op": "replace", "path": "/enabled", "value": false}
+    {"op": "replace", "path": "/enabled", "value": !isEnabled}
   ];
 
   var body = json.encode(data);

@@ -128,9 +128,9 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
     }
   }
 
-  void flipEnabledItem(int id, BuildContext context) async {
+  void flipEnabledItem(bool isEnabled, int id, BuildContext context) async {
     int code = 0;
-    code = await switchEnabledMepLijst(id, context);
+    code = await switchEnabledMepLijst(isEnabled, id, context);
 
     debugPrint(code.toString());
     if (code != 0) {
@@ -143,7 +143,7 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
   List<Widget> _buildListOfSlidables(List<MepListClass> data) {
     List<Widget> list = [];
     for (var item in data) {
-      list.add(_buildSlidable(item, data.indexOf(item)));
+      list.add(_buildSlidable(false, item, data.indexOf(item)));
     }
     return list;
   }
@@ -152,13 +152,13 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
     List<Widget> list = [];
     for (var item in data) {
       if (item.isActive) {
-        list.add(_buildSlidable(item, data.indexOf(item)));
+        list.add(_buildSlidable(true, item, data.indexOf(item)));
       }
     }
     return list;
   }
 
-  Widget _buildSlidable(MepListClass data, int i) {
+  Widget _buildSlidable(bool isEnabled, MepListClass data, int i) {
     return Slidable(
       key: ValueKey(i),
       startActionPane: ActionPane(
@@ -175,7 +175,7 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
           ),
           SlidableAction(
             onPressed: (_) {
-              flipEnabledItem(data.id, context);
+              flipEnabledItem(isEnabled, data.id, context);
             },
             backgroundColor: Colors.orange,
             foregroundColor: Colors.white,
