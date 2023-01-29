@@ -1,5 +1,6 @@
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../api/api_general.dart';
@@ -14,7 +15,10 @@ class HomescreenWidget extends StatefulWidget {
 class _HomescreenWidgetState extends State<HomescreenWidget> {
   @override
   Widget build(BuildContext context) {
-    var apiKeyLoaded = context.watch<ApiData>().apiKey;
+    if (Provider.of<ApiData>(context, listen: false).getApiKey == "") {
+      context.go('/login');
+    }
+
     return Scaffold(
       body: Column(
         children: [
