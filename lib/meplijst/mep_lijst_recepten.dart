@@ -7,7 +7,6 @@ import '../api/api_meplijsten.dart';
 import 'mep_lijst_widget.dart';
 
 class MepLijstRecepten extends StatefulWidget {
-
   final String title;
 
   const MepLijstRecepten({Key? key, required this.title}) : super(key: key);
@@ -21,7 +20,7 @@ class _MepLijstReceptenState extends State<MepLijstRecepten> {
   Widget build(BuildContext context) {
     return Material(
       type: MaterialType.transparency,
-      child: SafeArea(child: _buildOverlayContent("TEST", context)),
+      child: SafeArea(child: _buildOverlayContent(widget.title, context)),
     );
   }
 
@@ -81,8 +80,8 @@ class _MepLijstReceptenState extends State<MepLijstRecepten> {
                   side: BorderSide(color: Colors.white),
                 ),
                 onPressed: () =>
-                // TODO changed external state isnt optimal, consider building a controller or reworking this widget into a stateful widget
-                {setState(() => _vandaag = true)},
+                    // TODO changed external state isnt optimal, consider building a controller or reworking this widget into a stateful widget
+                    {setState(() => _vandaag = true)},
                 child: Text("Vandaag"),
               ),
               OutlinedButton(
@@ -90,17 +89,14 @@ class _MepLijstReceptenState extends State<MepLijstRecepten> {
                   side: BorderSide(color: Colors.white),
                 ),
                 onPressed: () =>
-                // TODO changed external state isnt optimal, consider building a controller or reworking this widget into a stateful widget
-                {setState(() => _vandaag = false)},
+                    // TODO changed external state isnt optimal, consider building a controller or reworking this widget into a stateful widget
+                    {setState(() => _vandaag = false)},
                 child: Text("Morgen"),
               ),
             ],
           ),
           SizedBox(
-            height: MediaQuery
-                .of(context)
-                .size
-                .height * 0.6,
+            height: MediaQuery.of(context).size.height * 0.6,
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -277,7 +273,7 @@ class _MepLijstReceptenState extends State<MepLijstRecepten> {
                         child: ElevatedButton(
                           style: ButtonStyle(
                             backgroundColor:
-                            MaterialStateProperty.all(Colors.white),
+                                MaterialStateProperty.all(Colors.white),
                           ),
                           onPressed: () {
                             context.pop();
@@ -293,7 +289,7 @@ class _MepLijstReceptenState extends State<MepLijstRecepten> {
                         child: ElevatedButton(
                           style: ButtonStyle(
                               backgroundColor:
-                              MaterialStateProperty.all(Colors.white)),
+                                  MaterialStateProperty.all(Colors.white)),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               addItem(MEPController.text, context);
