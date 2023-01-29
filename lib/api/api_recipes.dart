@@ -5,6 +5,24 @@ import 'package:provider/provider.dart';
 
 import 'api_general.dart';
 
+enum units {
+  liter,
+  deciliter,
+  centiliter,
+  milliliter,
+  kilo,
+  gram,
+  milligram,
+  snufje,
+}
+
+enum timeUnits {
+  seconden,
+  minuten,
+  uren,
+  dagen,
+}
+
 Future<List<RecipeClass>> getRecipesFromServer(context) async {
   String startOfUrl = Provider.of<ApiData>(context, listen: false).getApiUrl();
 
@@ -29,7 +47,7 @@ Future<List<RecipeClass>> getRecipesFromServer(context) async {
   return list;
 }
 
-Future<int> postRecipe(String title, context) async {
+Future<int> postRecipe(Map body, context) async {
   String startOfUrl = Provider.of<ApiData>(context, listen: false).getApiUrl();
 
   var url = Uri.parse('http://10.0.2.2:8081/recipe');
@@ -37,15 +55,18 @@ Future<int> postRecipe(String title, context) async {
   String key = Provider.of<ApiData>(context, listen: false).apiKey!;
 
   Map data = {
-    "name": "recept",
+    "name": "Idk recept",
     "volume": 500,
-    "unit": {"name": "ml"},
-    "instructions": "Fork it over",
+    "unit": {"name": "gram"},
+    "description": "this is describing",
+    "instructions": "Lorem ipsum dolor",
+    "ingredients": [],
     "preparationTime": 600,
-    "timeUnit": {"name": "uur"}
+    "timeUnit": {"name": "uur"},
+    "archived": false
   };
 
-  var body = json.encode(data);
+  var bodyEncoded = json.encode(body);
 
   var response = await http.post(
     url,
@@ -53,7 +74,7 @@ Future<int> postRecipe(String title, context) async {
       "Content-Type": "application/json",
       "Authorization": 'Bearer $key',
     },
-    body: body,
+    body: bodyEncoded,
   );
 
   print('Response status: ${response.statusCode}');

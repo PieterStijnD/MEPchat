@@ -198,7 +198,7 @@ class _MenuKaartenWidgetState extends State<MenuKaartenWidget> {
       builder: (BuildContext context) {
         return SimpleDialog(
           title: Center(
-            child: Text("Toevoegen MEP"),
+            child: Text("Toevoegen Menukaart"),
           ),
           children: [
             Form(

@@ -9,7 +9,7 @@ Future<List<String>> readFileLineByLine(PlatformFile fileParam) async {
 
   //Load an existing PDF document.
   final PdfDocument document =
-  PdfDocument(inputBytes: File(fileParam.path!).readAsBytesSync());
+      PdfDocument(inputBytes: File(fileParam.path!).readAsBytesSync());
 
   //Extract the text from all the pages.
   String text = PdfTextExtractor(document).extractText();

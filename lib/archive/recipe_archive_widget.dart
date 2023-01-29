@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:go_router/go_router.dart';
 
 import '../api/api_recipes.dart';
 
@@ -56,15 +55,15 @@ class _RecipeArchiveWidgetState extends State<RecipeArchiveWidget> {
                       return Text("Empty");
                     },
                   ),
-                  Center(
-                    child: IconButton(
-                      color: Colors.black,
-                      onPressed: () {
-                        showFormDialog(context);
-                      },
-                      icon: Icon(Icons.add),
-                    ),
-                  )
+                  // Center(
+                  //   child: IconButton(
+                  //     color: Colors.black,
+                  //     onPressed: () {
+                  //       showFormDialog(context);
+                  //     },
+                  //     icon: Icon(Icons.add),
+                  //   ),
+                  // )
                   // ],
                   // if (_activeItemsList) ...[
                   //   FutureBuilder(
@@ -99,16 +98,16 @@ class _RecipeArchiveWidgetState extends State<RecipeArchiveWidget> {
     );
   }
 
-  void addItem(String title, context) async {
-    int code = 0;
-    code = await postRecipe(title, context);
-    debugPrint(code.toString());
-    if (code != 0) {
-      setState(() {
-        fetchedRecipeList = getRecipesFromServer(context);
-      });
-    }
-  }
+  // void addItem(String title, context) async {
+  //   int code = 0;
+  //   // code = await postRecipe(title, context);
+  //   debugPrint(code.toString());
+  //   if (code != 0) {
+  //     setState(() {
+  //       fetchedRecipeList = getRecipesFromServer(context);
+  //     });
+  //   }
+  // }
 
   void removeItem(int id, BuildContext context) async {
     int code = 0;
@@ -196,79 +195,79 @@ class _RecipeArchiveWidgetState extends State<RecipeArchiveWidget> {
     );
   }
 
-  void showFormDialog(BuildContext context) {
-    final recipeController = TextEditingController();
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return SimpleDialog(
-          title: Center(
-            child: Text("Add Recipe"),
-          ),
-          children: [
-            Form(
-              key: _formKey,
-              child: Column(
-                // crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  TextFieldWidget(
-                      recipeController: recipeController, label: "Naam"),
-                  TextFieldWidget(
-                      recipeController: recipeController, label: "Volume"),
-                  TextFieldWidget(
-                      recipeController: recipeController, label: "Measurement"),
-                  TextFieldWidget(
-                      recipeController: recipeController,
-                      label: "Instructions"),
-                  TextFieldWidget(
-                      recipeController: recipeController, label: "Duration"),
-                  TextFieldWidget(
-                      recipeController: recipeController, label: "Time unit"),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.white),
-                          ),
-                          onPressed: () {
-                            context.pop();
-                          },
-                          child: Icon(
-                            Icons.cancel_outlined,
-                            color: Colors.amberAccent,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.white)),
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              addItem(recipeController.text, context);
-                              context.pop();
-                            }
-                          },
-                          child: Icon(Icons.check_circle_outline,
-                              color: Colors.green),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            )
-          ],
-        );
-      },
-    );
-  }
+// void showFormDialog(BuildContext context) {
+//   final recipeController = TextEditingController();
+//   showDialog(
+//     context: context,
+//     builder: (BuildContext context) {
+//       return SimpleDialog(
+//         title: Center(
+//           child: Text("Add Recipe"),
+//         ),
+//         children: [
+//           Form(
+//             key: _formKey,
+//             child: Column(
+//               // crossAxisAlignment: CrossAxisAlignment.stretch,
+//               children: [
+//                 TextFieldWidget(
+//                     recipeController: recipeController, label: "Naam"),
+//                 TextFieldWidget(
+//                     recipeController: recipeController, label: "Volume"),
+//                 TextFieldWidget(
+//                     recipeController: recipeController, label: "Measurement"),
+//                 TextFieldWidget(
+//                     recipeController: recipeController,
+//                     label: "Instructions"),
+//                 TextFieldWidget(
+//                     recipeController: recipeController, label: "Duration"),
+//                 TextFieldWidget(
+//                     recipeController: recipeController, label: "Time unit"),
+//                 Row(
+//                   mainAxisAlignment: MainAxisAlignment.center,
+//                   children: [
+//                     Padding(
+//                       padding: const EdgeInsets.all(8.0),
+//                       child: ElevatedButton(
+//                         style: ButtonStyle(
+//                           backgroundColor:
+//                               MaterialStateProperty.all(Colors.white),
+//                         ),
+//                         onPressed: () {
+//                           context.pop();
+//                         },
+//                         child: Icon(
+//                           Icons.cancel_outlined,
+//                           color: Colors.amberAccent,
+//                         ),
+//                       ),
+//                     ),
+//                     Padding(
+//                       padding: const EdgeInsets.all(8.0),
+//                       child: ElevatedButton(
+//                         style: ButtonStyle(
+//                             backgroundColor:
+//                                 MaterialStateProperty.all(Colors.white)),
+//                         onPressed: () {
+//                           if (_formKey.currentState!.validate()) {
+//                             addItem(recipeController.text, context);
+//                             context.pop();
+//                           }
+//                         },
+//                         child: Icon(Icons.check_circle_outline,
+//                             color: Colors.green),
+//                       ),
+//                     ),
+//                   ],
+//                 )
+//               ],
+//             ),
+//           )
+//         ],
+//       );
+//     },
+//   );
+// }
 }
 
 class TextFieldWidget extends StatelessWidget {

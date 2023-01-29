@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:new_base/api/api_recipes.dart';
+
+import '../api/api_recipes.dart';
 
 class PhotoParserWidget extends StatefulWidget {
   final List<String> sentences;
@@ -153,7 +154,8 @@ class PhotoParserWidgetState extends State<PhotoParserWidget> {
                 ElevatedButton(
                   onPressed: () async {
                     int code = 0;
-                    code = await postRecipe("title", context);
+                    Map body = makeBodyForPost();
+                    code = await postRecipe(body, context);
                     debugPrint(code.toString());
                     context.pop();
                   },
@@ -165,5 +167,65 @@ class PhotoParserWidgetState extends State<PhotoParserWidget> {
         ),
       ),
     );
+  }
+
+  Map makeBodyForPost() {
+    Map<String, String> combined = {
+      for (var i = 0; i < sentences.length; i++)
+        sentences[i]: _selectedDropDownButton[i]
+    };
+
+    Map body = {
+      "name": "",
+      "volume": 0,
+      "unit": {"name": "g"},
+      "description": "this is describing",
+      "instructions": "Lorem ipsum dolor",
+      "ingredients": [],
+      "preparationTime": 600,
+      "timeUnit": {"name": "uur"},
+      "archived": false
+    };
+    for (var item in combined.entries) {
+      if (item.value == "name") {
+        body["name"] = body["name"] + " " + item.key;
+      }
+    }
+    for (var item in combined.entries) {
+      if (item.value == "volume") {
+        body["volume"] = body["volume"] + " " + item.key;
+      }
+    }
+    for (var item in combined.entries) {
+      if (item.value == "unit") {
+        body["unit"] = body["unit"] + " " + item.key;
+      }
+    }
+    for (var item in combined.entries) {
+      if (item.value == "description") {
+        body["description"] = body["description"] + " " + item.key;
+      }
+    }
+    for (var item in combined.entries) {
+      if (item.value == "instructions") {
+        body["instructions"] = body["instructions"] + " " + item.key;
+      }
+    }
+    for (var item in combined.entries) {
+      if (item.value == "ingredients") {
+        body["ingredients"] = body["ingredients"] + " " + item.key;
+      }
+    }
+    for (var item in combined.entries) {
+      if (item.value == "preparationTime") {
+        body["preparationTime"] = body["preparationTime"] + " " + item.key;
+      }
+    }
+    for (var item in combined.entries) {
+      if (item.value == "timeUnit") {
+        body["timeUnit"] = body["timeUnit"] + " " + item.key;
+      }
+    }
+    return body;
   }
 }

@@ -28,19 +28,8 @@ final GoRouter _router = GoRouter(
       name: 'login',
       path: '/login',
       builder: (context, state) =>
-      // pass the original location to the LoginPage (if there is one)
-      LoginScreen(),
-    ),
-    GoRoute(
-      name: 'meplijstoverlay',
-      path: '/meplijstoverlay',
-      builder: (BuildContext context, GoRouterState state) {
-        List<String> data = [];
-        data.add(state.extra as String);
-        return PhotoParserWidget(
-          sentences: data,
-        );
-      },
+          // pass the original location to the LoginPage (if there is one)
+          LoginScreen(),
     ),
     GoRoute(
       path: '/',
@@ -48,6 +37,17 @@ final GoRouter _router = GoRouter(
         return const MyHomePage(title: 'MEP-chat Home Page');
       },
       routes: [
+        GoRoute(
+          name: 'meplijstoverlay',
+          path: 'meplijstoverlay',
+          builder: (BuildContext context, GoRouterState state) {
+            List<String> data = [];
+            data.add(state.extra as String);
+            return PhotoParserWidget(
+              sentences: data,
+            );
+          },
+        ),
         GoRoute(
           name: 'photoparser',
           path: 'photoparser',
@@ -146,7 +146,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     HomescreenWidget(),
     MepPageWrapperWidget(),
