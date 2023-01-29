@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../api/api_recipes.dart';
+import '../common/recipe_body_creator.dart';
 
 class PhotoParserWidget extends StatefulWidget {
   final List<String> sentences;
@@ -76,28 +77,6 @@ class PhotoParserWidgetState extends State<PhotoParserWidget> {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // Form(
-                      //   key: _formKey,
-                      //   // autovalidate: _autovalidate,
-                      //   // onWillPop: _warnUserAboutInvalidData,
-                      //   child: ListView(
-                      //     padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      //     children: <Widget>[
-                      //       for (var item in sentences)
-                      //         Container(
-                      //           child: TextFormField(
-                      //             initialValue: item,
-                      //             autocorrect: false,
-                      //             controller: textEditingControllers[
-                      //                 sentences.indexOf(item)],
-                      //             // onSaved: (String value) {
-                      //             //   sentences[item] = value;
-                      //             // },
-                      //           ),
-                      //         ),
-                      //     ],
-                      //   ),
-                      // ),
                       Padding(
                         padding: const EdgeInsets.only(
                             top: 24.0, left: 16.0, right: 16.0),
@@ -154,7 +133,8 @@ class PhotoParserWidgetState extends State<PhotoParserWidget> {
                 ElevatedButton(
                   onPressed: () async {
                     int code = 0;
-                    Map body = makeBodyForPost();
+                    Map body =
+                        makeBodyForPost(sentences, _selectedDropDownButton);
                     code = await postRecipe(body, context);
                     debugPrint(code.toString());
                     context.pop();
@@ -169,63 +149,63 @@ class PhotoParserWidgetState extends State<PhotoParserWidget> {
     );
   }
 
-  Map makeBodyForPost() {
-    Map<String, String> combined = {
-      for (var i = 0; i < sentences.length; i++)
-        sentences[i]: _selectedDropDownButton[i]
-    };
-
-    Map body = {
-      "name": "",
-      "volume": 0,
-      "unit": {"name": "g"},
-      "description": "",
-      "instructions": "",
-      "ingredients": [],
-      "preparationTime": 600,
-      "timeUnit": {"name": "uur"},
-      "archived": false
-    };
-    for (var item in combined.entries) {
-      if (item.value == "name") {
-        body["name"] = body["name"] + " " + item.key;
-      }
-    }
-    for (var item in combined.entries) {
-      if (item.value == "volume") {
-        body["volume"] = body["volume"] + " " + item.key;
-      }
-    }
-    for (var item in combined.entries) {
-      if (item.value == "unit") {
-        body["unit"] = body["unit"] + " " + item.key;
-      }
-    }
-    for (var item in combined.entries) {
-      if (item.value == "description") {
-        body["description"] = body["description"] + " " + item.key;
-      }
-    }
-    for (var item in combined.entries) {
-      if (item.value == "instructions") {
-        body["instructions"] = body["instructions"] + " " + item.key;
-      }
-    }
-    for (var item in combined.entries) {
-      if (item.value == "ingredients") {
-        body["ingredients"] = body["ingredients"] + " " + item.key;
-      }
-    }
-    for (var item in combined.entries) {
-      if (item.value == "preparationTime") {
-        body["preparationTime"] = body["preparationTime"] + " " + item.key;
-      }
-    }
-    for (var item in combined.entries) {
-      if (item.value == "timeUnit") {
-        body["timeUnit"] = body["timeUnit"] + " " + item.key;
-      }
-    }
-    return body;
-  }
+// Map makeBodyForPost() {
+//   Map<String, String> combined = {
+//     for (var i = 0; i < sentences.length; i++)
+//       sentences[i]: _selectedDropDownButton[i]
+//   };
+//
+//   Map body = {
+//     "name": "",
+//     "volume": 0,
+//     "unit": {"name": "g"},
+//     "description": "",
+//     "instructions": "",
+//     "ingredients": [],
+//     "preparationTime": 600,
+//     "timeUnit": {"name": "uur"},
+//     "archived": false
+//   };
+//   for (var item in combined.entries) {
+//     if (item.value == "name") {
+//       body["name"] = body["name"] + " " + item.key;
+//     }
+//   }
+//   for (var item in combined.entries) {
+//     if (item.value == "volume") {
+//       body["volume"] = body["volume"] + " " + item.key;
+//     }
+//   }
+//   for (var item in combined.entries) {
+//     if (item.value == "unit") {
+//       body["unit"] = body["unit"] + " " + item.key;
+//     }
+//   }
+//   for (var item in combined.entries) {
+//     if (item.value == "description") {
+//       body["description"] = body["description"] + " " + item.key;
+//     }
+//   }
+//   for (var item in combined.entries) {
+//     if (item.value == "instructions") {
+//       body["instructions"] = body["instructions"] + " " + item.key;
+//     }
+//   }
+//   for (var item in combined.entries) {
+//     if (item.value == "ingredients") {
+//       body["ingredients"] = body["ingredients"] + " " + item.key;
+//     }
+//   }
+//   for (var item in combined.entries) {
+//     if (item.value == "preparationTime") {
+//       body["preparationTime"] = body["preparationTime"] + " " + item.key;
+//     }
+//   }
+//   for (var item in combined.entries) {
+//     if (item.value == "timeUnit") {
+//       body["timeUnit"] = body["timeUnit"] + " " + item.key;
+//     }
+//   }
+//   return body;
+// }
 }

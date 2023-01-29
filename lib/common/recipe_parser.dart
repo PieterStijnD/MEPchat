@@ -1,4 +1,4 @@
-List<String> recipeParser(String ingredient) {
+List<String> ingredientParser(String ingredient) {
   // regular expression that separates the measurement, unit and ingredient
   RegExp exp = RegExp(r"(\d+\.\d+|\d+)\s*([a-zA-Z]+)\s*(.*)");
 
