@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../api/api_recipes.dart';
+import '../common/recipe_parser.dart';
 
 class FileParserWidget extends StatefulWidget {
   const FileParserWidget({Key? key, required this.sentences}) : super(key: key);
@@ -152,8 +153,8 @@ class _FileParserWidgetState extends State<FileParserWidget> {
       "name": "",
       "volume": 0,
       "unit": {"name": "g"},
-      "description": "this is describing",
-      "instructions": "Lorem ipsum dolor",
+      "description": "",
+      "instructions": "",
       "ingredients": [],
       "preparationTime": 600,
       "timeUnit": {"name": "uur"},
@@ -186,7 +187,10 @@ class _FileParserWidgetState extends State<FileParserWidget> {
     }
     for (var item in combined.entries) {
       if (item.value == "ingredients") {
-        body["ingredients"] = body["ingredients"] + " " + item.key;
+        List<String> parsedIngredient = recipeParser(item.key);
+        body["ingredients"] = body["ingredients"] + parsedIngredient;
+        print("BIG FUCKING X");
+        print(body["ingredients"]);
       }
     }
     for (var item in combined.entries) {

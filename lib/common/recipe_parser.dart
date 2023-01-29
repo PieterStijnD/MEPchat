@@ -1,30 +1,23 @@
-List<String> recipeParser(List<String> list) {
+List<String> recipeParser(String ingredient) {
   // regular expression that separates the measurement, unit and ingredient
   RegExp exp = RegExp(r"(\d+\.\d+|\d+)\s*([a-zA-Z]+)\s*(.*)");
 
   List<String> newList = [];
-  print("IM TRYING OVER HERE");
-  for (String recipeText in list) {
-    print("RecipeText: $recipeText");
-    Match? match = exp.firstMatch(recipeText);
-    print("Match: $match");
-    if (match == null) {
-      print("THAT DIDNT WORK DADDY");
-      newList.add(recipeText);
-    }
-    if (match != null) {
-      String? measurement = match.group(1);
-      String? unit = match.group(3);
-      String? ingredient = match.group(5);
-      print("Measurement: $measurement");
-      print("Unit: $unit");
-      print("Ingredient: $ingredient");
-
-      newList.add(measurement!);
-      newList.add(unit!);
-      newList.add(ingredient!);
-    }
+  Match? match = exp.firstMatch(ingredient);
+  if (match == null) {
+    newList.add(ingredient);
   }
-  print("NewList: $newList");
+  if (match != null) {
+    String? measurement = match.group(1);
+    String? unit = match.group(2);
+    String? ingredient = match.group(3);
+    print("Measurement: $measurement");
+    print("Unit: $unit");
+    print("Ingredient: $ingredient");
+
+    newList.add(measurement!);
+    newList.add(unit!);
+    newList.add(ingredient!);
+  }
   return newList;
 }
