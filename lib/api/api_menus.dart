@@ -84,6 +84,34 @@ Future<int> deleteMenu(int id, context) async {
   return response.statusCode;
 }
 
+Future<int> switchEnabledMenuLijst(int id, context) async {
+  String startOfUrl = Provider.of<ApiData>(context, listen: false).getApiUrl();
+
+  var url = Uri.parse('http://10.0.2.2:8081/mep-lijst/$id');
+
+  String key = Provider.of<ApiData>(context, listen: false).apiKey!;
+
+  List data = [
+    // TODO check values
+    {"op": "replace", "path": "/enabled", "value": false}
+  ];
+
+  var body = json.encode(data);
+
+  var response = await http.patch(
+    url,
+    headers: {
+      "Content-Type": "application/json-patch+json",
+      "Authorization": 'Bearer $key',
+    },
+    body: body,
+  );
+
+  print('${response.statusCode}');
+  print('${response.body}');
+  return response.statusCode;
+}
+
 class MenuClass {
   MenuClass({
     this.id,

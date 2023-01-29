@@ -124,7 +124,7 @@ Future<int> switchEnabledMepLijst(int id, context) async {
   String key = Provider.of<ApiData>(context, listen: false).apiKey!;
 
   List data = [
-    {"op": "replace", "path": "/enabled", "value": true}
+    {"op": "replace", "path": "/enabled", "value": false}
   ];
 
   var body = json.encode(data);
@@ -132,7 +132,7 @@ Future<int> switchEnabledMepLijst(int id, context) async {
   var response = await http.patch(
     url,
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/json-patch+json",
       "Authorization": 'Bearer $key',
     },
     body: body,

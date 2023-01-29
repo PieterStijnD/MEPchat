@@ -26,7 +26,7 @@ class MepListArchiveWidget extends StatefulWidget {
 
 class _MepListArchiveWidgetState extends State<MepListArchiveWidget> {
   late Future<List<MepListClass>> fetchedMepLijsten =
-      getMepLijstenFromServerAsListItems(context);
+  getMepLijstenFromServerAsListItems(context);
   final _formKey = GlobalKey<FormState>();
   bool _activeItemsList = true;
 
@@ -48,7 +48,10 @@ class _MepListArchiveWidgetState extends State<MepListArchiveWidget> {
         //   ],
         // ),
         SizedBox(
-          height: MediaQuery.of(context).size.height * 0.7,
+          height: MediaQuery
+              .of(context)
+              .size
+              .height * 0.7,
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Expanded(
@@ -138,6 +141,7 @@ class _MepListArchiveWidgetState extends State<MepListArchiveWidget> {
   }
 
   Widget _buildSlidable(MepListClass data, int i) {
+    // TODO filter archive and remove
     return Slidable(
       key: ValueKey(i),
       startActionPane: ActionPane(
@@ -152,13 +156,13 @@ class _MepListArchiveWidgetState extends State<MepListArchiveWidget> {
             icon: Icons.delete,
             label: 'Delete',
           ),
-          SlidableAction(
-            onPressed: null,
-            backgroundColor: Colors.orange,
-            foregroundColor: Colors.white,
-            icon: Icons.power_settings_new,
-            label: 'In/Active',
-          ),
+          // SlidableAction(
+          //   onPressed: null,
+          //   backgroundColor: Colors.orange,
+          //   foregroundColor: Colors.white,
+          //   icon: Icons.power_settings_new,
+          //   label: 'In/Active',
+          // ),
         ],
       ),
       endActionPane: const ActionPane(

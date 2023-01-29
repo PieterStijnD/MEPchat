@@ -130,6 +130,7 @@ class _CameraWidgetState extends State<CameraWidget> {
                         ),
                       ),
                     if (scannedText.isNotEmpty)
+                      // TODO make stuff disappear when you are done
                       ElevatedButton(
                           onPressed: () => context.goNamed(
                                 "photoparser",
