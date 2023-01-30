@@ -1,4 +1,4 @@
-# Atlas 2
+# MepChat
 
 First version of the MepChat app for iOS and Android.
 
