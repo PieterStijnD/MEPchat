@@ -144,9 +144,37 @@ class _MenuKaartenWidgetState extends State<MenuKaartenWidget> {
         ),
         title: Text('${data.name}'),
         onTap: () => {
-          // TODO , on tap, do what?
+          showMenu(data.name!),
         },
       ),
+    );
+  }
+
+  Future<void> showMenu(String name) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Menu'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                SizedBox(height: 24.0),
+                Center(child: Text("$name")),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 

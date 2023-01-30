@@ -194,10 +194,36 @@ class _RecipesWidgetState extends State<RecipesWidget> {
           ),
         ),
         title: Text('${data.name}'),
-        onTap: () => {
-          // TODO , on tap, do what?
-        },
+        onTap: () => {showRecept(data.name!)},
       ),
+    );
+  }
+
+  Future<void> showRecept(String name) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Recept'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                SizedBox(height: 24.0),
+                Center(child: Text("$name")),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 

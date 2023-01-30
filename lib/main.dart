@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:new_base/api/api_user_calls.dart';
-import 'package:new_base/login_page.dart';
+import 'package:new_base/login_page/login_page.dart';
 import 'package:new_base/meplijst/mep_page_wrapper_widget.dart';
 import 'package:new_base/photo_page/photo_parser_widget.dart';
 import 'package:new_base/recipe_page/recepturen_widget.dart';
@@ -36,7 +36,7 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return const MyHomePage(title: 'MEP-chat Home Page');
+        return const MyHomePage(title: 'MEP-chat Home');
       },
       routes: [
         GoRoute(

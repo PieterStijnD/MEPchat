@@ -3,8 +3,8 @@ import 'package:flutter_login/flutter_login.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import 'api/api_general.dart';
-import 'api/api_user_calls.dart';
+import '../api/api_general.dart';
+import '../api/api_user_calls.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
