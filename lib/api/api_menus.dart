@@ -84,15 +84,15 @@ Future<int> deleteMenu(int id, context) async {
   return response.statusCode;
 }
 
-Future<int> switchEnabledMenuLijst(bool isEnabled, int id, context) async {
+Future<int> switchArchivedMenuLijst(bool isArchived, int id, context) async {
   String startOfUrl = Provider.of<ApiData>(context, listen: false).getApiUrl();
 
-  var url = Uri.parse('http://10.0.2.2:8081/menucard/$id');
+  var url = Uri.parse('http://10.0.2.2:8081/menucard/archiving/$id');
 
   String key = Provider.of<ApiData>(context, listen: false).apiKey!;
 
   List data = [
-    {"op": "replace", "path": "/enabled", "value": !isEnabled}
+    {"op": "replace", "path": "/enabled", "value": !isArchived}
   ];
 
   var body = json.encode(data);
@@ -106,25 +106,23 @@ Future<int> switchEnabledMenuLijst(bool isEnabled, int id, context) async {
     body: body,
   );
 
-  print('${response.statusCode}');
-  print('${response.body}');
   return response.statusCode;
 }
 
 class MenuClass {
   MenuClass({
     this.id,
-    this.enabled,
+    this.archived,
     this.name,
   });
 
   int? id;
-  bool? enabled;
+  bool? archived;
   String? name;
 
   factory MenuClass.fromJson(Map<String, dynamic> json) => MenuClass(
         id: json["id"],
-        enabled: json["enabled"],
+        archived: json["archived"],
         name: json["name"],
       );
 }

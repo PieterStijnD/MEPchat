@@ -9,12 +9,12 @@ Map makeBodyForPost(
 
   Map body = {
     "name": "",
-    "volume": 0,
+    "volume": "0",
     "unit": {"name": "g"},
     "description": "",
     "instructions": "",
     "ingredients": [],
-    "preparationTime": 600,
+    "preparationTime": "600",
     "timeUnit": {"name": "uur"},
     "archived": false
   };
@@ -30,7 +30,8 @@ Map makeBodyForPost(
   }
   for (var item in combined.entries) {
     if (item.value == "unit") {
-      body["unit"] = body["unit"] + " " + item.key;
+      // TODO wait for backend
+      // body["unit"] = body["unit"] + " " + item.key;
     }
   }
   for (var item in combined.entries) {
@@ -46,9 +47,8 @@ Map makeBodyForPost(
   for (var item in combined.entries) {
     if (item.value == "ingredients") {
       List<String> parsedIngredient = ingredientParser(item.key);
+      // TODO wait for backend
       body["ingredients"] = body["ingredients"] + parsedIngredient;
-      print("BIG FUCKING X");
-      print(body["ingredients"]);
     }
   }
   for (var item in combined.entries) {
@@ -58,7 +58,8 @@ Map makeBodyForPost(
   }
   for (var item in combined.entries) {
     if (item.value == "timeUnit") {
-      body["timeUnit"] = body["timeUnit"] + " " + item.key;
+      // TODO wait for backend
+      // body["timeUnit"] = body["timeUnit"] + " " + item.key;
     }
   }
   return body;

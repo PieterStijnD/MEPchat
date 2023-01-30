@@ -83,15 +83,15 @@ Future<int> postRecipe(Map body, context) async {
   return response.statusCode;
 }
 
-Future<int> switchEnabledRecipe(bool isEnabled, int id, context) async {
+Future<int> switchArchivedRecipe(bool isArchived, int id, context) async {
   String startOfUrl = Provider.of<ApiData>(context, listen: false).getApiUrl();
 
-  var url = Uri.parse('http://10.0.2.2:8081/recipe/$id');
+  var url = Uri.parse('http://10.0.2.2:8081/recipe/archiving/$id');
 
   String key = Provider.of<ApiData>(context, listen: false).apiKey!;
 
   List data = [
-    {"op": "replace", "path": "/enabled", "value": !isEnabled}
+    {"op": "replace", "path": "/enabled", "value": !isArchived}
   ];
 
   var body = json.encode(data);
@@ -105,8 +105,6 @@ Future<int> switchEnabledRecipe(bool isEnabled, int id, context) async {
     body: body,
   );
 
-  print('${response.statusCode}');
-  print('${response.body}');
   return response.statusCode;
 }
 
@@ -140,17 +138,17 @@ Future<int> deleteRecipe(int id, context) async {
 class RecipeClass {
   RecipeClass({
     this.id,
-    this.enabled,
+    this.archived,
     this.name,
   });
 
   int? id;
-  bool? enabled;
+  bool? archived;
   String? name;
 
   factory RecipeClass.fromJson(Map<String, dynamic> json) => RecipeClass(
         id: json["id"],
-        enabled: json["enabled"],
+        archived: json["archived"],
         name: json["name"],
       );
 }

@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:new_base/api/api_meplijsten.dart';
@@ -124,6 +126,15 @@ class _MepListArchiveWidgetState extends State<MepListArchiveWidget> {
         ],
       ),
       child: ListTile(
+        leading: Transform.rotate(
+          angle: 15 * math.pi / 180,
+          child: IconButton(
+            icon: Icon(
+              Icons.archive_outlined,
+            ),
+            onPressed: null,
+          ),
+        ),
         title: Text('${data.name!}'),
         onTap: () => {},
       ),

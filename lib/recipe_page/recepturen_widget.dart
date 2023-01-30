@@ -1,8 +1,10 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
 
-import 'api/api_recipes.dart';
+import '../api/api_recipes.dart';
 
 class RecipesWidget extends StatefulWidget {
   const RecipesWidget({Key? key}) : super(key: key);
@@ -21,19 +23,19 @@ class _RecipesWidgetState extends State<RecipesWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            TextButton(
-              onPressed: () => setState(() => _activeItemsList = true),
-              child: Text("Active"),
-            ),
-            TextButton(
-              onPressed: () => setState(() => _activeItemsList = false),
-              child: Text("All"),
-            )
-          ],
-        ),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //   children: [
+        //     TextButton(
+        //       onPressed: () => setState(() => _activeItemsList = true),
+        //       child: Text("Active"),
+        //     ),
+        //     TextButton(
+        //       onPressed: () => setState(() => _activeItemsList = false),
+        //       child: Text("All"),
+        //     )
+        //   ],
+        // ),
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.7,
           child: SingleChildScrollView(
@@ -94,9 +96,22 @@ class _RecipesWidgetState extends State<RecipesWidget> {
     );
   }
 
-  void addItem(String title, context) async {
+  void addItem(String naam, String Volume, String Measurement,
+      String Instructions, String Duration, String Time, context) async {
     int code = 0;
-    // code = await postRecipe(title, context);
+    Map body = {
+      "name": naam,
+      "volume": Volume,
+      "unit": {"name": "g"},
+      "description": "Description",
+      "instructions": Instructions,
+      "ingredients": [],
+      "preparationTime": "600",
+      "timeUnit": {"name": "uur"},
+      "archived": false
+    };
+
+    code = await postRecipe(body, context);
     debugPrint(code.toString());
     if (code != 0) {
       setState(() {
@@ -116,9 +131,9 @@ class _RecipesWidgetState extends State<RecipesWidget> {
     }
   }
 
-  void flipEnabledItem(int id, BuildContext context) async {
+  void flipArchivedItem(bool isArchived, int id, BuildContext context) async {
     int code = 0;
-    code = await deleteRecipe(id, context);
+    code = await switchArchivedRecipe(isArchived, id, context);
     debugPrint(code.toString());
     if (code != 0) {
       setState(() {
@@ -130,16 +145,7 @@ class _RecipesWidgetState extends State<RecipesWidget> {
   List<Widget> _buildListOfSlidables(List<RecipeClass> data) {
     List<Widget> list = [];
     for (var item in data) {
-      list.add(_buildSlidable(item, data.indexOf(item)));
-    }
-    return list;
-  }
-
-  // TODO enabled on a menu?
-  List<Widget> _buildListOfEnabledSlidables(List<RecipeClass> data) {
-    List<Widget> list = [];
-    for (var item in data) {
-      if (!item.enabled!) {
+      if (!item.archived!) {
         list.add(_buildSlidable(item, data.indexOf(item)));
       }
     }
@@ -161,20 +167,15 @@ class _RecipesWidgetState extends State<RecipesWidget> {
             icon: Icons.delete,
             label: 'Delete',
           ),
-          SlidableAction(
-            onPressed: null,
-            backgroundColor: Colors.orange,
-            foregroundColor: Colors.white,
-            icon: Icons.power_settings_new,
-            label: 'In/Active',
-          ),
         ],
       ),
-      endActionPane: const ActionPane(
+      endActionPane: ActionPane(
         motion: ScrollMotion(),
         children: [
           SlidableAction(
-            onPressed: null,
+            onPressed: (_) {
+              flipArchivedItem(data.archived!, data.id!, context);
+            },
             backgroundColor: Color(0xFF7BC043),
             foregroundColor: Colors.white,
             icon: Icons.archive,
@@ -183,6 +184,15 @@ class _RecipesWidgetState extends State<RecipesWidget> {
         ],
       ),
       child: ListTile(
+        leading: Transform.rotate(
+          angle: 15 * math.pi / 180,
+          child: IconButton(
+            icon: Icon(
+              Icons.restaurant_menu,
+            ),
+            onPressed: null,
+          ),
+        ),
         title: Text('${data.name}'),
         onTap: () => {
           // TODO , on tap, do what?
@@ -192,7 +202,12 @@ class _RecipesWidgetState extends State<RecipesWidget> {
   }
 
   void showFormDialog(BuildContext context) {
-    final recipeController = TextEditingController();
+    final recipeNaamController = TextEditingController();
+    final recipeVolumeController = TextEditingController();
+    final recipeMeasurementController = TextEditingController();
+    final recipeInstructionsController = TextEditingController();
+    final recipeDurationController = TextEditingController();
+    final recipeTimeController = TextEditingController();
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -207,18 +222,22 @@ class _RecipesWidgetState extends State<RecipesWidget> {
                 // crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TextFieldWidget(
-                      recipeController: recipeController, label: "Naam"),
+                      recipeController: recipeNaamController, label: "Naam"),
                   TextFieldWidget(
-                      recipeController: recipeController, label: "Volume"),
+                      recipeController: recipeVolumeController,
+                      label: "Volume"),
                   TextFieldWidget(
-                      recipeController: recipeController, label: "Measurement"),
+                      recipeController: recipeMeasurementController,
+                      label: "Measurement"),
                   TextFieldWidget(
-                      recipeController: recipeController,
+                      recipeController: recipeInstructionsController,
                       label: "Instructions"),
                   TextFieldWidget(
-                      recipeController: recipeController, label: "Duration"),
+                      recipeController: recipeDurationController,
+                      label: "Duration"),
                   TextFieldWidget(
-                      recipeController: recipeController, label: "Time unit"),
+                      recipeController: recipeTimeController,
+                      label: "Time unit"),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -246,7 +265,14 @@ class _RecipesWidgetState extends State<RecipesWidget> {
                                   MaterialStateProperty.all(Colors.white)),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              addItem(recipeController.text, context);
+                              addItem(
+                                  recipeNaamController.text,
+                                  recipeVolumeController.text,
+                                  recipeMeasurementController.text,
+                                  recipeInstructionsController.text,
+                                  recipeDurationController.text,
+                                  recipeTimeController.text,
+                                  context);
                               context.pop();
                             }
                           },

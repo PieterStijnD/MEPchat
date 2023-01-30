@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
@@ -14,30 +16,13 @@ class MenuKaartenWidget extends StatefulWidget {
 class _MenuKaartenWidgetState extends State<MenuKaartenWidget> {
   late Future<List<MenuClass>> fetchedMenuList = getMenusFromServer(context);
   final _formKey = GlobalKey<FormState>();
-  bool _activeItemsList = true;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //   children: [
-        //     TextButton(
-        //       onPressed: () => setState(() => _activeItemsList = true),
-        //       child: Text("Active"),
-        //     ),
-        //     TextButton(
-        //       onPressed: () => setState(() => _activeItemsList = false),
-        //       child: Text("All"),
-        //     )
-        //   ],
-        // ),
         SizedBox(
-          height: MediaQuery
-              .of(context)
-              .size
-              .height * 0.7,
+          height: MediaQuery.of(context).size.height * 0.7,
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Column(
@@ -97,35 +82,26 @@ class _MenuKaartenWidgetState extends State<MenuKaartenWidget> {
   List<Widget> _buildListOfSlidables(List<MenuClass> data) {
     List<Widget> list = [];
     for (var item in data) {
-      list.add(_buildSlidable(false, item, data.indexOf(item)));
-    }
-    return list;
-  }
-
-  // TODO enabled on a menu?
-  List<Widget> _buildListOfEnabledSlidables(List<MenuClass> data) {
-    List<Widget> list = [];
-    for (var item in data) {
-      if (!item.enabled!) {
-        list.add(_buildSlidable(true, item, data.indexOf(item)));
+      if (!item.archived!) {
+        list.add(_buildSlidable(item.archived!, item, data.indexOf(item)));
       }
+      // list.add(_buildSlidable(item.archived!, item, data.indexOf(item)));
     }
     return list;
   }
 
-  // TODO //////////////////////
-  // void flipArchivedItem(bool isArchived, int id, BuildContext context) async {
-  //   int code = 0;
-  //   code = await switchArchivedMepLijst(isArchived, id, context);
-  //   debugPrint(code.toString());
-  //   if (code != 0) {
-  //     setState(() {
-  //       fetchedMepLijsten = getMepLijstenFromServerAsListItems(context);
-  //     });
-  //   }
-  // }
+  void flipArchivedItem(bool isArchived, int id, BuildContext context) async {
+    int code = 0;
+    code = await switchArchivedMenuLijst(isArchived, id, context);
+    debugPrint(code.toString());
+    if (code != 0) {
+      setState(() {
+        fetchedMenuList = getMenusFromServer(context);
+      });
+    }
+  }
 
-  Widget _buildSlidable(bool isEnabled, MenuClass data, int i) {
+  Widget _buildSlidable(bool isArchived, MenuClass data, int i) {
     return Slidable(
       key: ValueKey(i),
       startActionPane: ActionPane(
@@ -140,22 +116,15 @@ class _MenuKaartenWidgetState extends State<MenuKaartenWidget> {
             icon: Icons.delete,
             label: 'Delete',
           ),
-          // SlidableAction(
-          //   onPressed: (_) {
-          //     flipEnabledItem(isEnabled, data.id!, context);
-          //   },
-          //   backgroundColor: Colors.orange,
-          //   foregroundColor: Colors.white,
-          //   icon: Icons.power_settings_new,
-          //   label: 'In/Active',
-          // ),
         ],
       ),
-      endActionPane: const ActionPane(
+      endActionPane: ActionPane(
         motion: ScrollMotion(),
         children: [
           SlidableAction(
-            onPressed: null,
+            onPressed: (_) {
+              flipArchivedItem(isArchived, data.id!, context);
+            },
             backgroundColor: Color(0xFF7BC043),
             foregroundColor: Colors.white,
             icon: Icons.archive,
@@ -164,9 +133,17 @@ class _MenuKaartenWidgetState extends State<MenuKaartenWidget> {
         ],
       ),
       child: ListTile(
+        leading: Transform.rotate(
+          angle: 20 * math.pi / 180,
+          child: IconButton(
+            icon: Icon(
+              Icons.menu_book_outlined,
+            ),
+            onPressed: null,
+          ),
+        ),
         title: Text('${data.name}'),
-        onTap: () =>
-        {
+        onTap: () => {
           // TODO , on tap, do what?
         },
       ),
@@ -269,7 +246,7 @@ class _MenuKaartenWidgetState extends State<MenuKaartenWidget> {
                         child: ElevatedButton(
                           style: ButtonStyle(
                             backgroundColor:
-                            MaterialStateProperty.all(Colors.white),
+                                MaterialStateProperty.all(Colors.white),
                           ),
                           onPressed: () {
                             context.pop();
@@ -285,7 +262,7 @@ class _MenuKaartenWidgetState extends State<MenuKaartenWidget> {
                         child: ElevatedButton(
                           style: ButtonStyle(
                               backgroundColor:
-                              MaterialStateProperty.all(Colors.white)),
+                                  MaterialStateProperty.all(Colors.white)),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               addItem(MEPController.text, context);

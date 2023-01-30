@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
@@ -20,19 +22,6 @@ class _RecipeArchiveWidgetState extends State<RecipeArchiveWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //   children: [
-        //     TextButton(
-        //       onPressed: () => setState(() => _activeItemsList = true),
-        //       child: Text("Active"),
-        //     ),
-        //     TextButton(
-        //       onPressed: () => setState(() => _activeItemsList = false),
-        //       child: Text("All"),
-        //     )
-        //   ],
-        // ),
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.7,
           child: SingleChildScrollView(
@@ -40,7 +29,6 @@ class _RecipeArchiveWidgetState extends State<RecipeArchiveWidget> {
             child: Expanded(
               child: Column(
                 children: [
-                  // if (!_activeItemsList) ...[
                   FutureBuilder(
                     future: fetchedRecipeList,
                     builder: (BuildContext context, snapshot) {
@@ -75,9 +63,9 @@ class _RecipeArchiveWidgetState extends State<RecipeArchiveWidget> {
     }
   }
 
-  void flipEnabledItem(int id, BuildContext context) async {
+  void flipArchivedItem(bool isArchived, int id, BuildContext context) async {
     int code = 0;
-    code = await deleteRecipe(id, context);
+    code = await switchArchivedRecipe(isArchived, id, context);
     debugPrint(code.toString());
     if (code != 0) {
       setState(() {
@@ -89,15 +77,7 @@ class _RecipeArchiveWidgetState extends State<RecipeArchiveWidget> {
   List<Widget> _buildListOfSlidables(List<RecipeClass> data) {
     List<Widget> list = [];
     for (var item in data) {
-      list.add(_buildSlidable(item, data.indexOf(item)));
-    }
-    return list;
-  }
-
-  List<Widget> _buildListOfEnabledSlidables(List<RecipeClass> data) {
-    List<Widget> list = [];
-    for (var item in data) {
-      if (!item.enabled!) {
+      if (item.archived == true) {
         list.add(_buildSlidable(item, data.indexOf(item)));
       }
     }
@@ -119,28 +99,31 @@ class _RecipeArchiveWidgetState extends State<RecipeArchiveWidget> {
             icon: Icons.delete,
             label: 'Delete',
           ),
-          SlidableAction(
-            onPressed: null,
-            backgroundColor: Colors.orange,
-            foregroundColor: Colors.white,
-            icon: Icons.power_settings_new,
-            label: 'In/Active',
-          ),
         ],
       ),
-      endActionPane: const ActionPane(
+      endActionPane: ActionPane(
         motion: ScrollMotion(),
         children: [
           SlidableAction(
-            onPressed: null,
-            backgroundColor: Color(0xFF7BC043),
-            foregroundColor: Colors.white,
-            icon: Icons.archive,
-            label: 'Archive',
-          ),
+              onPressed: (_) {
+                flipArchivedItem(data.archived!, data.id!, context);
+              },
+              backgroundColor: Color(0xFF7BC043),
+              foregroundColor: Colors.white,
+              icon: Icons.unarchive,
+              label: 'Unarchive'),
         ],
       ),
       child: ListTile(
+        leading: Transform.rotate(
+          angle: 15 * math.pi / 180,
+          child: IconButton(
+            icon: Icon(
+              Icons.archive_outlined,
+            ),
+            onPressed: null,
+          ),
+        ),
         title: Text('${data.name}'),
         onTap: () => {
           // TODO , on tap, do what?
@@ -148,80 +131,6 @@ class _RecipeArchiveWidgetState extends State<RecipeArchiveWidget> {
       ),
     );
   }
-
-// void showFormDialog(BuildContext context) {
-//   final recipeController = TextEditingController();
-//   showDialog(
-//     context: context,
-//     builder: (BuildContext context) {
-//       return SimpleDialog(
-//         title: Center(
-//           child: Text("Add Recipe"),
-//         ),
-//         children: [
-//           Form(
-//             key: _formKey,
-//             child: Column(
-//               // crossAxisAlignment: CrossAxisAlignment.stretch,
-//               children: [
-//                 TextFieldWidget(
-//                     recipeController: recipeController, label: "Naam"),
-//                 TextFieldWidget(
-//                     recipeController: recipeController, label: "Volume"),
-//                 TextFieldWidget(
-//                     recipeController: recipeController, label: "Measurement"),
-//                 TextFieldWidget(
-//                     recipeController: recipeController,
-//                     label: "Instructions"),
-//                 TextFieldWidget(
-//                     recipeController: recipeController, label: "Duration"),
-//                 TextFieldWidget(
-//                     recipeController: recipeController, label: "Time unit"),
-//                 Row(
-//                   mainAxisAlignment: MainAxisAlignment.center,
-//                   children: [
-//                     Padding(
-//                       padding: const EdgeInsets.all(8.0),
-//                       child: ElevatedButton(
-//                         style: ButtonStyle(
-//                           backgroundColor:
-//                               MaterialStateProperty.all(Colors.white),
-//                         ),
-//                         onPressed: () {
-//                           context.pop();
-//                         },
-//                         child: Icon(
-//                           Icons.cancel_outlined,
-//                           color: Colors.amberAccent,
-//                         ),
-//                       ),
-//                     ),
-//                     Padding(
-//                       padding: const EdgeInsets.all(8.0),
-//                       child: ElevatedButton(
-//                         style: ButtonStyle(
-//                             backgroundColor:
-//                                 MaterialStateProperty.all(Colors.white)),
-//                         onPressed: () {
-//                           if (_formKey.currentState!.validate()) {
-//                             addItem(recipeController.text, context);
-//                             context.pop();
-//                           }
-//                         },
-//                         child: Icon(Icons.check_circle_outline,
-//                             color: Colors.green),
-//                       ),
-//                     ),
-//                   ],
-//                 )
-//               ],
-//             ),
-//           )
-//         ],
-//       );
-//     },
-//   );
-// }
 }
 
 class TextFieldWidget extends StatelessWidget {

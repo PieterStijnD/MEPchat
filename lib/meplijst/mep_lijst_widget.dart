@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
@@ -214,6 +216,16 @@ class _MepLijstWidgetState extends State<MepLijstWidget> {
         ],
       ),
       child: ListTile(
+        // leading: Icon(Icons.pending_actions),
+        leading: Transform.rotate(
+          angle: 20 * math.pi / 180,
+          child: IconButton(
+            icon: Icon(
+              Icons.pending_actions,
+            ),
+            onPressed: null,
+          ),
+        ),
         title: Text('${data.name}'),
         onTap: () => {
           // TODO send data to overlay or fetch data from server in overlay

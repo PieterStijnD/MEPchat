@@ -4,7 +4,7 @@ import 'package:new_base/api/api_user_calls.dart';
 import 'package:new_base/login_page.dart';
 import 'package:new_base/meplijst/mep_page_wrapper_widget.dart';
 import 'package:new_base/photo_page/photo_parser_widget.dart';
-import 'package:new_base/recepturen_widget.dart';
+import 'package:new_base/recipe_page/recepturen_widget.dart';
 import 'package:new_base/teams_page/teams_page_widget.dart';
 import 'package:provider/provider.dart';
 
