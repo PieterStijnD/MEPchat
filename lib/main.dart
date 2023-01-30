@@ -12,7 +12,7 @@ import 'Archive/archief_widget.dart';
 import 'api/api_general.dart';
 import 'file_page/file_page.dart';
 import 'homescreen/homescreen_widget.dart';
-import 'menukaarten_widget.dart';
+import 'menu_kaarten/menukaarten_widget.dart';
 import 'meplijst/mep_lijst_recepten.dart';
 import 'meplijst/mep_lijst_widget.dart';
 import 'photo_page/camera_page.dart';

@@ -33,8 +33,8 @@ class _HomescreenWidgetState extends State<HomescreenWidget> {
                       padding: const EdgeInsets.all(32.0),
                       child: DelayedDisplay(
                           delay: Duration(milliseconds: 200),
-                          // TODO change to real name
-                          child: Text("Welcome back, {user}",
+                          child: Text(
+                              "Welcome back, ${Provider.of<ApiData>(context, listen: false).getUserName()}",
                               style: TextStyle(
                                   color: Colors.blue,
                                   fontSize: 30,

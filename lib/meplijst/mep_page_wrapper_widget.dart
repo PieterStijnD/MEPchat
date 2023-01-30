@@ -1,7 +1,7 @@
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 
-import '../menukaarten_widget.dart';
+import '../menu_kaarten/menukaarten_widget.dart';
 import '../recepturen_widget.dart';
 import 'mep_lijst_widget.dart';
 

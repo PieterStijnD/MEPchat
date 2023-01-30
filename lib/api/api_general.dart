@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 class ApiData extends ChangeNotifier {
   String? apiKey = "";
+  String userName = "";
 
   String getApiUrl() {
     //TODO change to real url
@@ -19,6 +20,18 @@ class ApiData extends ChangeNotifier {
   }
 
   void updateApiKey(String newApiKey) {
-    apiKey = newApiKey;
+    // parse string before and after slash
+    String apiKeyParsed = newApiKey.split("/")[0];
+    String userNameParsed = newApiKey.split("/")[1];
+    apiKey = apiKeyParsed;
+    userName = userNameParsed;
+  }
+
+  String? getUserName() {
+    return userName;
+  }
+
+  void updateUserName(String newUserName) {
+    userName = newUserName;
   }
 }

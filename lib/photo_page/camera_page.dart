@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
@@ -42,102 +43,116 @@ class _CameraWidgetState extends State<CameraWidget> {
                     color: Colors.grey[300]!,
                   ),
                 if (imageFile != null) Image.file(File(imageFile!.path)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 5),
-                        padding: const EdgeInsets.only(top: 10),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: Colors.grey,
-                            shadowColor: Colors.grey[400],
-                            elevation: 10,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0)),
-                          ),
-                          onPressed: () {
-                            getImage(ImageSource.gallery);
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 5),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.image,
-                                  size: 30,
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 24, 8, 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      DelayedDisplay(
+                        delay: Duration(milliseconds: 300),
+                        child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 5),
+                            padding: const EdgeInsets.only(top: 10),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                foregroundColor: Colors.grey,
+                                shadowColor: Colors.grey[400],
+                                elevation: 10,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0)),
+                              ),
+                              onPressed: () {
+                                getImage(ImageSource.gallery);
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: 5, horizontal: 5),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.image,
+                                      size: 30,
+                                    ),
+                                    Text(
+                                      "Gallery",
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          color: Colors.grey[600]),
+                                    )
+                                  ],
                                 ),
-                                Text(
-                                  "Gallery",
-                                  style: TextStyle(
-                                      fontSize: 13, color: Colors.grey[600]),
-                                )
-                              ],
-                            ),
-                          ),
-                        )),
-                    Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 5),
-                        padding: const EdgeInsets.only(top: 10),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: Colors.grey,
-                            shadowColor: Colors.grey[400],
-                            elevation: 10,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0)),
-                          ),
-                          onPressed: () {
-                            getImage(ImageSource.camera);
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 5),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.camera_alt,
-                                  size: 30,
+                              ),
+                            )),
+                      ),
+                      DelayedDisplay(
+                        delay: Duration(milliseconds: 400),
+                        child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 5),
+                            padding: const EdgeInsets.only(top: 10),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                foregroundColor: Colors.grey,
+                                shadowColor: Colors.grey[400],
+                                elevation: 10,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0)),
+                              ),
+                              onPressed: () {
+                                getImage(ImageSource.camera);
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: 5, horizontal: 5),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.camera_alt,
+                                      size: 30,
+                                    ),
+                                    Text(
+                                      "Camera",
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          color: Colors.grey[600]),
+                                    )
+                                  ],
                                 ),
-                                Text(
-                                  "Camera",
-                                  style: TextStyle(
-                                      fontSize: 13, color: Colors.grey[600]),
-                                )
-                              ],
-                            ),
-                          ),
-                        )),
-                  ],
+                              ),
+                            )),
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(
                   height: 20,
                 ),
-                Column(
-                  children: [
-                    if (scannedText.isEmpty)
-                      ElevatedButton(onPressed: null, child: Text("Parse")),
-                    if (scannedText.isNotEmpty)
-                      Container(
-                        child: Text(
-                          scannedText[0] + " " + scannedText[1],
-                          style: TextStyle(fontSize: 20),
+                DelayedDisplay(
+                  delay: Duration(milliseconds: 500),
+                  child: Column(
+                    children: [
+                      if (scannedText.isEmpty)
+                        ElevatedButton(onPressed: null, child: Text("Parse")),
+                      if (scannedText.isNotEmpty)
+                        Container(
+                          child: Text(
+                            scannedText[0] + " " + scannedText[1],
+                            style: TextStyle(fontSize: 20),
+                          ),
                         ),
-                      ),
-                    if (scannedText.isNotEmpty)
-                      // TODO make stuff disappear when you are done
-                      ElevatedButton(
-                          onPressed: () => context.goNamed(
-                                "photoparser",
-                                extra: scannedText,
-                              ),
-                          child: Text("Parse"))
-                  ],
+                      if (scannedText.isNotEmpty)
+                        // TODO make stuff disappear when you are done
+                        ElevatedButton(
+                            onPressed: () => context.goNamed(
+                                  "photoparser",
+                                  extra: scannedText,
+                                ),
+                            child: Text("Parse"))
+                    ],
+                  ),
                 ),
               ],
             ),

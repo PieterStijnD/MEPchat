@@ -1,3 +1,4 @@
+import 'package:delayed_display/delayed_display.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -92,31 +93,36 @@ class _FileWidgetState extends State<FileWidget> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text("File type can only be .pdf"),
-                ConstrainedBox(
-                  constraints: const BoxConstraints.tightFor(width: 100.0),
-                  child: _pickingType == FileType.custom
-                      ? TextFormField(
-                          maxLength: 15,
-                          autovalidateMode: AutovalidateMode.always,
-                          controller: _controller,
-                          decoration: InputDecoration(
-                            labelText: 'File extension',
-                          ),
-                          keyboardType: TextInputType.text,
-                          textCapitalization: TextCapitalization.none,
-                        )
-                      : const SizedBox(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 50.0, bottom: 20.0),
-                  child: Column(
-                    children: <Widget>[
-                      ElevatedButton(
-                        onPressed: () => _pickFiles(),
-                        child: Text('Pick file'),
-                      ),
-                    ],
+                DelayedDisplay(
+                    delay: Duration(milliseconds: 300),
+                    child: Text("File type can only be .pdf")),
+                // ConstrainedBox(
+                //   constraints: const BoxConstraints.tightFor(width: 100.0),
+                //   child: _pickingType == FileType.custom
+                //       ? TextFormField(
+                //           maxLength: 15,
+                //           autovalidateMode: AutovalidateMode.always,
+                //           controller: _controller,
+                //           decoration: InputDecoration(
+                //             labelText: 'File extension',
+                //           ),
+                //           keyboardType: TextInputType.text,
+                //           textCapitalization: TextCapitalization.none,
+                //         )
+                //       : const SizedBox(),
+                // ),
+                DelayedDisplay(
+                  delay: Duration(milliseconds: 400),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 50.0, bottom: 20.0),
+                    child: Column(
+                      children: <Widget>[
+                        ElevatedButton(
+                          onPressed: () => _pickFiles(),
+                          child: Text('Pick file'),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Builder(

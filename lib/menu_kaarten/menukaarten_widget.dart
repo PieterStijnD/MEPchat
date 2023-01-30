@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
 
-import 'api/api_menus.dart';
+import '../api/api_menus.dart';
 
 class MenuKaartenWidget extends StatefulWidget {
   const MenuKaartenWidget({Key? key}) : super(key: key);
@@ -20,72 +20,50 @@ class _MenuKaartenWidgetState extends State<MenuKaartenWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            TextButton(
-              onPressed: () => setState(() => _activeItemsList = true),
-              child: Text("Active"),
-            ),
-            TextButton(
-              onPressed: () => setState(() => _activeItemsList = false),
-              child: Text("All"),
-            )
-          ],
-        ),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //   children: [
+        //     TextButton(
+        //       onPressed: () => setState(() => _activeItemsList = true),
+        //       child: Text("Active"),
+        //     ),
+        //     TextButton(
+        //       onPressed: () => setState(() => _activeItemsList = false),
+        //       child: Text("All"),
+        //     )
+        //   ],
+        // ),
         SizedBox(
-          height: MediaQuery.of(context).size.height * 0.7,
+          height: MediaQuery
+              .of(context)
+              .size
+              .height * 0.7,
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Column(
               children: [
-                if (!_activeItemsList) ...[
-                  FutureBuilder(
-                    future: fetchedMenuList,
-                    builder: (BuildContext context, snapshot) {
-                      if (snapshot.connectionState != ConnectionState.done) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                      if (snapshot.hasData || snapshot.data != null) {
-                        return Column(children: [
-                          ..._buildListOfSlidables(snapshot.data!)
-                        ]);
-                      }
-                      return Text("Empty");
-                    },
-                  ),
-                  IconButton(
-                    color: Colors.black,
-                    onPressed: () {
-                      showFormDialog(context);
-                    },
-                    icon: Icon(Icons.add),
-                  )
-                ],
-                if (_activeItemsList) ...[
-                  FutureBuilder(
-                    future: fetchedMenuList,
-                    builder: (BuildContext context, snapshot) {
-                      if (snapshot.connectionState != ConnectionState.done) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                      if (snapshot.hasData || snapshot.data != null) {
-                        return Column(children: [
-                          // TODO change back to enabled Slidables?
-                          ..._buildListOfSlidables(snapshot.data!)
-                        ]);
-                      }
-                      return Text("Empty");
-                    },
-                  ),
-                  IconButton(
-                    color: Colors.black,
-                    onPressed: () {
-                      showFormDialog(context);
-                    },
-                    icon: Icon(Icons.add),
-                  )
-                ],
+                FutureBuilder(
+                  future: fetchedMenuList,
+                  builder: (BuildContext context, snapshot) {
+                    if (snapshot.connectionState != ConnectionState.done) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    if (snapshot.hasData || snapshot.data != null) {
+                      return Column(children: [
+                        // TODO change back to enabled Slidables?
+                        ..._buildListOfSlidables(snapshot.data!)
+                      ]);
+                    }
+                    return Text("Empty");
+                  },
+                ),
+                IconButton(
+                  color: Colors.black,
+                  onPressed: () {
+                    showFormDialog(context);
+                  },
+                  icon: Icon(Icons.add),
+                )
               ],
             ),
           ),
@@ -116,17 +94,6 @@ class _MenuKaartenWidgetState extends State<MenuKaartenWidget> {
     }
   }
 
-  void flipEnabledItem(bool isEnabled, int id, BuildContext context) async {
-    int code = 0;
-    code = await switchEnabledMenuLijst(isEnabled, id, context);
-    debugPrint(code.toString());
-    if (code != 0) {
-      setState(() {
-        fetchedMenuList = getMenusFromServer(context);
-      });
-    }
-  }
-
   List<Widget> _buildListOfSlidables(List<MenuClass> data) {
     List<Widget> list = [];
     for (var item in data) {
@@ -146,6 +113,18 @@ class _MenuKaartenWidgetState extends State<MenuKaartenWidget> {
     return list;
   }
 
+  // TODO //////////////////////
+  // void flipArchivedItem(bool isArchived, int id, BuildContext context) async {
+  //   int code = 0;
+  //   code = await switchArchivedMepLijst(isArchived, id, context);
+  //   debugPrint(code.toString());
+  //   if (code != 0) {
+  //     setState(() {
+  //       fetchedMepLijsten = getMepLijstenFromServerAsListItems(context);
+  //     });
+  //   }
+  // }
+
   Widget _buildSlidable(bool isEnabled, MenuClass data, int i) {
     return Slidable(
       key: ValueKey(i),
@@ -161,15 +140,15 @@ class _MenuKaartenWidgetState extends State<MenuKaartenWidget> {
             icon: Icons.delete,
             label: 'Delete',
           ),
-          SlidableAction(
-            onPressed: (_) {
-              flipEnabledItem(isEnabled, data.id!, context);
-            },
-            backgroundColor: Colors.orange,
-            foregroundColor: Colors.white,
-            icon: Icons.power_settings_new,
-            label: 'In/Active',
-          ),
+          // SlidableAction(
+          //   onPressed: (_) {
+          //     flipEnabledItem(isEnabled, data.id!, context);
+          //   },
+          //   backgroundColor: Colors.orange,
+          //   foregroundColor: Colors.white,
+          //   icon: Icons.power_settings_new,
+          //   label: 'In/Active',
+          // ),
         ],
       ),
       endActionPane: const ActionPane(
@@ -186,7 +165,8 @@ class _MenuKaartenWidgetState extends State<MenuKaartenWidget> {
       ),
       child: ListTile(
         title: Text('${data.name}'),
-        onTap: () => {
+        onTap: () =>
+        {
           // TODO , on tap, do what?
         },
       ),
@@ -289,7 +269,7 @@ class _MenuKaartenWidgetState extends State<MenuKaartenWidget> {
                         child: ElevatedButton(
                           style: ButtonStyle(
                             backgroundColor:
-                                MaterialStateProperty.all(Colors.white),
+                            MaterialStateProperty.all(Colors.white),
                           ),
                           onPressed: () {
                             context.pop();
@@ -305,7 +285,7 @@ class _MenuKaartenWidgetState extends State<MenuKaartenWidget> {
                         child: ElevatedButton(
                           style: ButtonStyle(
                               backgroundColor:
-                                  MaterialStateProperty.all(Colors.white)),
+                              MaterialStateProperty.all(Colors.white)),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               addItem(MEPController.text, context);
